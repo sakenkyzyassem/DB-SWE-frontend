@@ -1,24 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import Header from "./components/Header";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <div className="row">
+            <div className="col">
+                <Header className="row"/>
+                <div className="row Cover px-5">
+                    <div className="col-4">
+                        <img
+                            src={require('./static/cover.png')}
+                            alt="people-illustration"
+                            height="280px"
+                        />
+                    </div>
+                    <div className="offset-1 col-7 px-5 mt-5">
+                        <h3><b>GETAROOM</b> is a hotel booking website, which will help you to find the perfect room</h3>
+                    </div>
+                </div>
+                <div className="row">
+
+                </div>
+            </div>
+        </div>
     </div>
   );
 }

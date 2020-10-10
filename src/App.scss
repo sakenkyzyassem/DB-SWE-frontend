@@ -1,0 +1,30 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
+$body-bg: #fff;
+$primary-blue: #061041;
+$primary-pink: #F43467;
+$primary-yellow: #F58E02;
+$primary-white: #EBEBEB;
+
+.App {
+  background-color: $body-bg;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .Cover {
+    transform-origin: top;
+    transform: translateY(100px);
+    height: 70vh;
+    background-color: $primary-blue;
+    background-image: url("./static/waves.svg");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    color: white;
+
+  }
+
+  .App-logo {
+    height: 40vmin;
+  }
+}
