@@ -1,0 +1,30 @@
+@import "~bootstrap/scss/functions";
+$primary: #062041;
+$secondary: #F43467;
+$theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+);
+$yellow: #F58E02;
+$info: #808080;
+$white: #fff;
+$body-bg: white;
+$dark: theme-color("primary");
+$light: $white;
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Roboto Light", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: "Segoe UI", "Roboto Light", source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}

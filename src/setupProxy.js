@@ -2,9 +2,9 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
     app.use(
-        '/api',
+        '/api/v1',
         createProxyMiddleware({
-            target: 'http://localhost:8080/hotel_management_war_exploded/',
+            target: 'http://localhost:8181/',
             changeOrigin: true,
         })
     );

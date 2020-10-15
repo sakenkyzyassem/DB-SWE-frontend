@@ -1,0 +1,32 @@
+@import "../../custom";
+
+.ProfileMain {
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-image: url('../../static/waveYellow.png');
+
+
+  .active {
+    color: $secondary;
+  }
+
+  .nav-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .Card {
+    z-index: 1000;
+    height: 75vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+}
