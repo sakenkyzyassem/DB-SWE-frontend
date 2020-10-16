@@ -1,0 +1,78 @@
+@import "../../../App.scss";
+
+
+h1 {
+    margin-bottom: 90px;
+    margin-top: 70px;
+    font-size: 42px;
+}
+
+.signUp {
+    background-color: $primary;
+    min-height: 100vh;
+    text-align: center;
+    padding-top: 20px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: block;
+    justify-content: center;
+    width: 1000px;
+}
+
+.card {
+    background-color: white;
+    width: 1000px;
+    max-height: 500px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+    margin-top: 30px;
+    border: none;
+    padding-right: 45px;
+}
+
+.inputForm {
+    border: none;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    outline: none;
+    ::placeholder {
+        color: #808080;
+    }
+}
+
+.inputForm:active, .inputForm:focus {
+    border-bottom: 1px solid #015CAF;
+}
+
+.signUpBtn {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    width: 150px;
+    height: 50px;
+    left: 968px;
+    top: 650px;
+    background: $secondary;
+    border-radius: 20px;
+    color: white;
+    outline: none;
+    border: none;
+}
+
+.signUpBtn:hover, .signUpBtn:focus{
+    border: none;
+    outline: none;
+    filter: drop-shadow(3px 5px 10px rgba(244, 52, 103, 0.5));
+}
+
+.col-9{
+    padding-right: 50px;
+}
+
+.imgSignUp {
+    border-radius: 40px 0 0 40px;
+}

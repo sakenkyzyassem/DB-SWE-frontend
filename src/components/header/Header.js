@@ -12,6 +12,7 @@ class Header extends React.Component {
 
 
     render() {
+        if(window.location.pathname === '/signUp' || window.location.pathname === '/createAccount' || window.location.pathname === '/signIn' || window.location.pathname === '/createAccountSuccess') return null;
         return(
             <Navbar
                 bg={this.props.location.pathname === "/" ? "primary" : "light"}
