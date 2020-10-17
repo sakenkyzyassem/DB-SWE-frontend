@@ -1,11 +1,1 @@
-@import "src/App.scss";
-
-.Cover {
-  height: 70vh;
-  background-color: $primary;
-  background-image: url("../../static/waves.svg");
-  background-position: bottom;
-  background-repeat: no-repeat;
-  color: white;
-
-}
+@import "src/custom.scss";.home {  background-color: $primary;  width: 100%;  .cover-page {    color: white;      img {      width: 100%;    }  }    .cover-bg {    min-height: 200px;    width: 100%;    background-color: $primary;    background-image: url("../../static/waves.svg");    background-repeat: no-repeat; /* Добавляем фон */    background-size: cover; /* Масштабируем фон *//* attachment */  }}

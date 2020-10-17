@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Col } from 'react-bootstrap';
 import './App.scss';
 import Header from "./components/header/Header";
@@ -20,15 +20,16 @@ function App() {
                                 <Home />
                             </Route>
                             <Route path="/profile">
-                                <ProfileMain tab="profile"/>
+                                <ProfileMain />
                             </Route>
                             <Route path="/history">
-                                <ProfileMain tab="history"/>
+                                <ProfileMain />
                             </Route>
                             <Route path="*" className="col">
                                 <Col>
-                                <h1>404</h1>
-                                <h2>Page Not Found</h2>
+                                    <h1>404</h1>
+                                    <h2>Page Not Found</h2>
+                                    <Link to="/">Go Home</Link>
                                 </Col>
                             </Route>
                         </Switch>

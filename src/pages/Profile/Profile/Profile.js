@@ -18,23 +18,20 @@ class Profile extends React.Component {
             <Container className="col px-6">
                 <h2 className="pl-2" >{this.props.user.firstName + " " + this.props.user.lastName}</h2>
                 <Row className="p-4">
-                    <Col xs={9}>
+                    <Col xs={6}>
                         <h6 className="info-header">General Information</h6>
                         <Row className="p-2">
-                            <Col xs={4} className="label">{this.state.titles[0]}</Col>
+                            <Col xs={12} md={4} className="label">{this.state.titles[0]}</Col>
                             <Col>{this.props.user.firstName}</Col>
                         </Row>
                         <Row className="p-2">
-                            <Col xs={4} className="label">{this.state.titles[1]}</Col>
+                            <Col xs={12} md={4} className="label">{this.state.titles[1]}</Col>
                             <Col>{this.props.user.lastName}</Col>
                         </Row>
                         <Row className="p-2">
                             <Col xs={4} className="label">{this.state.titles[3]}</Col>
                             <Col>{this.props.user.email}</Col>
                         </Row>
-                    </Col>
-                    <Col xs={3}>
-                        <img src={this.props.user.profile} alt="user-profile-pic" />
                     </Col>
                 </Row>
             </Container>
