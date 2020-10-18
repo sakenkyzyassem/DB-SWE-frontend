@@ -8,65 +8,84 @@ class History extends React.Component {
         super(props);
 
         this.state = {
-            data: [
-                {
-                    type: 'single',
-                    reservation_date: '12 October 2020',
-                    due_date: '20 October 2020',
-                    num_rooms: 2,
-                    payment_status: '20,000',
-                    app_status: <Badge variant="danger">Canceled</Badge>
-                },
-                {
-                    type: 'double',
-                    reservation_date: '9 October 2020',
-                    due_date: '29 October 2020',
-                    num_rooms: 1,
-                    payment_status: '15,000',
-                    app_status: <Badge variant="warning">Pending</Badge>
-                },
-                {
-                    type: 'single',
-                    reservation_date: '12 April 2019',
-                    due_date: '20 October 2020',
-                    num_rooms: 1,
-                    payment_status: '30,000',
-                    app_status: <Badge variant="success">Success</Badge>
-                },
-            ]
+            userHistory: null
         }
     }
 
+    async componentDidMount() {
+
+        await fetch('/api/bookinghistory/'+"random000@gmail.com", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then(response => response.json())
+            .then((res) => this.setState({userHistory: res}))
+            .catch(err => console.log(err));
+    }
+
     render() {
+        console.log(this.state.userHistory)
         return (
-            <Table responsive>
-                <thead>
-                    <tr>
-                        <th>Room type</th>
-                        <th>Date of reservation</th>
-                        <th>Due date</th>
-                        <th>Number of rooms</th>
-                        <th>Payment Status</th>
-                        <th>Appointment status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.state.data.map(row => {
-                            return (
-                            <tr>
-                                <td>{row.type}</td>
-                                <td>{row.reservation_date}</td>
-                                <td>{row.due_date}</td>
-                                <td>{row.num_rooms}</td>
-                                <td>{row.payment_status}</td>
-                                <td>{row.app_status}</td>
-                            </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </Table>
+            (Array.isArray(this.state.userHistory) && this.state.userHistory.length !== 0)
+                ?
+                    <Table responsive>
+                        <thead>
+                        <tr>
+                            <th>Room type</th>
+                            <th>Date of reservation</th>
+                            <th>Due date</th>
+                            <th>Number of rooms</th>
+                            <th>Payment Status</th>
+                            <th>Appointment status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.userHistory.map(row => {
+                                if (row.appointment_status == "canceled"){
+                                    return (
+                                        <tr>
+                                            <td>{row.room_type}</td>
+                                            <td>{row.date_reservation}</td>
+                                            <td>{row.due_date}</td>
+                                            <td>{row.number_of_rooms}</td>
+                                            <td>{row.payment_status}</td>
+                                            <td><Badge variant="danger">Canceled</Badge></td>
+                                        </tr>
+                                    )
+                                }
+                                else if (row.appointment_status == "pending"){
+                                    return (
+                                        <tr>
+                                            <td>{row.room_type}</td>
+                                            <td>{row.date_reservation}</td>
+                                            <td>{row.due_date}</td>
+                                            <td>{row.number_of_rooms}</td>
+                                            <td>{row.payment_status}</td>
+                                            <td><Badge variant="warning">Pending</Badge></td>
+                                        </tr>
+                                    )
+                                }
+                                else {
+                                    return (
+                                        <tr>
+                                            <td>{row.room_type}</td>
+                                            <td>{row.date_reservation}</td>
+                                            <td>{row.due_date}</td>
+                                            <td>{row.number_of_rooms}</td>
+                                            <td>{row.payment_status}</td>
+                                            <td><Badge variant="success">Success</Badge></td>
+                                        </tr>
+                                    )
+                                }
+                            })
+                        }
+                        </tbody>
+                    </Table>
+                :
+                <h5 className="label">You do not have bookings yet!</h5>
         );
     }
 }

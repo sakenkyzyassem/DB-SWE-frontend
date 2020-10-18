@@ -20,8 +20,6 @@ class SignUp extends Component {
         this.state = { 
             email: "",
             password: "",
-            message: "",
-            success: false
         }
         this.signUpFunction = this.signUpFunction.bind(this);
         
@@ -39,7 +37,7 @@ class SignUp extends Component {
             <div className="signUp">
                 <div className="container">
                 <img src={require('../../../static/LogoWhite.svg')} alt=""></img>
-                <div className="card">
+                <div className="card-form">
                     <div className="row">
                         <div className="col-6">
                             <img className="imgSignUp" src={require('../../../static/signUpImg2.jpg')} alt="LobbyBoy"/>
