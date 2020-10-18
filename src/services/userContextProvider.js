@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import UserContext from './userContext';
 
 export default class UserContextProvider extends React.Component {
@@ -9,15 +8,6 @@ export default class UserContextProvider extends React.Component {
             user: {}
         }
 
-    }
-
-    componentDidMount() {
-        axios.get("/api/v1/guests")
-            .then(res => {
-                const users = res.data;
-                const user = users[0];
-                this.setState({user})
-            })
     }
     
     render() {

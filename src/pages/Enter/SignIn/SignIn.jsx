@@ -7,7 +7,7 @@ class SignIn extends Component {
     render() { 
         return ( 
             <UserContext.Consumer>
-                { user => 
+                {user => 
             <div className="signIn">
                 <div className="container">
                 <img src={require('../../../static/LogoWhite.svg')} alt=""></img>

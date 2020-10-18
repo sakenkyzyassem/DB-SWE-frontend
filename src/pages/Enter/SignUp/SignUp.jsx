@@ -1,8 +1,39 @@
 import React, { Component } from 'react';
 import './SignUp.scss';
+import {withRouter} from 'react-router-dom';
+
+const required = value => {
+    if(!value){
+        return (
+            <div className="alert alert-danger" role="alert">
+                Empty field is not allowed!
+            </div>
+        );
+    }
+};
+
 
 class SignUp extends Component {
-    state = {  }
+
+    constructor(props){
+        super(props);
+        this.state = { 
+            email: "",
+            password: "",
+            message: "",
+            success: false
+        }
+        this.signUpFunction = this.signUpFunction.bind(this);
+        
+    }
+
+    signUpFunction() {
+        this.props.history.push({
+            pathname: "/createAccount", 
+            state: {info: this.state}
+        });
+    }
+
     render() { 
         return ( 
             <div className="signUp">
@@ -20,12 +51,10 @@ class SignUp extends Component {
                             </div>
                             <div className="col-9">
                                 <h1>Sign Up</h1>
-                                <input type="email" placeholder="Enter email" className="inputForm"></input>
-                                <input type="password" placeholder="Enter password" className="inputForm"></input>
+                                <input type="email" placeholder="Enter email" className="inputForm" onChange={e => this.setState({email: e.target.value})}></input>
+                                <input type="password" placeholder="Enter password" className="inputForm" onChange={e => this.setState({password: e.target.value})}></input>
                                 <br></br>
-                                <a href="/createAccount">
-                                <button className="signUpBtn" type="button">Sign up</button>
-                                </a>
+                                <button className="signUpBtn" type="button" onClick={this.signUpFunction}>Sign up</button>
                                 <p>Already have an account? <a href="/signIn">Sign in</a></p>
                             </div>
                             </div>
@@ -38,4 +67,4 @@ class SignUp extends Component {
     }
 }
  
-export default SignUp;
+export default withRouter(SignUp);
