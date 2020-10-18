@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Col, Row, Card, Nav} from "react-bootstrap";
+import {Container, Card, Nav} from "react-bootstrap";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 
@@ -9,14 +9,11 @@ import History from "./History/History";
 import UserContext from '../../services/userContext';
 
 class ProfileMain extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
             <UserContext.Consumer>
-                { user =>
+                { state =>
                 <div className="ProfileMain">
                     <Container>
                         <Card className="m-5 shadow Card">
@@ -34,7 +31,7 @@ class ProfileMain extends React.Component {
                                 <Card.Body>
                                     <Switch>
                                         <Route path="/profile">
-                                            <Profile user = {user.user}/>
+                                            <Profile user = {state}/>
                                         </Route>
                                         <Route path="/history">
                                             <History />

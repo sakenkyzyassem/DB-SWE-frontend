@@ -29,7 +29,7 @@ class SignUp extends Component {
     signUpFunction() {
         this.props.history.push({
             pathname: "/createAccount", 
-            state: {info: this.state}
+            state: this.state
         });
     }
 

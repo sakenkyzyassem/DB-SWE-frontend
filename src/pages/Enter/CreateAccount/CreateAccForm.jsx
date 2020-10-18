@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import './CreateAccForm.scss';
+<<<<<<< HEAD
 import {withRouter} from 'react-router-dom';
+=======
+>>>>>>> 380d2c5a2886a4230597087dc163fbb08ba67e86
 
 const required = value => {
     if(!value){
@@ -31,11 +35,20 @@ class CreateAccForm extends Component {
 
     async createUser(e) {
         let userPrev = this.props.history.location.state;
+<<<<<<< HEAD
                 const user = {
                     email: userPrev.info.email,
                     password: userPrev.info.password,
                     ...this.state
                 }
+=======
+        const user = {
+            email: userPrev.email,
+            password: userPrev.password,
+            ...this.state
+        }
+                console.log(user);
+>>>>>>> 380d2c5a2886a4230597087dc163fbb08ba67e86
         await fetch('/api/guests', {
             method: 'POST',
             headers: {
@@ -74,7 +87,7 @@ class CreateAccForm extends Component {
                             <label className="labelType">ID Type</label>
                             <select onChange={e => this.setState({documentType: e.target.value})}>
                                 <option selected disabled>Choose identification type</option>
-                                <option>Passport</option>
+                                <option     >Passport</option>
                                 <option>Driving license</option>
                             </select>
                             <label>ID Number</label>

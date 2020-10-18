@@ -10,6 +10,7 @@ import SignUp from './pages/Enter/SignUp/SignUp';
 import CreateAccount from './pages/Enter/CreateAccount/CreateAccForm';
 import SignIn from './pages/Enter/SignIn/SignIn';
 import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
+import LogOut from "./pages/Enter/Logout/LogOut";
 
 function App() {
 
@@ -17,38 +18,46 @@ function App() {
         <UserContextProvider>
             <div className="App">
                 <Router>
-                    <Header className="row" dark="true"/>
-                    <div className="App-content">
-                        <Switch>
-                            <Route exact path="/">
-                                <Home />
-                            </Route>
-                            <Route path="/signUp">
-                                <SignUp tab="signUp"/>
-                            </Route>
-                            <Route path="/createAccount">
-                                <CreateAccount tab="createAccount"/>
-                            </Route>
-                            <Route path="/createAccountSuccess">
-                                <CreateAccountSuccess tab="createAccountSuccess"/>
-                            </Route>
-                            <Route path="/signIn">
-                                <SignIn tab="signIn"/>
-                            </Route>
-                            <Route path="/profile">
-                                <ProfileMain tab="profile"/>
-                            </Route>
-                            <Route path="/history">
-                                <ProfileMain tab="history"/>
-                            </Route>
-                            <Route path="*" className="col">
-                                <Col>
-                                <h1>404</h1>
-                                <h2>Page Not Found</h2>
-                                </Col>
-                            </Route>
-                        </Switch>
-                    </div>
+                    <Switch>
+                        <Route path="/logout">
+                            <LogOut />
+                        </Route>
+                        <Route path="/signUp">
+                            <SignUp />
+                        </Route>
+                        <Route path="/createAccount">
+                            <CreateAccount />
+                        </Route>
+                        <Route path="/createAccountSuccess">
+                            <CreateAccountSuccess />
+                        </Route>
+                        <Route path="/signIn">
+                            <SignIn tab="signIn"/>
+                        </Route>
+                        <Route>
+                            <Header className="row" dark="true"/>
+                            <div className="App-content">
+                                <Switch>
+                                    <Route exact path="/">
+                                        <Home />
+                                    </Route>
+                                    <Route path="/profile">
+                                        <ProfileMain />
+                                    </Route>
+                                    <Route path="/history">
+                                        <ProfileMain />
+                                    </Route>
+                                    <Route path="*" className="col">
+                                        <Col>
+                                            <h1>404</h1>
+                                            <h2>Page Not Found</h2>
+                                            <Link to="/">Go Home</Link>
+                                        </Col>
+                                    </Route>
+                                </Switch>
+                            </div>
+                        </Route>
+                    </Switch>
                 </Router>
             </div>
         </UserContextProvider>

@@ -1,11 +1,12 @@
 @import "~bootstrap/scss/functions";
 $primary: #062041;
 $secondary: #F43467;
+$yellow: #F58E02;
 $theme-colors: (
         "primary": $primary,
         "secondary": $secondary,
+        "additional": $yellow,
 );
-$yellow: #F58E02;
 $info: #808080;
 $white: #fff;
 $body-bg: white;
