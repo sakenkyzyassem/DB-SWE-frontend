@@ -17,7 +17,7 @@ class CreateAccSuccess extends Component {
                         </p>
                         <br></br>
                         <div className="container2" style={{width:"600px"}}>
-                            <Link to="/">
+                            <Link to="/signIn">
                             <button className="signUpBtn" type="button">OK</button>
                             </Link>
                         </div>
