@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './CreateAccSuccess.scss';
 
 class CreateAccSuccess extends Component {
@@ -16,9 +17,9 @@ class CreateAccSuccess extends Component {
                         </p>
                         <br></br>
                         <div className="container2" style={{width:"600px"}}>
-                            <a href="/signIn">
+                            <Link to="/">
                             <button className="signUpBtn" type="button">OK</button>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

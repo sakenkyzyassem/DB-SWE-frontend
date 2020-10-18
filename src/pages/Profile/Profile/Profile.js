@@ -1,37 +1,24 @@
 import React from "react";
-import axios from 'axios';
-import { Col, Row, Card, Container } from 'react-bootstrap';
+import { Col, Row, Container } from 'react-bootstrap';
 import './Profile.scss';
+import UserContext from "../../../services/userContext";
 
 
 class Profile extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            titles: ['Name', 'Surname', 'Username', 'Email']
-        }
-    }
+    static contextType = UserContext;
 
+    componentDidMount() {
+        console.log(this.context);
+    }
 
     render() {
         return (
             <Container className="col px-6">
-                <h2 className="pl-2" >{this.props.user.firstName + " " + this.props.user.lastName}</h2>
+                {/*<h2 className="pl-2" >{this.props.user.firstName | "" + " " + this.props.user.lastName}</h2>*/}
                 <Row className="p-4">
                     <Col xs={6}>
                         <h6 className="info-header">General Information</h6>
-                        <Row className="p-2">
-                            <Col xs={12} md={4} className="label">{this.state.titles[0]}</Col>
-                            <Col>{this.props.user.firstName}</Col>
-                        </Row>
-                        <Row className="p-2">
-                            <Col xs={12} md={4} className="label">{this.state.titles[1]}</Col>
-                            <Col>{this.props.user.lastName}</Col>
-                        </Row>
-                        <Row className="p-2">
-                            <Col xs={4} className="label">{this.state.titles[3]}</Col>
-                            <Col>{this.props.user.email}</Col>
-                        </Row>
+
                     </Col>
                 </Row>
             </Container>
