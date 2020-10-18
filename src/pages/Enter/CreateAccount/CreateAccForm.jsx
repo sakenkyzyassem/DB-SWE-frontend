@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './CreateAccForm.scss';
-import EnterService from '../../../services/EnterService';
 import {withRouter} from 'react-router-dom';
 
 const required = value => {
@@ -20,12 +19,11 @@ class CreateAccForm extends Component {
         this.state = {
             firstName: "",
             lastName: "",
-            mobilePhone: "",
+            mobile: "",
             address: "",
-            idType: "",
-            idNumber: "",
-            homePhone: "",
-            message: "",
+            documentType: "",
+            documentId: "",
+            home: "",
             success: false
          }
         this.createUser = this.createUser.bind(this);
@@ -34,8 +32,8 @@ class CreateAccForm extends Component {
     async createUser(e) {
         let userPrev = this.props.history.location.state;
                 const user = {
-                    email: userPrev.email,
-                    password: userPrev.password,
+                    email: userPrev.info.email,
+                    password: userPrev.info.password,
                     ...this.state
                 }
         await fetch('/api/guests', {
@@ -54,34 +52,6 @@ class CreateAccForm extends Component {
             .catch(err => console.log(err));
     }
 
-    createAccountFunction(e) {
-        e.preventDefault();
-
-        this.setState({
-            success: false
-        });
-
-        console.log('lrfkr');
-
-        EnterService.createAccount(
-            this.props.history.location.state.info.email,
-            this.props.history.location.state.info.password,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.mobilePhone,
-            this.state.idType,
-            this.state.idNumber,
-            this.state.homePhone
-        ).then(response => {
-            this.setState({
-                success: true
-            });
-            console.log("success");
-            window.location.replace("/createAccountSuccess");
-        }
-        ).catch(error => console.log(error))
-    }
-
     render() { 
         return ( 
             <div className="createAccForm">
@@ -96,21 +66,21 @@ class CreateAccForm extends Component {
                             <label>Last Name</label>
                             <input type="text" placeholder="Enter last name" className="inputForm2"onChange={e => this.setState({lastName: e.target.value})}></input>
                             <label>Mobile Phone</label>
-                            <input type="tel" maxLength="12" placeholder="Enter mobile phone number" className="inputForm2" onChange={e => this.setState({homePhone: e.target.value})}></input>
+                            <input type="tel" maxLength="12" placeholder="Enter mobile phone number" className="inputForm2" onChange={e => this.setState({mobile: e.target.value})}></input>
                             <label>Address</label>
                             <input type="text" placeholder="Enter address" className="inputForm2" onChange={e => this.setState({address: e.target.value})}></input>
                         </div>
                         <div className="col-6">
                             <label className="labelType">ID Type</label>
-                            <select onChange={e => this.setState({idType: e.target.value})}>
+                            <select onChange={e => this.setState({documentType: e.target.value})}>
                                 <option selected disabled>Choose identification type</option>
                                 <option>Passport</option>
                                 <option>Driving license</option>
                             </select>
                             <label>ID Number</label>
-                            <input placeholder="Enter identification number" className="inputForm2" onChange={e => this.setState({idNumber: e.target.value})}></input>
+                            <input placeholder="Enter identification number" className="inputForm2" onChange={e => this.setState({documentId: e.target.value})}></input>
                             <label>Home Phone</label>
-                            <input type="tel" placeholder="Enter home phone number" className="inputForm2" onChange={e => this.setState({homePhone: e.target.value})}></input>
+                            <input type="tel" placeholder="Enter home phone number" className="inputForm2" onChange={e => this.setState({home: e.target.value})}></input>
                         </div>
                     </div>
                     <div className="container2">
