@@ -20,6 +20,7 @@ class SignUp extends Component {
         this.state = { 
             email: "",
             password: "",
+            success: false,
         }
         this.signUpFunction = this.signUpFunction.bind(this);
         
