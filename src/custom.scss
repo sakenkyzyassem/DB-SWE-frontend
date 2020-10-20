@@ -7,11 +7,10 @@ $theme-colors: (
         "secondary": $secondary,
         "additional": $yellow,
 );
-$info: #808080;
 $white: #fff;
 $body-bg: white;
 $dark: theme-color("primary");
-$light: $white;
+$light: #808080;
 
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";

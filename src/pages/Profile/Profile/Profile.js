@@ -1,5 +1,6 @@
 import React from "react";
-import { Col, Row, Container } from 'react-bootstrap';
+import { Col, Row, Container, Spinner } from 'react-bootstrap';
+import { getUserData } from '../../../services/userService';
 import './Profile.scss';
 
 const col1 = [
@@ -45,31 +46,13 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: {
-                firstName: "",
-                lastName: "",
-                email: "",
-                documentType: "",
-                documentId: "",
-                mobile: "",
-                home: "",
-                address: ""
-            }
+            userInfo: null
         }
 
     }
 
-    async componentDidMount () {
-        await fetch('/api/guests/'+this.props.data, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => response.json())
-            .then((res) => this.setState({userInfo: res}))
-            .catch(err => console.log(err));
+    componentDidMount () {
+        getUserData(this.props.data).then((res) => this.setState({userInfo: res}));
 
         console.log(this.state.userInfo);
     }
@@ -78,45 +61,56 @@ class Profile extends React.Component {
     render() {
         return (
             <Container className="col p-4">
-                <Row>
-                    <h2>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</h2>
-                </Row>
-                <Row>
-                    <Col xs={12} md={6} className="p-4">
-                        <h6 className="info-header">General Information</h6>
-                        {
-                            col1.map((field, index) => {
-                                return (
-                                    <Row key={index} className="py-2">
-                                        <Col xs={6} className="label">
-                                            {field.label}
-                                        </Col>
-                                        <Col xs={6}>
-                                            {this.state.userInfo[field.field]}
-                                        </Col>
-                                    </Row>
-                                )
-                            })
-                        }
-                    </Col>
-                    <Col xs={12} md={6} className="p-4">
-                        <h6 className="info-header">Contact Information</h6>
-                        {
-                            col2.map((field, index) => {
-                                return (
-                                    <Row key={index} className="py-2">
-                                        <Col xs={6} className="label">
-                                            {field.label}
-                                        </Col>
-                                        <Col xs={6}>
-                                            {this.state.userInfo[field.field]}
-                                        </Col>
-                                    </Row>
-                                )
-                            })
-                        }
-                    </Col>
-                </Row>
+                {
+                    this.state.userInfo ?
+                        <div>
+                            <Row>
+                                <h2>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</h2>
+                            </Row>
+                            <Row>
+                                <Col xs={12} md={6} className="p-4">
+                                    <h6 className="info-header">General Information</h6>
+                                    {
+                                        col1.map((field, index) => {
+                                            return (
+                                                <Row key={index} className="py-2">
+                                                    <Col xs={6} className="label">
+                                                        {field.label}
+                                                    </Col>
+                                                    <Col xs={6}>
+                                                        {this.state.userInfo[field.field]}
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                                <Col xs={12} md={6} className="p-4">
+                                    <h6 className="info-header">Contact Information</h6>
+                                    {
+                                        col2.map((field, index) => {
+                                            return (
+                                                <Row key={index} className="py-2">
+                                                    <Col xs={6} className="label">
+                                                        {field.label}
+                                                    </Col>
+                                                    <Col xs={6}>
+                                                        {this.state.userInfo[field.field]}
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                            </Row>
+                        </div>
+                        :
+                        <Row className="justify-content-md-center">
+                            <Spinner animation="border" role="status" variant="secondary">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </Row>
+                }
             </Container>
         );
     }
