@@ -28,7 +28,7 @@ class Header extends React.Component {
                             <Nav
                                 className="ml-auto mr-0"
                             >
-                                <LinkContainer exact to="/" className="mr-4 pt-2">
+                                <LinkContainer exact to="/" className="h mr-4 pt-2">
                                     <Nav.Item>HOME</Nav.Item>
                                 </LinkContainer>
                                 {

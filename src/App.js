@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Col } from 'react-bootstrap';
+import { ReactComponent as Logo } from "./static/LogoText.svg";
 import './App.scss';
 import Header from "./components/header/Header";
 import Home from "./pages/Home/Home";
@@ -11,8 +12,9 @@ import CreateAccount from './pages/Enter/CreateAccount/CreateAccForm';
 import SignIn from './pages/Enter/SignIn/SignIn';
 import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
 import LogOut from "./pages/Enter/Logout/LogOut";
+import Footer from "./components/footer/Footer";
 
-function App() {
+function App(props) {
 
     return (
         <UserContextProvider>
@@ -40,6 +42,7 @@ function App() {
                                 <Switch>
                                     <Route exact path="/">
                                         <Home />
+                                        <Footer />
                                     </Route>
                                     <Route path="/profile">
                                         <ProfileMain />
@@ -47,7 +50,7 @@ function App() {
                                     <Route path="/history">
                                         <ProfileMain />
                                     </Route>
-                                    <Route path="*" className="col">
+                                    <Route path="*">
                                         <Col>
                                             <h1>404</h1>
                                             <h2>Page Not Found</h2>

@@ -112,7 +112,7 @@ class History extends React.Component {
                                 <th>Number of rooms</th>
                                 <th>Payment Status</th>
                                 <th>Appointment status</th>
-                                <th><Button variant="primary" onClick={this.createBooking}>Book</Button></th>
+                                <th><Button variant="primary" onClick={this.createBooking} block>Book</Button></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -135,6 +135,7 @@ class History extends React.Component {
                                                             this.handleHide(row.booking_id, index)
                                                         }}
                                                         disabled={this.state.isLoading}
+                                                        block
                                                     >
                                                         { this.state.isLoading ? "...Loading" : "Hide"}
                                                     </Button></td>
@@ -159,6 +160,7 @@ class History extends React.Component {
                                                         }}
                                                         className="m-1"
                                                         disabled={this.state.isLoading}
+                                                        block
                                                     >
                                                         { this.state.isLoading ? "...Loading" : "Edit"}
                                                     </Button>
@@ -170,6 +172,7 @@ class History extends React.Component {
                                                         }}
                                                         className="m-1"
                                                         disabled={this.state.isLoading}
+                                                        block
                                                     >
                                                         { this.state.isLoading ? "...Loading" : "Cancel"}
                                                     </Button>
@@ -224,11 +227,11 @@ class History extends React.Component {
                                                                 </Col>
                                                             </Form.Group>
 
-                                                            <Form.Group as={Row}>
-                                                                <Button variant="secondary" type="cancel" onClick={this.handleClose}>
+                                                            <Form.Group as={Row} className="p-3">
+                                                                <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                     Cancel
                                                                 </Button>
-                                                                <Button variant="primary" type="submit">
+                                                                <Button variant="primary" type="submit" block>
                                                                     Save Changes
                                                                 </Button>
                                                             </Form.Group>

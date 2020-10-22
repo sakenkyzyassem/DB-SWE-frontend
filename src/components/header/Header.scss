@@ -1,7 +1,7 @@
 @import "../../custom.scss";
 
 .Header {
-  height: 60px;
+  height: 70px;
 
   .dark {
     color: $white;
@@ -13,6 +13,10 @@
 
   .active {
     color: $secondary;
+  }
+
+  .h{
+    color: $white;
   }
 
   .nav-item {
