@@ -13,8 +13,8 @@ class Header extends React.Component {
             <UserContext.Consumer>
                 { user =>
                     <Navbar
-                        bg={this.props.location.pathname === "/" ? "primary" : "light"}
-                        variant={this.props.location.pathname === "/" ? "dark": "light"}
+                        bg={this.props.location.pathname === "/" ? "primary" : "white"}
+                        variant={this.props.location.pathname === "/" ? "dark": "white"}
                         className={ this.props.location.pathname === "/" ? "Header fixed-top" : "Header fixed-top shadow-sm p-3 mb-5"}
                     >
                         <Navbar.Brand href="/">

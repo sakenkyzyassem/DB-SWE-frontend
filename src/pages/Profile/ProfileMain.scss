@@ -6,11 +6,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-image: url('../../static/waveYellow.png');
-
+  min-height: 90vh;
 
   .active {
     color: $secondary;
@@ -22,11 +18,25 @@
     }
   }
 
-  .Card {
+  .Card-profile {
     z-index: 1000;
-    height: 75vh;
+    height: max-content;
     overflow-y: scroll;
     scroll-behavior: smooth;
+  }
+
+  .banner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 128px;
+    width: 100%;
+    background-position: bottom;
+    background-size: 100%;
+    background-image: url('../../static/waveYellow.png');
+    background-repeat: no-repeat;
+    height: 128px;
+    width: 100%;
   }
 
 }

@@ -36,7 +36,6 @@ class CreateAccForm extends Component {
             password: userPrev.password,
             ...this.state
         }
-                console.log(user);
         await fetch('/api/guests', {
             method: 'POST',
             headers: {

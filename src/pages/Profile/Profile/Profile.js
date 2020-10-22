@@ -1,26 +1,116 @@
 import React from "react";
-import { Col, Row, Container } from 'react-bootstrap';
+import { Col, Row, Container, Spinner } from 'react-bootstrap';
+import { getUserData } from '../../../services/userService';
 import './Profile.scss';
-import UserContext from "../../../services/userContext";
 
+const col1 = [
+    {
+        label: "First Name",
+        field: "firstName"
+    },
+    {
+        label: "Last Name",
+        field: "lastName"
+    },
+    {
+        label: "Email",
+        field: "email"
+    },
+    {
+        label: "Document type",
+        field: "documentType"
+    },
+    {
+        label: "Document Id",
+        field: "documentId"
+    },
+]
+
+const col2 = [
+    {
+        label: "Mobile Phone Number",
+        field: "mobile"
+    },
+    {
+        label: "Home Phone Number",
+        field: "home"
+    },
+    {
+        label: "Address",
+        field: "address"
+    }
+]
 
 class Profile extends React.Component {
-    static contextType = UserContext;
 
-    componentDidMount() {
-        console.log(this.context);
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: null
+        }
+
     }
+
+    componentDidMount () {
+        getUserData(this.props.data).then((res) => this.setState({userInfo: res}));
+
+        console.log(this.state.userInfo);
+    }
+
 
     render() {
         return (
-            <Container className="col px-6">
-                {/*<h2 className="pl-2" >{this.props.user.firstName | "" + " " + this.props.user.lastName}</h2>*/}
-                <Row className="p-4">
-                    <Col xs={6}>
-                        <h6 className="info-header">General Information</h6>
-
-                    </Col>
-                </Row>
+            <Container className="col p-4">
+                {
+                    this.state.userInfo ?
+                        <div>
+                            <Row>
+                                <h2>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</h2>
+                            </Row>
+                            <Row>
+                                <Col xs={12} md={6} className="p-4">
+                                    <h6 className="info-header">General Information</h6>
+                                    {
+                                        col1.map((field, index) => {
+                                            return (
+                                                <Row key={index} className="py-2">
+                                                    <Col xs={6} className="label">
+                                                        {field.label}
+                                                    </Col>
+                                                    <Col xs={6}>
+                                                        {this.state.userInfo[field.field]}
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                                <Col xs={12} md={6} className="p-4">
+                                    <h6 className="info-header">Contact Information</h6>
+                                    {
+                                        col2.map((field, index) => {
+                                            return (
+                                                <Row key={index} className="py-2">
+                                                    <Col xs={6} className="label">
+                                                        {field.label}
+                                                    </Col>
+                                                    <Col xs={6}>
+                                                        {this.state.userInfo[field.field]}
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                            </Row>
+                        </div>
+                        :
+                        <Row className="justify-content-md-center">
+                            <Spinner animation="border" role="status" variant="secondary">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </Row>
+                }
             </Container>
         );
     }
