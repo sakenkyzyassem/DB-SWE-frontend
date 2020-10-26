@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row, Container, Spinner } from 'react-bootstrap';
 import { getUserData } from '../../../services/userService';
 import './Profile.scss';
+import Loading from "../../../components/Loading/Loading";
 
 const col1 = [
     {
@@ -105,11 +106,7 @@ class Profile extends React.Component {
                             </Row>
                         </div>
                         :
-                        <Row className="justify-content-md-center">
-                            <Spinner animation="border" role="status" variant="secondary">
-                                <span className="sr-only">Loading...</span>
-                            </Spinner>
-                        </Row>
+                        <Loading />
                 }
             </Container>
         );

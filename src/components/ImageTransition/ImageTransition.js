@@ -16,10 +16,11 @@ class ImageTransition extends React.Component {
                     src={this.props.src}
                     height={this.props.height}
                     width={this.props.width}
+                    alt={this.props.title}
                 />
                 <div className="transition-card card-text" style={{height: this.props.height, width: this.props.width}}>
-                    <h5>Hotel-name</h5>
-                    <p>Place-of-location</p>
+                    <h5>{ this.props.title }</h5>
+                    <p>{ this.props.subtitle }</p>
                 </div>
             </div>
         )

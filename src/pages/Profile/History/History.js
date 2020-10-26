@@ -1,8 +1,9 @@
 import React from "react";
 import {Table, Badge, Spinner, Row, Button, Modal, Form, Col} from 'react-bootstrap';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { getUserBookings, deleteBooking, editBooking } from "../../../services/bookingsService";
 import './History.scss'
+import Loading from "../../../components/Loading/Loading";
 
 class History extends React.Component {
 
@@ -12,7 +13,6 @@ class History extends React.Component {
         this.state = {
             show: false,
             userHistory: null,
-            isLoading: false,
             newBookings: null
         }
     }
@@ -27,31 +27,26 @@ class History extends React.Component {
     }
 
     handleHide = (id, key) => {
-        this.setState({isLoading: true});
-        console.log("deleting "+id);
         deleteBooking(id)
             .then(res => {
-                console.log(res);
-                    const arr = [...this.state.userHistory];
-                    arr.splice(key,1);
-                    this.setState({userHistory: arr});
-                    console.log(arr);
+                const arr = [...this.state.userHistory];
+                arr.splice(key,1);
+                this.setState({userHistory: arr});
             })
-
-        this.setState({isLoading: false});
     }
 
     handleEdit = (e, key) => {
         e.preventDefault();
         var bookings = this.state.newBookings;
 
-        editBooking(bookings[key].booking_id, bookings[key]);
-
-        this.setState({
-            userHistory: this.state.newBookings,
-            newBookings: null,
-            show: false
-        });
+        editBooking(bookings[key].booking_id, bookings[key])
+            .then(res => {
+                this.setState({
+                    userHistory: this.state.newBookings,
+                    newBookings: null,
+                    show: false
+                });
+            })
     }
 
     handleChange = (event, key, name) => {
@@ -60,7 +55,6 @@ class History extends React.Component {
                 ...this.state.newBookings[key],
                 [name]: event.target.value
             };
-            console.log(booking);
             var bookings = [...this.state.newBookings];
         }
         else {
@@ -68,7 +62,6 @@ class History extends React.Component {
                 ...this.state.userHistory[key],
                 [name]: event.target.value
             };
-            console.log(booking);
             var bookings = [...this.state.userHistory]
         }
         bookings[key] = booking;
@@ -93,7 +86,6 @@ class History extends React.Component {
                 const arr = [...this.state.userHistory];
                 arr[key].appointment_status = "canceled";
                 this.setState({userHistory: arr});
-                console.log(arr);
             })
     }
 
@@ -106,21 +98,24 @@ class History extends React.Component {
                         <Table responsive>
                             <thead>
                             <tr>
+                                <th>Hotel</th>
                                 <th>Room type</th>
                                 <th>Date of reservation</th>
                                 <th>Due date</th>
                                 <th>Number of rooms</th>
                                 <th>Payment Status</th>
-                                <th>Appointment status</th>
+                                <th>Reservation status</th>
+                                <th>Estimated price</th>
                                 <th><Button variant="primary" onClick={this.createBooking} block>Book</Button></th>
                             </tr>
                             </thead>
                             <tbody>
                             {
                                 this.state.userHistory.map((row, index) => {
-                                    if (row.appointment_status === "canceled"){
+                                    if (row.status === "canceled"){
                                         return (
                                             <tr key={index}>
+                                                <td><Link to={`/hotel/${row.hotel_id}`}>row.hotel_id</Link></td>
                                                 <td>{row.room_type}</td>
                                                 <td>{row.date_reservation}</td>
                                                 <td>{row.due_date}</td>
@@ -134,17 +129,17 @@ class History extends React.Component {
                                                         onClick={() => {
                                                             this.handleHide(row.booking_id, index)
                                                         }}
-                                                        disabled={this.state.isLoading}
                                                         block
-                                                    >
-                                                        { this.state.isLoading ? "...Loading" : "Hide"}
-                                                    </Button></td>
+                                                    >Remove</Button>
+                                                </td>
+                                                <td>{row.price}</td>
                                             </tr>
                                         )
                                     }
-                                    else if (row.appointment_status === "pending"){
+                                    else if (row.status === "pending"){
                                         return (
                                             <tr key={index}>
+                                                <td><Link to={`/hotel/${row.hotel_id}`}>row.hotel_id</Link></td>
                                                 <td>{row.room_type}</td>
                                                 <td>{row.date_reservation}</td>
                                                 <td>{row.due_date}</td>
@@ -159,11 +154,8 @@ class History extends React.Component {
                                                             this.handleOpen()
                                                         }}
                                                         className="m-1"
-                                                        disabled={this.state.isLoading}
                                                         block
-                                                    >
-                                                        { this.state.isLoading ? "...Loading" : "Edit"}
-                                                    </Button>
+                                                    >Change</Button>
                                                     <Button
                                                         variant="outline-danger"
                                                         size="sm"
@@ -171,11 +163,8 @@ class History extends React.Component {
                                                             this.handleCancel(row.booking_id, index)
                                                         }}
                                                         className="m-1"
-                                                        disabled={this.state.isLoading}
                                                         block
-                                                    >
-                                                        { this.state.isLoading ? "...Loading" : "Cancel"}
-                                                    </Button>
+                                                    >Cancel reservation</Button>
                                                 </td>
                                                 <Modal show={this.state.show} onHide={this.handleClose}>
                                                     <Modal.Header closeButton>
@@ -244,6 +233,7 @@ class History extends React.Component {
                                     else {
                                         return (
                                             <tr key={index}>
+                                                <td><Link to={`/hotel/${row.hotel_id}`}>row.hotel_id</Link></td>
                                                 <td>{row.room_type}</td>
                                                 <td>{row.date_reservation}</td>
                                                 <td>{row.due_date}</td>
@@ -255,10 +245,7 @@ class History extends React.Component {
                                                         variant="outline-info"
                                                         size="sm"
                                                         onClick={() => {this.handleHide(row.booking_id, index)}}
-                                                        disabled={this.state.isLoading}
-                                                    >
-                                                        { this.state.isLoading ? "...Loading" : "Hide"}
-                                                    </Button>
+                                                    >Remove</Button>
                                                 </td>
                                             </tr>
                                         )
@@ -271,11 +258,7 @@ class History extends React.Component {
                     :
                     <h5 className="label">You do not have bookings yet!</h5>
             :
-                <Row className="justify-content-md-center">
-                    <Spinner animation="border" role="status" variant="secondary">
-                        <span className="sr-only">Loading...</span>
-                    </Spinner>
-                </Row>
+                <Loading />
         );
     }
 }

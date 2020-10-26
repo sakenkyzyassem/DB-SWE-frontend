@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Col } from 'react-bootstrap';
-import { ReactComponent as Logo } from "./static/LogoText.svg";
 import './App.scss';
 import Header from "./components/header/Header";
 import Home from "./pages/Home/Home";
@@ -13,6 +12,7 @@ import SignIn from './pages/Enter/SignIn/SignIn';
 import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
 import LogOut from "./pages/Enter/Logout/LogOut";
 import Footer from "./components/footer/Footer";
+import Hotel from "./pages/Hotel/Hotel";
 
 function App(props) {
 
@@ -44,6 +44,7 @@ function App(props) {
                                         <Home />
                                         <Footer />
                                     </Route>
+                                    <Route path="/hotel/:id" component={Hotel} />
                                     <Route path="/profile">
                                         <ProfileMain />
                                     </Route>

@@ -28,8 +28,8 @@ class Header extends React.Component {
                             <Nav
                                 className="ml-auto mr-0"
                             >
-                                <LinkContainer exact to="/" className="h mr-4 pt-2">
-                                    <Nav.Item>HOME</Nav.Item>
+                                <LinkContainer exact to="/" className={this.props.location.pathname === "/" ? "h mr-4 pt-2" : "mr-4 pt-2"}>
+                                    <Nav.Item>Home</Nav.Item>
                                 </LinkContainer>
                                 {
                                     user.isLoggedIn
