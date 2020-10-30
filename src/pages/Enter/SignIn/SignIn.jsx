@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import './SignIn.scss';
 import UserContext from '../../../services/userContext';
 import {Col, Form} from "react-bootstrap";
+import {signInGuest} from "../../../services/enteringService";
 
 class SignIn extends Component {
     static contextType = UserContext;
@@ -10,11 +11,25 @@ class SignIn extends Component {
         super(props);
         this.state = {
             validated: false,
-            userInformation: {},
+            email: "",
+            password: "",
+            token: ""
         }
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.signIn = this.signIn.bind(this);
+    }
+
+    async signIn(e){
+        const guest = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        signInGuest(guest)
+            .then(res => {
+                console.log(res);
+                this.setState({token: res.token});
+            })
     }
 
     handleChange = (event, title) => {
@@ -44,8 +59,6 @@ class SignIn extends Component {
 
     render() { 
         return ( 
-            <UserContext.Consumer>
-                {user => 
             <div className="signIn">
                 <div className="container">
                 <img src={require('../../../static/LogoWhite.svg')} alt=""></img>
@@ -68,9 +81,8 @@ class SignIn extends Component {
                                             type="email"
                                             placeholder="Enter email"
                                             className="inputFormsignin"
-                                            onChange={(value) => this.handleChange(value, "email")}
+                                            onChange={e => this.setState({email: e.target.value})}
                                         />
-                                        <Form.Control.Feedback type="invalid">Email is required</Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="signUpPasswordValidation">
                                         <Form.Control
@@ -78,11 +90,10 @@ class SignIn extends Component {
                                             type="password"
                                             placeholder="Enter password"
                                             className="inputFormsignin"
-                                            onChange={(value) => this.handleChange(value, "password")}
+                                            onChange={e => this.setState({password: e.target.value})}
                                         />
-                                        <Form.Control.Feedback type="invalid">Password is required</Form.Control.Feedback>
                                     </Form.Group>
-                                    <button className="signUpBtn" type="submit">Sign In</button>
+                                    <button className="signUpBtn" type="submit" onClick={this.signIn}>Sign In</button>
                                 </Form>
                                 <p>Don't have an account? <a href="/signUp">Sign up</a></p>
                             </div>
@@ -92,8 +103,6 @@ class SignIn extends Component {
                 </div>
                 </div>
             </div>
-            }       
-            </UserContext.Consumer>
          );
     }
 }

@@ -36,7 +36,7 @@ class CreateAccForm extends Component {
             password: userPrev.password,
             ...this.state
         }
-        await fetch('/api/guests', {
+        await fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
