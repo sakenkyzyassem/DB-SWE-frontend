@@ -1,5 +1,5 @@
 
-h1 {
+.signinh1 {
     margin-bottom: 90px;
     margin-top: 70px;
     font-size: 42px;
@@ -32,7 +32,7 @@ h1 {
     padding-right: 42px;
 }
 
-.inputForm {
+.inputFormsignin {
     border: none;
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -43,7 +43,7 @@ h1 {
     }
 }
 
-.inputForm:active, .inputForm:focus {
+.inputFormsignin:active, .inputFormsignin:focus {
     border-bottom: 1px solid #015CAF;
 }
 

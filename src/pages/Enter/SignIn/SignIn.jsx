@@ -60,14 +60,14 @@ class SignIn extends Component {
                                 <img src={require("../../../static/waveSignIn.svg")} alt="wave"/>
                             </div>
                             <div className="col-9">
-                                <h1>Sign In</h1>
+                                <h1 className="signinh1">Sign In</h1>
                                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                                     <Form.Group as={Col} controlId="signUpEmailValidation">
                                         <Form.Control
                                             required
                                             type="email"
                                             placeholder="Enter email"
-                                            className="inputForm"
+                                            className="inputFormsignin"
                                             onChange={(value) => this.handleChange(value, "email")}
                                         />
                                         <Form.Control.Feedback type="invalid">Email is required</Form.Control.Feedback>
@@ -77,7 +77,7 @@ class SignIn extends Component {
                                             required
                                             type="password"
                                             placeholder="Enter password"
-                                            className="inputForm"
+                                            className="inputFormsignin"
                                             onChange={(value) => this.handleChange(value, "password")}
                                         />
                                         <Form.Control.Feedback type="invalid">Password is required</Form.Control.Feedback>
