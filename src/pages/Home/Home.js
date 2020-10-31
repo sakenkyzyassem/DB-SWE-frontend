@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Row, Form, Button, Container, Spinner} from "react-bootstrap";
+import {Col, Row, Form, Button, Container} from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import { enGB } from 'date-fns/locale'
 import { DateRangePicker, START_DATE, END_DATE } from 'react-nice-dates'
@@ -16,6 +16,10 @@ class Home extends React.Component {
         super(props);
         this.state = {
             hotels: [],
+            filterData: {
+                startDate: null,
+                endDate: null,
+            },
             startDate: null,
             endDate: null,
             loaded: false,
@@ -26,23 +30,45 @@ class Home extends React.Component {
         this.setState({loaded: false});
         getHotels().then(data => {
             this.setState({hotels: data});
-            console.log(data);
             this.setState({loaded: true});
         })
-
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         console.log(event);
+        if( this.state.filterData.startDate !== null ) {
+            let f = {
+                ...this.state.filterData,
+                startDate: this.convertDate(this.state.filterData.startDate),
+                endDate: this.convertDate(this.state.filterData.endDate)
+            }
+            console.log(f);
+        }
+        console.log(this.state.filterData);
+    }
+
+    handleChange = (title, data) => {
+        let newFilter = {
+            ...this.state.filterData,
+            [title]: data
+        }
+
+        this.setState({ filterData: newFilter });
+    }
+
+    convertDate = (inputFormat) => {
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        let d = new Date(inputFormat);
+        return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-');
     }
 
     setEndDate = (date) => {
-        this.setState({endDate: date});
+        this.handleChange("endDate", date);
     }
 
     setStartDate = (date) => {
-        this.setState({startDate: date});
+        this.handleChange("startDate", date);
     }
 
     render() {
@@ -66,13 +92,22 @@ class Home extends React.Component {
                             <Col md={9}>
                                 <Row className="filter-forms">
                                     <Form.Group as={Col} xs={3} controlId="formGridPlace">
-                                        <Form.Control size="lg" type="text" placeholder="Place"/>
+                                        <Form.Control as={"select"} size="lg" type="text" onChange={(event) => this.handleChange("city", event.target.value)}>
+                                            <option value={null}>City</option>
+                                            {
+                                                this.state.hotels.map((hotel, i) => {
+                                                    return(
+                                                        <option key={i} value={hotel.id}>{hotel.city+', '+hotel.country}</option>
+                                                    );
+                                                })
+                                            }
+                                        </Form.Control>
                                     </Form.Group>
 
                                     <Form.Group as={Col} xs={6} controlId="formGridDate">
                                         <DateRangePicker
-                                            startDate={this.state.startDate}
-                                            endDate={this.state.endDate}
+                                            startDate={this.state.filterData.startDate}
+                                            endDate={this.state.filterData.endDate}
                                             onStartDateChange={this.setStartDate}
                                             onEndDateChange={this.setEndDate}
                                             minimumDate={new Date()}
@@ -98,8 +133,8 @@ class Home extends React.Component {
                                         </DateRangePicker>
                                     </Form.Group>
 
-                                    <Form.Group as={Col} xs={3} controlId="formGridNumber">
-                                        <Form.Control size="lg" type="text" placeholder="Number of people"/>
+                                    <Form.Group as={Col} xs={3} controlId="formGridNumber" onChange={(event) => this.handleChange("number_of_people", event.target.value)}>
+                                        <Form.Control size="lg" type="number" placeholder="# people"/>
                                     </Form.Group>
                                 </Row>
                             </Col>
@@ -122,7 +157,7 @@ class Home extends React.Component {
                                                     <Col key={i} className="hotel-individual">
                                                         <Link to={`/hotel/${hotel.hotel_id}`}>
                                                             <ImageTransition
-                                                                src={require(`../../static/hotel-${i + 1}.jpg`)}
+                                                                src={require(`../../static/hotel-${ i - Math.floor(i/4) + 1}.jpg`)}
                                                                 width="200px"
                                                                 height="150px"
                                                                 title={hotel.name}
