@@ -1,3 +1,4 @@
+
 export const signInGuest = (guest) => {
     return fetch('/api/login/',
         {
