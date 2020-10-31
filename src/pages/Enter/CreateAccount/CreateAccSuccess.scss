@@ -1,10 +1,4 @@
 
-h1 {
-    margin-bottom: 90px;
-    margin-top: 70px;
-    font-size: 42px;
-}
-
 .createAccSuccess {
     background-color: #062041;
     min-height: 100vh;
@@ -13,7 +7,12 @@ h1 {
     width: 100vw;
     display: flex;
     justify-content: center;
-}
+
+    h1 {
+        margin-bottom: 90px;
+        margin-top: 70px;
+        font-size: 42px;
+    }
 
 .containerForSuccess {
     display: block;
@@ -90,4 +89,5 @@ a{
 a:hover, a:active{
     color: #F43467;
     text-decoration: none;
+}
 }
