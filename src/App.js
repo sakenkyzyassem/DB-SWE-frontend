@@ -13,6 +13,7 @@ import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
 import LogOut from "./pages/Enter/Logout/LogOut";
 import Footer from "./components/footer/Footer";
 import Hotel from "./pages/Hotel/Hotel";
+import FilterRooms from "./pages/FilterRooms/FilterRooms";
 
 function App(props) {
 
@@ -44,12 +45,15 @@ function App(props) {
                                         <Home />
                                         <Footer />
                                     </Route>
+                                    <Route path="/filterRooms" >
+                                        <FilterRooms />
+                                    </Route>
                                     <Route path="/hotel/:id" component={Hotel} />
                                     <Route path="/profile">
-                                        <ProfileMain />
+                                        <ProfileMain tab={"profile"}/>
                                     </Route>
                                     <Route path="/history">
-                                        <ProfileMain />
+                                        <ProfileMain tab={"history"}/>
                                     </Route>
                                     <Route path="*">
                                         <Col>

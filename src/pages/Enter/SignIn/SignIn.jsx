@@ -29,6 +29,9 @@ class SignIn extends Component {
             .then(res => {
                 console.log(res);
                 this.setState({token: res.token});
+                const userContext = this.context;
+                userContext.setUserLoggedIn(res);
+                this.props.history.push("/");
             })
     }
 
@@ -47,11 +50,6 @@ class SignIn extends Component {
             this.setState({validated: false});
             event.preventDefault();
             event.stopPropagation();
-        }
-        else{
-            const userContext = this.context;
-            userContext.setUserLoggedIn();
-            this.props.history.push("/");
         }
 
         this.setState({validated: true});

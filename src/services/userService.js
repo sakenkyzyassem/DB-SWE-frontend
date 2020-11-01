@@ -1,6 +1,6 @@
 // get user's information
-export const getUserData = (userId) => {
-    return fetch('/api/guests/' + userId, {
+export const getUserData = (token) => {
+    return fetch('/api/guest/' + token, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

@@ -18,12 +18,12 @@ class History extends React.Component {
     }
 
      componentDidMount() {
-        getUserBookings(this.props.data)
+        getUserBookings(this.props.userId)
             .then((res) => this.setState({userHistory: res}));
     }
 
     createBooking = () => {
-        this.props.history.push("/");
+        this.props.history.push("/filterRooms");
     }
 
     handleHide = (id, key) => {
@@ -50,19 +50,21 @@ class History extends React.Component {
     }
 
     handleChange = (event, key, name) => {
-        if( this.state.newBookings ) {
-            var booking = {
+        var booking = {};
+        var bookings = {};
+        if( this.state.newBookings != null ) {
+            booking = {
                 ...this.state.newBookings[key],
                 [name]: event.target.value
             };
-            var bookings = [...this.state.newBookings];
+            bookings = [...this.state.newBookings];
         }
         else {
-            var booking = {
+            booking = {
                 ...this.state.userHistory[key],
                 [name]: event.target.value
             };
-            var bookings = [...this.state.userHistory]
+            bookings = [...this.state.userHistory]
         }
         bookings[key] = booking;
 
