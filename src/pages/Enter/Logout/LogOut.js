@@ -33,7 +33,8 @@ class Logout extends React.Component {
     }
     
     componentDidMount() {
-        // this.context.userLogOut();
+        let context = this.context;
+        context.setUserLogOut();
         this.props.history.push("/");
     }
     
@@ -42,7 +43,7 @@ class Logout extends React.Component {
         return (
             <UserContext.Consumer>
                 {value => (
-            <div onClick={this.logoutUser(value.token)}>
+            <div onClick={() => this.logoutUser(value.token)}>
                 Logout
             </div>
                 )}

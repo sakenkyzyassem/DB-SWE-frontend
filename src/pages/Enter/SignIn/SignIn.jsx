@@ -16,8 +16,6 @@ class SignIn extends Component {
             password: "",
             token: ""
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.signIn = this.signIn.bind(this);
     }
 
@@ -62,10 +60,6 @@ class SignIn extends Component {
         }
 
         this.setState({validated: true});
-    }
-
-    componentDidMount(){
-        this.context.setUserLoggedIn(this.state.token);
     }
 
     render() { 
