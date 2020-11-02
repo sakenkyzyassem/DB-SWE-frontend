@@ -1,5 +1,5 @@
 
-h1 {
+.signin {
     margin-bottom: 90px;
     margin-top: 70px;
     font-size: 42px;
@@ -47,9 +47,9 @@ h1 {
     border-bottom: 1px solid #015CAF;
 }
 
-.signUpBtn {
+.signInBtn {
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     width: 150px;
     height: 50px;
     left: 968px;
@@ -61,7 +61,7 @@ h1 {
     border: none;
 }
 
-.signUpBtn:hover, .signUpBtn:focus{
+.signInBtn:hover, .signInBtn:focus{
     border: none;
     outline: none;
     filter: drop-shadow(3px 5px 10px rgba(244, 52, 103, 0.5));

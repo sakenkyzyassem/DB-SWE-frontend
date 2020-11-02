@@ -11,6 +11,7 @@ import CreateAccount from './pages/Enter/CreateAccount/CreateAccForm';
 import SignIn from './pages/Enter/SignIn/SignIn';
 import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
 import LogOut from "./pages/Enter/Logout/LogOut";
+import {Redirect} from 'react-router-dom';
 
 function App() {
 
@@ -19,9 +20,9 @@ function App() {
             <div className="App">
                 <Router>
                     <Switch>
-                        <Route path="/logout">
+                        {/* <Route path="/logout">
                             <LogOut />
-                        </Route>
+                        </Route> */}
                         <Route path="/signUp">
                             <SignUp />
                         </Route>

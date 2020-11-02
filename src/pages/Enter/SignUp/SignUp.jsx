@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
 import './SignUp.scss';
 import {withRouter} from 'react-router-dom';
-
-const required = value => {
-    if(!value){
-        return (
-            <div className="alert alert-danger" role="alert">
-                Empty field is not allowed!
-            </div>
-        );
-    }
-};
-
+import {Col, Form} from 'react-bootstrap';
 
 class SignUp extends Component {
 
@@ -21,9 +11,10 @@ class SignUp extends Component {
             email: "",
             password: "",
             success: false,
+            validated: false
         }
         this.signUpFunction = this.signUpFunction.bind(this);
-        
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     signUpFunction() {
@@ -31,6 +22,18 @@ class SignUp extends Component {
             pathname: "/createAccount", 
             state: this.state
         });
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            this.setState({validated: false});
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        this.setState({validated: true});
     }
 
     render() { 
@@ -50,17 +53,36 @@ class SignUp extends Component {
                             </div>
                             <div className="col-9">
                                 <h1>Sign Up</h1>
-                                <input type="email" placeholder="Enter email" className="inputForm" onChange={e => this.setState({email: e.target.value})}></input>
-                                <input type="password" placeholder="Enter password" className="inputForm" onChange={e => this.setState({password: e.target.value})}></input>
-                                <br></br>
-                                <button className="signUpBtn" type="button" onClick={this.signUpFunction}>Sign up</button>
+                                <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
+                                    <Form.Group as={Col} controlId="signUpEmailValidation">
+                                        <Form.Control
+                                            required
+                                            type="email"
+                                            placeholder="Enter email"
+                                            className="inputForm"
+                                            onChange={e => this.setState({email: e.target.value})}
+                                        />
+                                        <Form.Control.Feedback type="invalid">Email is required</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="signUpPasswordValidation">
+                                        <Form.Control
+                                            required
+                                            type="password"
+                                            placeholder="Enter password"
+                                            className="inputForm"
+                                            onChange={e => this.setState({password: e.target.value})}
+                                        />
+                                        <Form.Control.Feedback type="invalid">Password is required</Form.Control.Feedback>
+                                    </Form.Group>
+                                <button className="signUpBtn2" type="button" onClick={this.signUpFunction}>Sign up</button>
                                 <p>Already have an account? <a href="/signIn">Sign in</a></p>
-                            </div>
+                            </Form>
                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
+            </div>
             </div>
          );
     }

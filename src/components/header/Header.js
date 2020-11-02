@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { ReactComponent as Logo } from "../../static/LogoWhite.svg";
 import './Header.scss';
 import UserContext from "../../services/userContext";
+import LogOut from '../../pages/Enter/Logout/LogOut';
 
 class Header extends React.Component {
 
@@ -41,8 +42,8 @@ class Header extends React.Component {
                                                 <LinkContainer to="/history">
                                                     <NavDropdown.Item>My Bookings</NavDropdown.Item>
                                                 </LinkContainer>
-                                                <LinkContainer to="/logout">
-                                                    <NavDropdown.Item>Logout</NavDropdown.Item>
+                                                <LinkContainer to="/">
+                                                    <NavDropdown.Item><LogOut></LogOut></NavDropdown.Item>
                                                 </LinkContainer>
                                             </NavDropdown>
                                         :

@@ -46,12 +46,13 @@ h1 {
 }
 
 .inputForm:active, .inputForm:focus {
-    border-bottom: 1px solid #015CAF;
+    outline: none;
+    // border-bottom: 1px solid #015CAF;
 }
 
-.signUpBtn {
+.signUpBtn2 {
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     width: 150px;
     height: 50px;
     left: 968px;
@@ -63,7 +64,7 @@ h1 {
     border: none;
 }
 
-.signUpBtn:hover, .signUpBtn:focus{
+.signUpBtn2:hover, .signUpBtn2:focus{
     border: none;
     outline: none;
     filter: drop-shadow(3px 5px 10px rgba(244, 52, 103, 0.5));
