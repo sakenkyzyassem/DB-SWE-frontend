@@ -8,46 +8,26 @@ class Logout extends React.Component {
 
     constructor(props) {
         super(props);
-        let loggedIn = true;
-        // const context = React.useContext(SignInContext);
-        // this.setState({token: this.context.tokenValue});
-        // if(token==null){
-        //     loggedIn = false;
-        // }
         this.state = {
             validated: false,
-            loggedIn,
-            token: "2"
         }
-        this.logoutUser = this.logoutUser.bind(this);
-    }
-
-    async logoutUser(e) {
-        const guest = {
-            token: this.state.token
-        }
-        console.log(guest.token);
-        signOutGuest(guest).then((res) => {
-            console.log(res);
-        });
     }
     
-    componentDidMount() {
+    async componentDidMount() {
         let context = this.context;
-        context.setUserLogOut();
-        this.props.history.push("/");
+        console.log(context.user.token);
+        signOutGuest(context.user.token).then((res) => {
+            context.setUserLogOut();
+            this.props.history.push("/");
+        });
     }
     
 
     render() {
         return (
-            <UserContext.Consumer>
-                {value => (
-            <div onClick={() => this.logoutUser(value.token)}>
+            <div>
                 Logout
             </div>
-                )}
-            </UserContext.Consumer>
         );
         }
 }
