@@ -51,7 +51,7 @@ class Home extends React.Component {
                                 <Col>
                                     <h1>Popular Hotels</h1>
                                     <Row className="popular-hotels justify-content-center">
-                                        {
+                                        {/* {
                                             this.state.hotels.map((hotel, i) => {
                                                 return (
                                                     <Col key={i} className="hotel-individual">
@@ -67,7 +67,7 @@ class Home extends React.Component {
                                                     </Col>
                                                 );
                                             })
-                                        }
+                                        } */}
                                     </Row>
                                 </Col>
                             </Row>
