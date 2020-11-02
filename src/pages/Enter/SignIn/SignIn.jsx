@@ -4,6 +4,7 @@ import './SignIn.scss';
 import UserContext from '../../../services/userContext';
 import {Col, Form} from "react-bootstrap";
 import {signInGuest} from "../../../services/enteringService";
+import Logout from "../Logout/LogOut";
 
 class SignIn extends Component {
     static contextType = UserContext;
@@ -51,14 +52,22 @@ class SignIn extends Component {
         else{
             const userContext = this.context;
             userContext.setUserLoggedIn();
-            this.props.history.push("/");
+            this.props.history.push({
+                pathname: "/", 
+                state: this.state
+            });
         }
 
         this.setState({validated: true});
     }
 
+    componentDidMount(){
+        this.context.setUserLoggedIn(this.state.token);
+    }
+
     render() { 
         return ( 
+            <UserContext.Provider value={this.state}>
             <div className="signIn">
                 <div className="container">
                 <img src={require('../../../static/LogoWhite.svg')} alt=""></img>
@@ -103,6 +112,7 @@ class SignIn extends Component {
                 </div>
                 </div>
             </div>
+            </UserContext.Provider>
          );
     }
 }

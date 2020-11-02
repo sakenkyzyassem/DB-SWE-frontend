@@ -14,7 +14,7 @@ export const signInGuest = (guest) => {
 }
 
 export const signOutGuest = (token) => {
-    return fetch(`/api/logout/${token}`,
+    return fetch(`/api/guests/logout/${token}`,
         {
             method: 'POST',
             headers: {
