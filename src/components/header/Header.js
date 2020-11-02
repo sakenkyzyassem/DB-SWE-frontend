@@ -42,8 +42,13 @@ class Header extends React.Component {
                                                 <LinkContainer to="/history">
                                                     <NavDropdown.Item>My Bookings</NavDropdown.Item>
                                                 </LinkContainer>
+<<<<<<< HEAD
                                                 <LinkContainer to="/logout">
                                                 <NavDropdown.Item><LogOut></LogOut></NavDropdown.Item>
+=======
+                                                <LinkContainer to="/">
+                                                    <NavDropdown.Item><LogOut></LogOut></NavDropdown.Item>
+>>>>>>> 5d57f26656c57546013ac786619509ba804eb1b7
                                                 </LinkContainer>
                                             </NavDropdown>
                                         :

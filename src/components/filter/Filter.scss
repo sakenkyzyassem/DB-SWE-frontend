@@ -1,0 +1,37 @@
+@import "../../custom";
+
+.search-filter {
+  * {
+    z-index: 1000;
+  }
+
+  .filter-forms {
+    background-color: $white;
+    border-radius: 2rem;
+    margin: 0 1rem;
+    filter: drop-shadow(0px 4px 8px rgba(0,0,0, 0.15));
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    input, .date-range {
+      vertical-align: center;
+      background-color: transparent;
+      border: none;
+    }
+  }
+
+  .date-range {
+    vertical-align: center;
+    font-size: 1.25rem;
+    height: calc(1.5rem + 1rem + 2px);
+  }
+
+  .filter-button {
+    filter: drop-shadow(0px 4px 8px rgba($secondary, 0.25));
+    border-radius: 2rem;
+    font-size: 1.25rem;
+    height: calc(1.5em + 1rem + 2px);
+  }
+}
