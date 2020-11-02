@@ -2,12 +2,12 @@ import React from "react";
 import {Container, Card, Nav, Modal, Button} from "react-bootstrap";
 import {withRouter, BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
-import UserAPI from '../../services/userService';
 
 import './ProfileMain.scss';
 import Profile from "./Profile/Profile";
 import History from "./History/History";
 import UserContext from "../../services/userContext";
+import LoginModal from "../../components/LoginModal/LoginModal";
 
 class ProfileMain extends React.Component {
 
@@ -17,16 +17,6 @@ class ProfileMain extends React.Component {
             userInfo: null,
             userHistory: null
         };
-        this.handleSignIn = this.handleSignIn.bind(this);
-        this.handleSignUp = this.handleSignUp.bind(this);
-    }
-
-    handleSignIn = () => {
-        this.props.history.push('/signIn');
-    }
-
-    handleSignUp = () => {
-        this.props.history.push('/signUp');
     }
 
     render() {
@@ -40,7 +30,7 @@ class ProfileMain extends React.Component {
                                         <Card className="mt-5 shadow Card-profile">
                                             <Router>
                                                 <Card.Header>
-                                                    <Nav justify activeKey={"/" + this.props.tab}>
+                                                    <Nav justify activeKey={`/${this.props.tab}`}>
                                                         <LinkContainer to="/profile">
                                                             <Nav.Item>Profile</Nav.Item>
                                                         </LinkContainer>
@@ -52,10 +42,10 @@ class ProfileMain extends React.Component {
                                                 <Card.Body>
                                                     <Switch>
                                                         <Route path="/profile">
-                                                            <Profile data={state.userId}/>
+                                                            <Profile user={state.user}/>
                                                         </Route>
                                                         <Route path="/history">
-                                                            <History data={state.userId}/>
+                                                            <History userId={state.user.userId}/>
                                                         </Route>
                                                     </Switch>
                                                 </Card.Body>
@@ -68,20 +58,7 @@ class ProfileMain extends React.Component {
                         }
                         else {
                             return (
-                                <Modal show={!state.isLoggedIn}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Login is required</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>Please, login or signup to see your profile and bookings history</Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" onClick={this.handleSignIn}>
-                                            SignIn
-                                        </Button>
-                                        <Button variant="primary" onClick={this.handleSignUp}>
-                                            SignUp
-                                        </Button>
-                                    </Modal.Footer>
-                                </Modal>
+                                <LoginModal showLogIn={!state.isLoggedIn}/>
                             )
                         }
                     }

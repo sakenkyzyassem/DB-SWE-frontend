@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './CreateAccForm.scss';
-import {createUserAccount} from '../../../services/enteringService';
 
 const required = value => {
     if(!value){
@@ -37,10 +36,20 @@ class CreateAccForm extends Component {
             password: userPrev.password,
             ...this.state
         }
-        createUserAccount(user).then((res) => {
+        await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user),
+        }).then((res) => {
             console.log(res);
-            this.props.history.push('/createAccountSuccess');
-        });
+            if( res.ok ) {
+                this.props.history.push('/createAccountSuccess');
+            }
+        })
+            .catch(err => console.log(err));
     }
 
     render() { 

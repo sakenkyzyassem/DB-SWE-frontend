@@ -11,18 +11,20 @@ import CreateAccount from './pages/Enter/CreateAccount/CreateAccForm';
 import SignIn from './pages/Enter/SignIn/SignIn';
 import CreateAccountSuccess from './pages/Enter/CreateAccount/CreateAccSuccess';
 import LogOut from "./pages/Enter/Logout/LogOut";
-import {Redirect} from 'react-router-dom';
+import Footer from "./components/footer/Footer";
+import Hotel from "./pages/Hotel/Hotel";
+import FilterRooms from "./pages/FilterRooms/FilterRooms";
 
-function App() {
+function App(props) {
 
     return (
         <UserContextProvider>
             <div className="App">
                 <Router>
                     <Switch>
-                        {/* <Route path="/logout">
+                        <Route path="/logout">
                             <LogOut />
-                        </Route> */}
+                        </Route>
                         <Route path="/signUp">
                             <SignUp />
                         </Route>
@@ -41,14 +43,19 @@ function App() {
                                 <Switch>
                                     <Route exact path="/">
                                         <Home />
+                                        <Footer />
                                     </Route>
+                                    <Route path="/filterRooms" >
+                                        <FilterRooms />
+                                    </Route>
+                                    <Route path="/hotel/:id" component={Hotel} />
                                     <Route path="/profile">
-                                        <ProfileMain />
+                                        <ProfileMain tab={"profile"}/>
                                     </Route>
                                     <Route path="/history">
-                                        <ProfileMain />
+                                        <ProfileMain tab={"history"}/>
                                     </Route>
-                                    <Route path="*" className="col">
+                                    <Route path="*">
                                         <Col>
                                             <h1>404</h1>
                                             <h2>Page Not Found</h2>

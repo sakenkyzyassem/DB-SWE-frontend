@@ -1,7 +1,7 @@
 import React from "react";
-import { Col, Row, Container, Spinner } from 'react-bootstrap';
-import { getUserData } from '../../../services/userService';
+import { Col, Row, Container } from 'react-bootstrap';
 import './Profile.scss';
+import Loading from "../../../components/Loading/Loading";
 
 const col1 = [
     {
@@ -43,29 +43,14 @@ const col2 = [
 
 class Profile extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            userInfo: null
-        }
-
-    }
-
-    componentDidMount () {
-        getUserData(this.props.data).then((res) => this.setState({userInfo: res}));
-
-        console.log(this.state.userInfo);
-    }
-
-
     render() {
         return (
             <Container className="col p-4">
                 {
-                    this.state.userInfo ?
+                    this.props.user ?
                         <div>
                             <Row>
-                                <h2>{this.state.userInfo.firstName + " " + this.state.userInfo.lastName}</h2>
+                                <h2>{this.props.user.firstName + " " + this.props.user.lastName}</h2>
                             </Row>
                             <Row>
                                 <Col xs={12} md={6} className="p-4">
@@ -78,7 +63,7 @@ class Profile extends React.Component {
                                                         {field.label}
                                                     </Col>
                                                     <Col xs={6}>
-                                                        {this.state.userInfo[field.field]}
+                                                        {this.props.user[field.field]}
                                                     </Col>
                                                 </Row>
                                             )
@@ -95,7 +80,7 @@ class Profile extends React.Component {
                                                         {field.label}
                                                     </Col>
                                                     <Col xs={6}>
-                                                        {this.state.userInfo[field.field]}
+                                                        {this.props.user[field.field]}
                                                     </Col>
                                                 </Row>
                                             )
@@ -105,11 +90,7 @@ class Profile extends React.Component {
                             </Row>
                         </div>
                         :
-                        <Row className="justify-content-md-center">
-                            <Spinner animation="border" role="status" variant="secondary">
-                                <span className="sr-only">Loading...</span>
-                            </Spinner>
-                        </Row>
+                        <Loading />
                 }
             </Container>
         );

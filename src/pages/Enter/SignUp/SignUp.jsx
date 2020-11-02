@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './SignUp.scss';
 import {withRouter} from 'react-router-dom';
-import {Col, Form} from 'react-bootstrap';
+import {Col, Form} from "react-bootstrap";
+
 
 class SignUp extends Component {
 
@@ -11,9 +12,9 @@ class SignUp extends Component {
             email: "",
             password: "",
             success: false,
-            validated: false
         }
         this.signUpFunction = this.signUpFunction.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -23,6 +24,14 @@ class SignUp extends Component {
             state: this.state
         });
     }
+    
+    handleChange = (event, title) => {
+        const user = {
+            ...this.state.userInformation,
+            [title]: event.target.value
+        }
+        this.setState({userInformation: user});
+    }
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -31,6 +40,12 @@ class SignUp extends Component {
             this.setState({validated: false});
             event.preventDefault();
             event.stopPropagation();
+        }
+        else{
+            const userContext = this.context;
+            userContext.setUserLoggedIn();
+            // this.props.history.push("/");
+            this.signUpFunction();
         }
 
         this.setState({validated: true});
@@ -62,7 +77,6 @@ class SignUp extends Component {
                                             className="inputForm"
                                             onChange={e => this.setState({email: e.target.value})}
                                         />
-                                        <Form.Control.Feedback type="invalid">Email is required</Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="signUpPasswordValidation">
                                         <Form.Control
@@ -72,17 +86,16 @@ class SignUp extends Component {
                                             className="inputForm"
                                             onChange={e => this.setState({password: e.target.value})}
                                         />
-                                        <Form.Control.Feedback type="invalid">Password is required</Form.Control.Feedback>
                                     </Form.Group>
-                                <button className="signUpBtn2" type="button" onClick={this.signUpFunction}>Sign up</button>
+                                </Form>
+                                <button className="signUpBtn" type="button" onClick={this.signUpFunction}>Sign up</button>
                                 <p>Already have an account? <a href="/signIn">Sign in</a></p>
-                            </Form>
+                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
-            </div>
             </div>
          );
     }
