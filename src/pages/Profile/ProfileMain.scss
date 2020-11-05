@@ -1,12 +1,12 @@
 @import "../../custom";
 
 .ProfileMain {
-  overflow: hidden;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  min-height: 90vh;
+  min-height: calc(100vh - 70px);
+  overflow-y: hidden;
 
   .active {
     color: $secondary;
@@ -20,7 +20,7 @@
 
   .Card-profile {
     z-index: 1000;
-    height: max-content;
+    height: 70vh;
     overflow-y: scroll;
     scroll-behavior: smooth;
   }
@@ -29,8 +29,6 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 128px;
-    width: 100%;
     background-position: bottom;
     background-size: 100%;
     background-image: url('../../static/waveYellow.png');

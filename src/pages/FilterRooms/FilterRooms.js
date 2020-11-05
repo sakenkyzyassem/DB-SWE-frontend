@@ -116,7 +116,11 @@ class FilterRooms extends React.Component {
         return (
             <div className="FilteredRooms">
                 <Container as={Col} className="p-5">
-                    <LoginModal showLogIn={this.state.showLogIn} />
+                    <LoginModal
+                        title={"Login please"}
+                        showLogIn={this.state.showLogIn}
+                        message={"Please, sign in or sign up to make a reservation"}
+                    />
                     {
                         this.state.data ?
                             <BookingModal

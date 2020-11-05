@@ -17,9 +17,9 @@ class LoginModal extends React.Component {
             <div>
                 <Modal show={this.props.showLogIn}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Login is required</Modal.Title>
+                        <Modal.Title>{this.props.title}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Please, login or signup to see your profile and bookings history</Modal.Body>
+                    <Modal.Body>{this.props.message}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleSignIn}>
                             SignIn

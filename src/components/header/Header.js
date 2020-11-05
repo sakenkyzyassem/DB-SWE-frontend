@@ -36,18 +36,18 @@ class Header extends React.Component {
                                     user.isLoggedIn
                                         ?
                                             <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
-                                                <LinkContainer to="/profile">
+                                                <LinkContainer to="/profile/user">
                                                     <NavDropdown.Item>My Profile</NavDropdown.Item>
                                                 </LinkContainer>
-                                                <LinkContainer to="/history">
+                                                <LinkContainer to="/profile/history">
                                                     <NavDropdown.Item>My Bookings</NavDropdown.Item>
                                                 </LinkContainer>
-                                                <LinkContainer to="/logout">
+                                                <LinkContainer to="/auth/logout">
                                                     <NavDropdown.Item>Logout</NavDropdown.Item>
                                                 </LinkContainer>
                                             </NavDropdown>
                                         :
-                                            <LinkContainer to="/signIn">
+                                            <LinkContainer to="/auth/signIn">
                                                 <Button variant="additional">
                                                     Sign In
                                                 </Button>

@@ -48,28 +48,35 @@ class Home extends React.Component {
                     <div className="home-content">
                         <Container>
                             <Row>
-                                <Col>
-                                    <h1>Popular Hotels</h1>
-                                    <Row className="popular-hotels justify-content-center">
-                                        {
-                                            this.state.hotels.map((hotel, i) => {
-                                                return (
-                                                    <Col key={i} className="hotel-individual">
-                                                        <Link to={`/hotel/${hotel.hotel_id}`}>
-                                                            <ImageTransition
-                                                                src={require(`../../static/hotel-${i + 1}.jpg`)}
-                                                                width="200px"
-                                                                height="150px"
-                                                                title={hotel.name}
-                                                                subtitle={hotel.city}
-                                                            />
-                                                        </Link>
-                                                    </Col>
-                                                );
-                                            })
-                                        }
-                                    </Row>
-                                </Col>
+                                {
+                                    this.state.hotels
+                                        ?
+
+                                        <Col>
+                                            <h1>Popular Hotels</h1>
+                                            <Row className="popular-hotels justify-content-center">
+                                            {
+                                                this.state.hotels.map((hotel, i) => {
+                                                    return (
+                                                        <Col key={i} className="hotel-individual">
+                                                            <Link to={`/hotel/${hotel.hotel_id}`}>
+                                                                <ImageTransition
+                                                                    src={require(`../../static/hotel-${i + 1}.jpg`)}
+                                                                    width="200px"
+                                                                    height="150px"
+                                                                    title={hotel.name}
+                                                                    subtitle={hotel.city}
+                                                                />
+                                                            </Link>
+                                                        </Col>
+                                                    );
+                                                })
+                                            }
+                                            </Row>
+                                        </Col>
+                                        :
+                                        null
+                                }
                             </Row>
                         </Container>
                     </div>

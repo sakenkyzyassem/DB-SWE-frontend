@@ -11,14 +11,6 @@ import LoginModal from "../../components/LoginModal/LoginModal";
 
 class ProfileMain extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            userInfo: null,
-            userHistory: null
-        };
-    }
-
     render() {
         return (
             <UserContext.Consumer>
@@ -30,21 +22,21 @@ class ProfileMain extends React.Component {
                                         <Card className="mt-5 shadow Card-profile">
                                             <Router>
                                                 <Card.Header>
-                                                    <Nav justify activeKey={`/${this.props.tab}`}>
-                                                        <LinkContainer to="/profile">
+                                                    <Nav justify activeKey={`/profile/${this.props.match.params.tab}`}>
+                                                        <LinkContainer to="/profile/user">
                                                             <Nav.Item>Profile</Nav.Item>
                                                         </LinkContainer>
-                                                        <LinkContainer to="/history">
+                                                        <LinkContainer to="/profile/history">
                                                             <Nav.Item>History</Nav.Item>
                                                         </LinkContainer>
                                                     </Nav>
                                                 </Card.Header>
                                                 <Card.Body>
                                                     <Switch>
-                                                        <Route path="/profile">
+                                                        <Route path="/profile/user">
                                                             <Profile user={state.user}/>
                                                         </Route>
-                                                        <Route path="/history">
+                                                        <Route path="/profile/history">
                                                             <History userId={state.user.userId}/>
                                                         </Route>
                                                     </Switch>
@@ -58,7 +50,11 @@ class ProfileMain extends React.Component {
                         }
                         else {
                             return (
-                                <LoginModal showLogIn={!state.isLoggedIn}/>
+                                <LoginModal
+                                    title={"Login please"}
+                                    showLogIn={!state.isLoggedIn}
+                                    message={"Please, login or signup to see your profile and bookings history"}
+                                />
                             )
                         }
                     }

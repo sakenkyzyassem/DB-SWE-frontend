@@ -88,11 +88,14 @@ class Filter extends React.Component {
                                     <Form.Control as={"select"} size="lg" type="text" onChange={(event) => this.handleChange("city", event.target.value)}>
                                         <option value={null}>City</option>
                                         {
+                                            this.props.hotels ?
                                             this.props.hotels.map((hotel, i) => {
                                                 return(
                                                     <option key={i} value={hotel.city}>{hotel.city}</option>
                                                 );
                                             })
+                                                :
+                                                null
                                         }
                                     </Form.Control>
                                 </Form.Group>
