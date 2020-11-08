@@ -1,9 +1,7 @@
 import React from "react";
-import {Row, Spinner, Tab, Tabs, Carousel, Container, Col} from "react-bootstrap";
-import { getHotel, getHotelFeatures } from "../../../services/hotelServices";
+import {Row, Carousel, Container, Col} from "react-bootstrap";
+import { getHotel } from "../../../services/hotelServices";
 import './Information.scss';
-import Loading from "../../../components/Loading/Loading";
-import { ConfirmationNumber, SignalCellularNullRounded } from "@material-ui/icons";
 
 class Information extends React.Component {
     constructor(props) {

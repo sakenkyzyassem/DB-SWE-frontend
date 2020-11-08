@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './CreateAccForm.scss';
 
-const required = value => {
-    if(!value){
-        return (
-            <div className="alert alert-danger" role="alert">
-                Empty field is not allowed!
-            </div>
-        );
-    }
-};
+// const required = value => {
+//     if(!value){
+//         return (
+//             <div className="alert alert-danger" role="alert">
+//                 Empty field is not allowed!
+//             </div>
+//         );
+//     }
+// };
 
 class CreateAccForm extends Component {
 

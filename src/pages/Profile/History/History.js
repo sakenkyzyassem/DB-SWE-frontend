@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Badge, Spinner, Row, Button, Modal, Form, Col} from 'react-bootstrap';
+import {Table, Badge, Row, Button, Modal, Form, Col} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import { getUserBookings, deleteBooking, editBooking } from "../../../services/bookingsService";
 import './History.scss'

@@ -1,5 +1,5 @@
 import React from "react";
-import {Row, Spinner, Tab, Tabs, Container} from "react-bootstrap";
+import { Tab, Tabs, Container } from "react-bootstrap";
 import { getHotel } from "../../services/hotelServices";
 import Information from "../Hotel/Information/Information";
 import './Hotel.scss';

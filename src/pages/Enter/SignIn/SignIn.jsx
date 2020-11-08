@@ -4,7 +4,6 @@ import './SignIn.scss';
 import UserContext from '../../../services/userContext';
 import {Col, Form} from "react-bootstrap";
 import {signInGuest} from "../../../services/enteringService";
-import Logout from "../Logout/LogOut";
 
 class SignIn extends Component {
     static contextType = UserContext;
@@ -101,7 +100,7 @@ class SignIn extends Component {
                                     </Form.Group>
                                     <button className="signUpBtn" type="submit" onClick={this.signIn}>Sign In</button>
                                 </Form>
-                                <p>Don't have an account? <a href="/signUp">Sign up</a></p>
+                                <p>Don't have an account? <a href="/auth/signUp">Sign up</a></p>
                             </div>
                             </div>
                         </div>

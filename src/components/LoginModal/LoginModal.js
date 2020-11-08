@@ -5,11 +5,16 @@ import {Button, Modal} from "react-bootstrap";
 class LoginModal extends React.Component {
 
     handleSignIn = () => {
-        this.props.history.push('/signIn');
+        if( this.props.route !== null ) {
+            this.props.history.push(`/${this.props.route}/signIn`);
+        }
+        else {
+            this.props.history.push('/auth/signIn');
+        }
     }
 
     handleSignUp = () => {
-        this.props.history.push('/signUp');
+        this.props.history.push('/auth/signUp');
     }
 
     render() {
@@ -24,9 +29,14 @@ class LoginModal extends React.Component {
                         <Button variant="secondary" onClick={this.handleSignIn}>
                             SignIn
                         </Button>
-                        <Button variant="primary" onClick={this.handleSignUp}>
-                            SignUp
-                        </Button>
+                        {
+                            this.props.route
+                            ?
+                                null
+                            : <Button variant="primary" onClick={this.handleSignUp}>
+                                SignUp
+                            </Button>
+                        }
                     </Modal.Footer>
                 </Modal>
             </div>

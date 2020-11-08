@@ -25,3 +25,31 @@ export const signOutGuest = (token) => {
         .then(response => response.json())
         .catch(err => console.log(err));
 }
+
+export const signInDeskClerk = (guest) => {
+    return fetch('/api/logindeskclerk',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(guest),
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}
+
+export const signInManager = (guest) => {
+    return fetch('/api/logindeskclerk',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(guest),
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}

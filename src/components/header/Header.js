@@ -5,7 +5,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { ReactComponent as Logo } from "../../static/LogoWhite.svg";
 import './Header.scss';
 import UserContext from "../../services/userContext";
-import LogOut from "../../pages/Enter/Logout/LogOut";
 
 class Header extends React.Component {
 

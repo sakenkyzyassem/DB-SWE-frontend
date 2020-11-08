@@ -1,6 +1,6 @@
 import React from "react";
 import {Link, withRouter} from 'react-router-dom';
-import {Button, Card, Col, Container, Modal, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import './FilterRooms.scss';
 import {filterRooms, getHotels} from "../../services/hotelServices";
 import Filter from "../../components/filter/Filter";

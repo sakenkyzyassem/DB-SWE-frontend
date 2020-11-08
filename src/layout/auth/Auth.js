@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
+import { Route } from "react-router-dom";
 import LogOut from "../../pages/Enter/Logout/LogOut";
 import SignUp from "../../pages/Enter/SignUp/SignUp";
 import CreateAccount from "../../pages/Enter/CreateAccount/CreateAccForm";

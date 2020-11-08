@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, Modal, Row, Toast} from "react-bootstrap";
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import { createBooking } from "../../services/bookingsService";
 import {Link} from "react-router-dom";
 
@@ -83,6 +83,9 @@ class BookingModal extends React.Component {
                                             }</Col>
                                         </Row>
                                     )
+                                }
+                                else {
+                                    return ( null )
                                 }
                             })
                                 : null
