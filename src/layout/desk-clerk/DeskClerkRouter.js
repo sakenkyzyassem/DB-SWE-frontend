@@ -9,7 +9,6 @@ import Header from "../../components/header/deskclerk/HeaderDeskClerk";
 import Footer from "../../components/footer/Footer";
 import MyProfile from "../../pages/DeskClerk/MyProfile/DeskClerkProfile";
 import ManageBookings from "../../pages/DeskClerk/ManageBookings/DeskClerkManageBookings";
-import GuestPage from "../../pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
 import DeskClerkLogout from "../../pages/DeskClerk/Logout/DeskClerkLogout";
 
 const routes = [

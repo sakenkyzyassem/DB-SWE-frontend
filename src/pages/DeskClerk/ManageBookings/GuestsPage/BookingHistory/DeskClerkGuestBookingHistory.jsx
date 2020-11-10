@@ -1,11 +1,9 @@
 import React from "react";
-import {getAllGuests} from "../../../../../services/deskClerkService";
 import Loading from "../../../../../components/Loading/Loading";
-// import "./DeskClerkGuest.scss";
+import "./DeskClerkGuestBookingHistory.scss";
 import {Table, Badge, Row, Button, Modal, Form, Col} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import {getUserBookings} from "../../../../../services/bookingsService";
-import { Container, Card, Nav, Tab, Tabs } from "react-bootstrap";
 
 class BookingHistory extends React.Component {
     constructor(props) {
@@ -31,7 +29,7 @@ class BookingHistory extends React.Component {
                 this.state.bookingHistory ?
                 (Array.isArray(this.state.bookingHistory) && this.state.bookingHistory.length !== 0)
                     ?
-                <div className="manageBookings">
+                <div className="bookingHistory">
                     <div style={{height:"50px"}}></div>
                     <Table responsive>
                             <thead>
@@ -199,6 +197,7 @@ class BookingHistory extends React.Component {
                     <img className="imgDeskclerk" src={require(`../../../../../static/nobookings.svg`)} alt="deskclerk" style={{height:"130px", width:"130px"}}/>
                     <div style={{height:"50px"}}></div>
                     <h6>Guest doesn't have bookings yet!</h6>
+                    <button className="book">Book</button>
                 </div>
                 :
                 <Loading />

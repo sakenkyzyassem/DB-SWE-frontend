@@ -1,49 +1,37 @@
-@import '../../../custom.scss';
+.myProfile{
 
-.info-header {
-    color: $light;
-}
-
-.label {
-    text-align: right;
-    color: $light;
-}
-
-.ProfileMain {
-    top: 0;
-    left: 0;
+  .back{
+    background-image: url("../../../static/wavePink.svg");
+    background-repeat: no-repeat;
+    height: 128px;
+    width: 100%;
     bottom: 0;
-    right: 0;
-    min-height: calc(100vh - 70px);
-    overflow-y: hidden;
-  
-    .active {
-      color: $secondary;
-    }
-  
-    .nav-item {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  
-    .Card-profile {
-      z-index: 1000;
-      height: 70vh;
-      overflow-y: scroll;
-      scroll-behavior: smooth;
-    }
-  
-    .banner {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background-position: bottom;
-      background-size: 100%;
-      background-image: url('../../../../src/static/waveYellow.png');
-      background-repeat: no-repeat;
-      height: 128px;
-      width: 100%;
-    }
-  
-  }
+    left: 0;
+    background-position: bottom;
+    background-size: 100%;
+}
+
+.container{
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.card{
+    background-color: white;
+    -webkit-box-shadow: 10px 10px 32px -2px rgba(0, 0, 0, 0.20);
+    -moz-box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+    box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+    transition: 0.4s;
+    width: 800px;
+    min-height: 300px;
+    border-radius: 15px;
+    padding: 30px 30px 30px 50px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    text-align: left;
+    border: none;
+}
+}

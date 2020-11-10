@@ -1,5 +1,5 @@
 import React from "react";
-import { Tab, Tabs, Container, Card} from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Link, withRouter } from 'react-router-dom';
 import {getAllGuests} from "../../../services/deskClerkService";
 import Loading from "../../../components/Loading/Loading";
@@ -40,7 +40,7 @@ class ManageBookings extends React.Component {
             return (
                 <div className="manageBookings">
                     <Container className="container">
-                        <h1>Manage Bookings</h1>
+                        <h2>Manage Bookings</h2>
                         <input type="text" id="findGuest" class="findguest" onKeyUp="filteredSearch()" size="50" placeholder="Enter name and surname of the guest"></input>
                         <button class="search" type="button" >Search</button>
                         <div class="card" id="guestsList">

@@ -1,12 +1,10 @@
 import React from "react";
-import {getAllGuests} from "../../../../services/deskClerkService";
 import Loading from "../../../../components/Loading/Loading";
 import Header from "../../../../components/header/deskclerk/HeaderDeskClerk";
 import "./DeskClerkGuest.scss";
-import { Container, Card, Nav, Tab, Tabs } from "react-bootstrap";
-import {withRouter, BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { Container, Card, Tab, Tabs } from "react-bootstrap";
+import {withRouter} from "react-router-dom";
 import Footer from "../../../../components/footer/Footer";
-import {LinkContainer} from "react-router-bootstrap";
 import GuestProfile from "../GuestsPage/Profile/DeskClerkGuestProfile";
 import BookingHistory from "../GuestsPage/BookingHistory/DeskClerkGuestBookingHistory";
 
@@ -17,15 +15,10 @@ class GuestsPage extends React.Component {
             isLoaded: true,
             personal: {}
         }
-        console.log(this.state);
-    }
-
-    componentDidMount() {
-        
     }
 
     render() {
-        // if( this.state.isLoaded ) {
+        if( this.state.isLoaded ) {
             return (
                 <div className="guestPage">
                     <Header></Header>
@@ -48,12 +41,12 @@ class GuestsPage extends React.Component {
                     <Footer/>
                 </div>
             )
-        // }
-        // else {
-        //     return (
-        //         <Loading />
-        //     )
-        // }
+        }
+        else {
+            return (
+                <Loading />
+            )
+        }
     }
 }
 

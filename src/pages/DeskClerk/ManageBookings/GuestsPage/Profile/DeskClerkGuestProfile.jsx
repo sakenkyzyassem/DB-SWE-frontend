@@ -2,8 +2,8 @@ import React from "react";
 import {getAllGuests} from "../../../../../services/deskClerkService";
 import Loading from "../../../../../components/Loading/Loading";
 import "./DeskClerkGuestProfile.scss";
-import { Container, Card, Nav, Tab, Tabs, Row, Col } from "react-bootstrap";
-import {withRouter, BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
+import {withRouter} from "react-router-dom";
 
 class GuestProfile extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class GuestProfile extends React.Component {
     }
 
     render() {
-        // if( this.state.isLoaded ) {
+        if( this.state.isLoaded ) {
             return (
                 <div className="guestProfile">
                     <div style={{height:"50px"}}></div>
@@ -44,14 +44,13 @@ class GuestProfile extends React.Component {
                             <p>{this.state.personal.email}</p>
                         </Col>
                         <Col md={3}>
-                            <img className="imgDeskclerk" src={require(`../../../../../static/guest-${this.state.index+1}.svg`)} alt="deskclerk" style={{height:"130px", width:"130px"}}/>
+                            <img className="imgDeskclerk" src={require(`../../../../../static/guest-${this.state.index+1}.svg`)} alt="deskclerk" style={{height:"160px"}}/>
                         </Col>
                     </Row>
-                    <br></br>
                     <h6 className="info-header">Guest's Contact Information</h6>
                     <br></br>
                     <Row>
-                        <Col md={4}>
+                        <Col md={3}>
                             <p>Home Phone Number</p>
                             <p>Mobile Phone Number</p>
                             <p>{this.state.personal.documentType} Number</p>
@@ -66,12 +65,12 @@ class GuestProfile extends React.Component {
                     </Row>
                 </div>
             )
-        // }
-        // else {
-        //     return (
-        //         <Loading />
-        //     )
-        // }
+        }
+        else {
+            return (
+                <Loading />
+            )
+        }
     }
 }
 
