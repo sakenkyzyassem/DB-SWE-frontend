@@ -2,9 +2,9 @@ import React from "react";
 import {Navbar, Nav, NavDropdown, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import { ReactComponent as Logo } from "../../static/LogoWhite.svg";
-import './Header.scss';
-import UserContext from "../../services/userContext";
+import { ReactComponent as Logo } from "../../../static/LogoWhite.svg";
+import '../Header.scss';
+import UserContext from "../../../services/userContext";
 
 class Header extends React.Component {
 
@@ -13,40 +13,40 @@ class Header extends React.Component {
             <UserContext.Consumer>
                 { user =>
                     <Navbar
-                        bg={this.props.location.pathname === "/" ? "primary" : "white"}
-                        variant={this.props.location.pathname === "/" ? "dark": "white"}
-                        className={ this.props.location.pathname === "/" ? "Header fixed-top" : "Header fixed-top shadow-sm p-3 mb-5"}
+                        bg={this.props.location.pathname === "/deskClerk/main" ? "primary" : "white"}
+                        variant={this.props.location.pathname === "/deskClerk/main" ? "dark": "white"}
+                        className={ this.props.location.pathname === "/deskClerk/main" ? "Header fixed-top" : "Header fixed-top shadow-sm p-3 mb-5"}
                     >
-                        <Navbar.Brand href="/">
+                        <Navbar.Brand href="/deskClerk/main">
                             {
-                                this.props.location.pathname === "/"
+                                this.props.location.pathname === "/deskClerk/main"
                                     ? <Logo height="40px" style={{fill: "#fff"}}/>
                                     : <Logo height="40px" style={{fill: "#062041"}}/>
                             }
                         </Navbar.Brand>
-                        <Navbar.Collapse className={this.props.location.pathname === "/" ? "dark" : "light"}>
+                        <Navbar.Collapse className={this.props.location.pathname === "/deskClerk/main" ? "dark" : "light"}>
                             <Nav
                                 className="ml-auto mr-0"
                             >
-                                <LinkContainer exact to="/" className={this.props.location.pathname === "/" ? "h mr-4 pt-2" : "mr-4 pt-2"}>
+                                <LinkContainer exact to="/deskClerk/main" className={this.props.location.pathname === "/deskClerk/main" ? "h mr-4 pt-2" : "mr-4 pt-2"}>
                                     <Nav.Item>Home</Nav.Item>
                                 </LinkContainer>
                                 {
                                     user.isLoggedIn
                                         ?
                                             <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
-                                                <LinkContainer to="/profile/user">
+                                                <LinkContainer to="/deskClerk/myProfile">
                                                     <NavDropdown.Item>My Profile</NavDropdown.Item>
                                                 </LinkContainer>
-                                                <LinkContainer to="/profile/history">
-                                                    <NavDropdown.Item>My Bookings</NavDropdown.Item>
+                                                <LinkContainer to="/deskClerk/manageBookings">
+                                                    <NavDropdown.Item>Manage Bookings</NavDropdown.Item>
                                                 </LinkContainer>
-                                                <LinkContainer to="/auth/logout">
+                                                <LinkContainer to="/deskClerk/logout">
                                                     <NavDropdown.Item>Logout</NavDropdown.Item>
                                                 </LinkContainer>
                                             </NavDropdown>
                                         :
-                                            <LinkContainer to="/auth/signIn">
+                                            <LinkContainer to="/deskClerk/signIn">
                                                 <Button variant="additional">
                                                     Sign In
                                                 </Button>

@@ -6,7 +6,7 @@ export default class UserContextProvider extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn: false,
+            isLoggedIn: true,
             user: null,
             setUserLoggedIn: this.setUserLoggedIn,
             setUserLogOut: this.setUserLogOut,
@@ -14,7 +14,7 @@ export default class UserContextProvider extends React.Component {
     }
 
     setUserLoggedIn = (user) => {
-        this.setState({ isLoggedIn: true, user: user });
+        this.setState({ isLoggedIn: true, user: user});
     }
 
     setUserLogOut = () => {

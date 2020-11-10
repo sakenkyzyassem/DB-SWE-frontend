@@ -1,0 +1,49 @@
+@import '../../../custom.scss';
+
+.info-header {
+    color: $light;
+}
+
+.label {
+    text-align: right;
+    color: $light;
+}
+
+.ProfileMain {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    min-height: calc(100vh - 70px);
+    overflow-y: hidden;
+  
+    .active {
+      color: $secondary;
+    }
+  
+    .nav-item {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  
+    .Card-profile {
+      z-index: 1000;
+      height: 70vh;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
+  
+    .banner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-position: bottom;
+      background-size: 100%;
+      background-image: url('../../../../src/static/waveYellow.png');
+      background-repeat: no-repeat;
+      height: 128px;
+      width: 100%;
+    }
+  
+  }

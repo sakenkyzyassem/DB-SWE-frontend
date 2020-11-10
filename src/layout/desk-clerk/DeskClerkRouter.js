@@ -1,10 +1,16 @@
 import React from "react";
 import {Link, Route} from 'react-router-dom';
 
-import DeskClerk from "../../pages/DeskClerk/Main/DeskClerk";
+import DeskClerk from "../../pages/DeskClerk/Main/DeskClerkMain";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import UserContext from "../../services/userContext";
 import DeskClerkLogin from "../../pages/DeskClerk/Login/DeskClerkLogin";
+import Header from "../../components/header/deskclerk/HeaderDeskClerk";
+import Footer from "../../components/footer/Footer";
+import MyProfile from "../../pages/DeskClerk/MyProfile/DeskClerkProfile";
+import ManageBookings from "../../pages/DeskClerk/ManageBookings/DeskClerkManageBookings";
+import GuestPage from "../../pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
+import DeskClerkLogout from "../../pages/DeskClerk/Logout/DeskClerkLogout";
 
 const routes = [
     {
@@ -15,6 +21,18 @@ const routes = [
         path: 'signIn',
         component: <DeskClerkLogin />
     },
+    {
+        path: 'logout',
+        component: <DeskClerkLogout />
+    },
+    {
+        path: 'myProfile',
+        component: <MyProfile />
+    },
+    {
+        path: 'manageBookings',
+        component: <ManageBookings />
+    }
 ]
 
 export default class DeskClerkRouter extends React.Component {
@@ -39,8 +57,32 @@ export default class DeskClerkRouter extends React.Component {
             <UserContext.Consumer>
                 {state => {
                     console.log(state);
-                    if (state.isLoggedIn && state.user.role === "DESKCLERK" ) {
-                        if ( this.state.route ) {
+                    if (state.isLoggedIn) {
+                        if ( this.state.route && this.state.route.path === "main") {
+                            return (
+                                <div>
+                                    <Header className="row" dark="true"/>
+                                        <Route path={`/deskClerk/${this.state.route.path}`}>
+                                            {this.state.route.component}
+                                        </Route>
+                                    <Footer />
+                                </div>
+                            )
+                        }
+                        else if ( this.state.route && this.state.route.path !== "logout") {
+                            return (
+                                <div>
+                                    <Header className="row" dark="false"/>
+                                    <div style={{height: "100px"}}></div>
+                                        
+                                        <Route path={`/deskClerk/${this.state.route.path}`}>
+                                            {this.state.route.component}
+                                        </Route>
+                                    <Footer />
+                                </div>
+                            )
+                        }
+                        else if (this.state.route && this.state.route.path === "logout"){
                             return (
                                 <Route path={`/deskClerk/${this.state.route.path}`}>
                                     {this.state.route.component}

@@ -12,6 +12,7 @@ import FilterRooms from "./pages/FilterRooms/FilterRooms";
 import Auth from "./layout/auth/Auth";
 import DeskClerkRouter from "./layout/desk-clerk/DeskClerkRouter";
 import ManagerRouter from "./layout/manager/ManagerRouter";
+import GuestPage from "./pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
 
 function App(props) {
 
@@ -20,6 +21,7 @@ function App(props) {
             <div className="App">
                 <Router>
                     <Switch>
+                        <Route path="/deskClerk/guest/:id" component={GuestPage} />
                         <Route path="/deskClerk/:path" component={DeskClerkRouter} />
                         <Route path="/manager/:path" component={ManagerRouter} />
                         <Route path="/auth/:path" component={Auth} />

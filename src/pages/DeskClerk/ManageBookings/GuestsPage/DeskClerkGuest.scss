@@ -1,0 +1,44 @@
+.guestPage{
+
+    .back{
+        background-image: url("../../../../static/wavePink.svg");
+        background-repeat: no-repeat;
+        height: 128px;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        background-position: bottom;
+        background-size: 100%;
+    }
+
+    .container{
+        justify-content: center;
+        align-items: center;
+        max-width: 1000px;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .card{
+        background-color: white;
+        -webkit-box-shadow: 10px 10px 32px -2px rgba(0, 0, 0, 0.20);
+        -moz-box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+        box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+        transition: 0.4s;
+        width: 1000px;
+        min-height: 300px;
+        border-radius: 15px;
+        padding: 30px 30px 30px 50px;
+        margin-bottom: 30px;
+        margin-top: 50px;
+        text-align: left;
+        border: none;
+    }
+
+    .tabs{
+        padding-left: 38%;
+        margin-right: 10px;
+        border-radius: 45px;
+        background-color: rgba(0, 0, 0, 0.020);
+    }
+}

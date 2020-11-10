@@ -53,3 +53,16 @@ export const signInManager = (guest) => {
         .then(response => response.json())
         .catch(err => console.log(err));
 }
+
+export const signOutDeskClerk = (token) => {
+    return fetch(`/api/deskclerk/logout/${token}`,
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}
