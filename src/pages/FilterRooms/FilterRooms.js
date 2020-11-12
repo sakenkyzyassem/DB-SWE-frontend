@@ -136,6 +136,7 @@ class FilterRooms extends React.Component {
                         <Filter
                             filter={this.filterRooms}
                             hotels={this.state.places}
+                            className="filter"
                         />
                     </Row>
                     <Row>

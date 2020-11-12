@@ -9,6 +9,7 @@ import Footer from "../../components/footer/Footer";
 import ManageBookings from "../../pages/DeskClerk/ManageBookings/DeskClerkManageBookings";
 import DeskClerkLogout from "../../pages/DeskClerk/Logout/DeskClerkLogout";
 import DeskClerkProfile from "../../pages/DeskClerk/MyProfile/DeskClerkProfile";
+import GuestPage from "../../pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
 
 export default class DeskClerkRouter extends React.Component {
     render() {
@@ -26,6 +27,7 @@ export default class DeskClerkRouter extends React.Component {
                                     <DeskClerk />
                                     <Footer />
                                 </Route>
+                                <Route path="/deskClerk/guest/:id" component={GuestPage} />
                                 <Route path='/deskClerk/signIn'>
                                     <DeskClerkLogin />
                                 </Route>

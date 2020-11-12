@@ -24,7 +24,6 @@ function App(props) {
                 <Router>
                     <Switch>
                         <Route path="/deskClerk/signIn" component={DeskClerkLogin} />
-                        <Route path="/deskClerk/guest/:id" component={GuestPage} />
                         <Route path="/deskClerk/:path" component={DeskClerkRouter} />
                         <Route path="/manager/signIn" component={ManagerLogin} />
                         <Route path="/manager/:path" component={ManagerRouter} />
