@@ -28,7 +28,7 @@ class ManagerLogin extends React.Component {
                 this.setState({token: res.token});
                 const userContext = this.context;
                 userContext.setUserLoggedIn(res);
-                this.props.history.push("/deskClerk/main");
+                this.props.history.push("/manager/profile");
             })
     }
 
