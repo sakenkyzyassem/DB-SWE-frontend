@@ -1,7 +1,7 @@
 import React  from 'react';
 import { withRouter } from 'react-router-dom';
 import UserContext from '../../../services/userContext';
-import {Col, Form} from "react-bootstrap";
+import {Button, Col, Form} from "react-bootstrap";
 import { signInDeskClerk } from "../../../services/enteringService";
 
 class DeskClerkLogin extends React.Component {
@@ -18,10 +18,12 @@ class DeskClerkLogin extends React.Component {
     }
 
     async signIn(e){
+        e.preventDefault();
         const guest = {
             email: this.state.email,
             password: this.state.password
         }
+        console.log(guest);
         signInDeskClerk(guest)
             .then(res => {
                 console.log(res);
@@ -34,7 +36,6 @@ class DeskClerkLogin extends React.Component {
 
     render() {
         return (
-            <UserContext.Provider value={this.state}>
                 <div className="signIn">
                     <div className="container">
                         <img src={require('../../../static/LogoWhite.svg')} alt=""></img>
@@ -50,7 +51,7 @@ class DeskClerkLogin extends React.Component {
                                         </div>
                                         <div className="col-9">
                                             <h1 className="signinh1">Sign In</h1>
-                                            <Form noValidate validated={this.state.validated}>
+                                            <Form noValidate validated={this.state.validated} onSubmit={(event) => this.signIn(event)}>
                                                 <Form.Group as={Col} controlId="signUpEmailValidation">
                                                     <Form.Control
                                                         required
@@ -69,7 +70,7 @@ class DeskClerkLogin extends React.Component {
                                                         onChange={e => this.setState({password: e.target.value})}
                                                     />
                                                 </Form.Group>
-                                                <button className="signUpBtn" type="submit" onClick={this.signIn}>Sign In</button>
+                                                <Button className="signUpBtn" type="submit">Sign In</Button>
                                                 <p className="border-primary">Please, use your work account to sign in</p>
                                             </Form>
                                         </div>
@@ -79,7 +80,6 @@ class DeskClerkLogin extends React.Component {
                         </div>
                     </div>
                 </div>
-            </UserContext.Provider>
         );
     }
 }

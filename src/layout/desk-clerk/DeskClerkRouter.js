@@ -73,7 +73,7 @@ export default class DeskClerkRouter extends React.Component {
                                 <div>
                                     <Header className="row" dark="false"/>
                                     <div style={{height: "100px"}}></div>
-                                        
+
                                         <Route path={`/deskClerk/${this.state.route.path}`}>
                                             {this.state.route.component}
                                         </Route>
