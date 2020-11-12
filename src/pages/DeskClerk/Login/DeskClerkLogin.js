@@ -22,6 +22,7 @@ class DeskClerkLogin extends React.Component {
             email: this.state.email,
             password: this.state.password
         }
+        console.log(this.state.email)
         signInDeskClerk(guest)
             .then(res => {
                 console.log(res);
