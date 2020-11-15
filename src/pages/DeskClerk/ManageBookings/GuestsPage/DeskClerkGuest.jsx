@@ -1,6 +1,6 @@
 import React from "react";
 import Loading from "../../../../components/Loading/Loading";
-import Header from "../../../../components/header/deskclerk/HeaderDeskClerk";
+import Header from "../../../../components/header/Header";
 import "./DeskClerkGuest.scss";
 import { Container, Card, Tab, Tabs } from "react-bootstrap";
 import {withRouter} from "react-router-dom";
