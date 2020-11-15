@@ -4,7 +4,7 @@ import {Route, Redirect} from 'react-router-dom';
 import DeskClerk from "../../pages/DeskClerk/Main/DeskClerkMain";
 import UserContext from "../../services/userContext";
 import DeskClerkLogin from "../../pages/DeskClerk/Login/DeskClerkLogin";
-import Header from "../../components/header/deskclerk/HeaderDeskClerk";
+import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import ManageBookings from "../../pages/DeskClerk/ManageBookings/DeskClerkManageBookings";
 import DeskClerkLogout from "../../pages/DeskClerk/Logout/DeskClerkLogout";

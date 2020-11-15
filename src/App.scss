@@ -3,6 +3,7 @@
 body {
   font-family: "Segoe UI";
   width: 100%;
+  overflow-x: hidden;
 }
 
 .App {
@@ -15,6 +16,5 @@ body {
     padding: 0;
     transform-origin: top;
     transform: translateY(70px);
-    overflow-y: hidden;
   }
 }
