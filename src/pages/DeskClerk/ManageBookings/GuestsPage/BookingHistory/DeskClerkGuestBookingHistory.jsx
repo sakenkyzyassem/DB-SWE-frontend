@@ -4,7 +4,7 @@ import "./DeskClerkGuestBookingHistory.scss";
 import {Table, Badge, Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import {getUserBookings} from "../../../../../services/bookingsService";
-import {changeBookingStatus, cancelBooking, changeBooking, changeRoom} from "../../../../../services/deskClerkService";
+import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType} from "../../../../../services/deskClerkService";
 
 class BookingHistory extends React.Component {
     constructor(props) {
@@ -17,7 +17,8 @@ class BookingHistory extends React.Component {
             numberRooms: null,
             roomType: '',
             dueDate: null,
-            index: null
+            index: null,
+            roomNumbers: []
         }
         this.statusHandler = this.statusHandler.bind(this);
         this.numberRoomsHandler = this.numberRoomsHandler.bind(this);
@@ -29,13 +30,14 @@ class BookingHistory extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleEdit2 = this.handleEdit2.bind(this);
         this.createBooking = this.createBooking.bind(this);
+        this.handleEdit3 = this.handleEdit3.bind(this);
     }
 
     componentDidMount() {
         getUserBookings(this.props.guest_id)
             .then((res) => {
                 console.log(res);
-                this.setState({bookingHistory: res})
+                this.setState({bookingHistory: res});
             });
     }
 
@@ -103,11 +105,17 @@ class BookingHistory extends React.Component {
     }
 
     handleEdit3 = (e, id, key) => {
-        var number_of_rooms = this.state.numberRooms;
-        changeRoom(id, number_of_rooms)
+        e.preventDefault();
+        var booking = this.state.bookingHistory[key];
+        filterByRoomType(booking)
             .then(res => {
-
+                console.log(res)
+                this.setState({roomNumbers: res})
             })
+            .then(changeRoom(id, this.state.roomNumbers[0])
+            .then(res => {
+                console.log(res);
+            }))
     }
 
     createBooking = () => {
@@ -119,7 +127,7 @@ class BookingHistory extends React.Component {
                 this.state.bookingHistory ?
                     (Array.isArray(this.state.bookingHistory) && this.state.bookingHistory.length !== 0)
                         ?
-                        <div>
+                        <div className="deskClerk">
                             <div style={{height:"50px"}}></div>
                             <Table responsive>
                                 <thead>
@@ -208,6 +216,10 @@ class BookingHistory extends React.Component {
                                                                     <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
+                                                                    <Button variant="primary"
+                                                                        type="submit" block onClick={(e) => {this.handleEdit3(e, this.state.row.bookingid, this.state.index)}}>
+                                                                        Change Room
+                                                                    </Button>
                                                                 </Form.Group>
                                                             </Form>
                                                             </Tab>
@@ -266,7 +278,6 @@ class BookingHistory extends React.Component {
                                                                         </Form.Group>
                                                                     </Form>                         
                                                             </Tab>
-                                                            
                                                         </Tabs>
                                                             
                                                         </Modal.Body>

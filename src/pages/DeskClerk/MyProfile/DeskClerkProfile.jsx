@@ -1,10 +1,24 @@
 import React from "react";
 import { Col, Row, Container, Card } from 'react-bootstrap';
 import './DeskClerkProfile.scss';
-import Loading from "../../../components/Loading/Loading";
+import UserContext from "../../../services/userContext";
 
 
 class DeskClerkProfile extends React.Component {
+    static contextType = UserContext;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            deskClerk: [],
+        }
+    }
+
+    componentDidMount() {
+        let context = this.context;
+        this.setState({deskClerk: context.user});
+        console.log(this.state.deskClerk)
+    }
 
     render() {
         return (
@@ -23,9 +37,9 @@ class DeskClerkProfile extends React.Component {
                             <p>Email</p>
                         </Col>
                         <Col>
-                            <p>th</p>
-                            <p>tgr</p>
-                            <p>rtg</p>
+                            <p>{this.state.deskClerk.first_name}</p>
+                            <p>{this.state.deskClerk.last_name}</p>
+                            <p>{this.state.deskClerk.email}</p>
                         </Col>
                     </Row>
                     </Card>

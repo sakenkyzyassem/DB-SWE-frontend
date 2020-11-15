@@ -2,7 +2,7 @@ import React  from 'react';
 import { withRouter } from 'react-router-dom';
 import UserContext from '../../../services/userContext';
 import {Button, Col, Form} from "react-bootstrap";
-import { signInDeskClerk } from "../../../services/enteringService";
+import { signInDeskClerk } from "../../../services/deskClerkService";
 
 class DeskClerkLogin extends React.Component {
     static contextType = UserContext;
