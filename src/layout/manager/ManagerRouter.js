@@ -10,7 +10,7 @@ export default class ManagerRouter extends React.Component {
         return (
             <UserContext.Consumer>
                 {state => {
-                    if ( !state.isLoggedIn ) {
+                    if ( !state.isLoggedIn || state.user.role !== 'MANAGER' ) {
                         return (
                             <Redirect to="/manager/signIn" />
                             )

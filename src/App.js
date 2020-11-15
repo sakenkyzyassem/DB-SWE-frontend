@@ -12,7 +12,6 @@ import FilterRooms from "./pages/FilterRooms/FilterRooms";
 import Auth from "./layout/auth/Auth";
 import DeskClerkRouter from "./layout/desk-clerk/DeskClerkRouter";
 import ManagerRouter from "./layout/manager/ManagerRouter";
-import GuestPage from "./pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
 import DeskClerkLogin from "./pages/DeskClerk/Login/DeskClerkLogin";
 import ManagerLogin from "./pages/Manager/Login/ManagerLogin";
 

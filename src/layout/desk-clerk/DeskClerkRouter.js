@@ -16,7 +16,7 @@ export default class DeskClerkRouter extends React.Component {
         return (
             <UserContext.Consumer>
                 {state => {
-                    if ( !state.isLoggedIn ) {
+                    if ( !state.isLoggedIn || state.user.role !== 'DESKCLERK' ) {
                         return <Redirect to="/deskClerk/signIn"/>
                     }
                     else {
