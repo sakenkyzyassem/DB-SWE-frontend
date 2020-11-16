@@ -5,7 +5,7 @@ import {Button, NavDropdown} from "react-bootstrap";
 export default class HeaderDropdown extends React.Component {
     render() {
         let user = this.props.user;
-        if ( user.isLoggedIn ){
+        if ( user.isLoggedIn===false ){
             if( user.role === 'GUEST' ){
                 return (
                     <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
@@ -21,7 +21,7 @@ export default class HeaderDropdown extends React.Component {
                     </NavDropdown>
                 )
             }
-            else {
+            else if(user.role === 'DESKCLERK') {
                 return (
                     <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
                         <LinkContainer to="/deskClerk/myProfile">
@@ -31,6 +31,24 @@ export default class HeaderDropdown extends React.Component {
                             <NavDropdown.Item>Manage Bookings</NavDropdown.Item>
                         </LinkContainer>
                         <LinkContainer to="/deskClerk/logout">
+                            <NavDropdown.Item>Logout</NavDropdown.Item>
+                        </LinkContainer>
+                    </NavDropdown>
+                )
+            }
+            else {
+                return (
+                    <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
+                        <LinkContainer to="/manager/profile">
+                            <NavDropdown.Item>My Profile</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/manager/manageHotels">
+                            <NavDropdown.Item>Manage Hotels</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/manager/manageEmployees">
+                            <NavDropdown.Item>Manage Employees</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/manager/logout">
                             <NavDropdown.Item>Logout</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>

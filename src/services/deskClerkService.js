@@ -1,4 +1,4 @@
-let access_token = '';
+// let access_token = '';
 
 export const signInDeskClerk = (guest) => {
     return fetch('/api/logindeskclerk',
@@ -11,7 +11,7 @@ export const signInDeskClerk = (guest) => {
             body: JSON.stringify(guest),
         })
         .then(response => response.json())
-        .then(res => access_token = res.token)
+        // .then(res => access_token = res.token)
         .catch(err => console.log(err));
 }
 
@@ -20,7 +20,7 @@ export const getAllGuests = () => {
         {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -34,7 +34,7 @@ export const getEmployeeData = () => {
         {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -48,7 +48,7 @@ export const changeBookingStatus = (bh_id, roomtype, status) => {
         {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -62,7 +62,7 @@ export const cancelBooking = (bh_id, roomtype, number_of_rooms) => {
         {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -76,7 +76,7 @@ export const changeBooking = (bookingHistory) => {
         {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -91,7 +91,7 @@ export const filterRooms = (bookingHistory) => {
         {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -106,7 +106,7 @@ export const findGuest = (guest) => {
         {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -121,7 +121,7 @@ export const filterByRoomType = (bookingHistory) => {
         {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -136,7 +136,7 @@ export const changeRoom = (bh_id, room_num) => {
         {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${access_token}`,
+                // 'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
