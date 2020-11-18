@@ -3,11 +3,9 @@ import {Route, Redirect} from 'react-router-dom';
 
 import DeskClerk from "../../pages/DeskClerk/Main/DeskClerkMain";
 import UserContext from "../../services/userContext";
-import DeskClerkLogin from "../../pages/DeskClerk/Login/DeskClerkLogin";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import ManageBookings from "../../pages/DeskClerk/ManageBookings/DeskClerkManageBookings";
-import DeskClerkLogout from "../../pages/DeskClerk/Logout/DeskClerkLogout";
 import DeskClerkProfile from "../../pages/DeskClerk/MyProfile/DeskClerkProfile";
 import GuestPage from "../../pages/DeskClerk/ManageBookings/GuestsPage/DeskClerkGuest";
 
@@ -17,7 +15,7 @@ export default class DeskClerkRouter extends React.Component {
             <UserContext.Consumer>
                 {state => {
                     if ( !state.isLoggedIn || state.user.role !== 'DESKCLERK' ) {
-                        return <Redirect to="/deskClerk/signIn"/>
+                        return <Redirect to="/auth/employee"/>
                     }
                     else {
                         return (
@@ -28,12 +26,6 @@ export default class DeskClerkRouter extends React.Component {
                                     <Footer />
                                 </Route>
                                 <Route path="/deskClerk/guest/:id" component={GuestPage} />
-                                <Route path='/deskClerk/signIn'>
-                                    <DeskClerkLogin />
-                                </Route>
-                                <Route path='/deskClerk/logout'>
-                                    <DeskClerkLogout />
-                                </Route>
                                 <Route path='/deskClerk/myProfile'>
                                     <Header className="row" dark="false"/>
                                     <div style={{height: "100px"}}></div>

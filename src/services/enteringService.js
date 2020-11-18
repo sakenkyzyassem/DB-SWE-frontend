@@ -1,3 +1,4 @@
+/***************** GUEST AUTH **********************/
 export const signInGuest = (guest) => {
     return signInPOST('/api/login/', guest);
 }
@@ -6,17 +7,13 @@ export const signOutGuest = (token) => {
     return signOutPOST(`/api/guests/logout/${token}` );
 }
 
-export const signOutDeskClerk = (token) => {
+/***************** EMPLOYEE AUTH *****************/
+export const signInEmployee = (guest) => {
+    return signInPOST('/api/loginemployee', guest);
+}
+
+export const signOutEmployee = (token) => {
     return signOutPOST(`/api/deskclerk/logout/${token}`);
-}
-
-/***************** MANAGER AUTH *****************/
-export const signInManager = (guest) => {
-    return signInPOST('/api/logindeskclerk', guest);
-}
-
-export const signOutManager = (token) => {
-    return signOutPOST(`/api/manager/logout/${token}`);
 }
 
 /********************* SIGN IN ******************/

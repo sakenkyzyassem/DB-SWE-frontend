@@ -19,8 +19,8 @@ class ImageTransition extends React.Component {
                     alt={this.props.title}
                 />
                 <div className="transition-card card-text" style={{height: this.props.height, width: this.props.width}}>
-                    <h5>{ this.props.title }</h5>
-                    <p>{ this.props.subtitle }</p>
+                    <h5 id="title">{ this.props.title }</h5>
+                    <p id="subtitle">{ this.props.subtitle }</p>
                 </div>
             </div>
         )

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './SignIn.scss';
 import UserContext from '../../../services/userContext';
 import {Col, Form} from "react-bootstrap";
-import {signInGuest} from "../../../services/enteringService";
+import {signInEmployee, signInGuest} from "../../../services/enteringService";
 
 class SignIn extends Component {
     static contextType = UserContext;
@@ -19,46 +19,35 @@ class SignIn extends Component {
     }
 
     async signIn(e){
+        e.preventDefault();
         const guest = {
             email: this.state.email,
             password: this.state.password
         }
-        signInGuest(guest)
-            .then(res => {
-                console.log(res);
-                this.setState({token: res.token});
-                const userContext = this.context;
-                userContext.setUserLoggedIn(res);
-                this.props.history.push("/");
-            })
-    }
+        if( this.props.role === 'employee' ) {
+            signInEmployee(guest)
+                .then(res => {
+                    console.log(res);
+                    const userContext = this.context;
+                    userContext.setUserLoggedIn(res);
 
-    handleChange = (event, title) => {
-        const user = {
-            ...this.state.userInformation,
-            [title]: event.target.value
+                    if( res.role === 'DESKCLERK' ){
+                        this.props.history.push('/deskClerk/main')
+                    }
+                    else {
+                        this.props.history.push("/manager/main");
+                    }
+                })
         }
-        this.setState({userInformation: user});
-    }
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            this.setState({validated: false});
-            event.preventDefault();
-            event.stopPropagation();
+        else {
+            signInGuest(guest)
+                .then(res => {
+                    console.log(res);
+                    const userContext = this.context;
+                    userContext.setUserLoggedIn(res);
+                    this.props.history.push("/");
+                });
         }
-        else{
-            const userContext = this.context;
-            userContext.setUserLoggedIn();
-            this.props.history.push({
-                pathname: "/", 
-                state: this.state
-            });
-        }
-
-        this.setState({validated: true});
     }
 
     render() { 
@@ -79,7 +68,7 @@ class SignIn extends Component {
                             </div>
                             <div className="col-9">
                                 <h1 className="signinh1">Sign In</h1>
-                                <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
+                                <Form noValidate validated={this.state.validated} onSubmit={this.signIn}>
                                     <Form.Group as={Col} controlId="signUpEmailValidation">
                                         <Form.Control
                                             required
@@ -100,7 +89,7 @@ class SignIn extends Component {
                                     </Form.Group>
                                     <button className="signUpBtn" type="submit" onClick={this.signIn}>Sign In</button>
                                 </Form>
-                                <p>Don't have an account? <a href="/auth/signUp">Sign up</a></p>
+                                <p>Don't have an account? <Link to="/auth/signUp">Sign up</Link></p>
                             </div>
                             </div>
                         </div>

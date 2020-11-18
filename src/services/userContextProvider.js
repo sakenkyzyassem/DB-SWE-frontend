@@ -20,7 +20,7 @@ export default class UserContextProvider extends React.Component {
     setUserLogOut = () => {
         this.setState({
             isLoggedIn: false,
-            userId: null
+            user: null
         })
     }
 

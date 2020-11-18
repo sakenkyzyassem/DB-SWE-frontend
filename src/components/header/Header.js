@@ -11,7 +11,7 @@ class Header extends React.Component {
 
     render() {
         let theme;
-        if( this.props.location.pathname === "/" || this.props.location.pathname === "/deskClerk/main" ){
+        if( this.props.location.pathname === "/" || this.props.location.pathname === "/deskClerk/main" || this.props.location.pathname === "/manager/main" ){
             theme = {
                 theme: "dark",
                 class: "Header fixed-top",

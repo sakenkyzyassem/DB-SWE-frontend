@@ -27,6 +27,10 @@ const routes = [
         path: "signIn",
         component: <SignIn />
     },
+    {
+        path: 'employee',
+        component: <SignIn role='employee' />
+    }
 ]
 
 export default class Auth extends React.Component {

@@ -5,23 +5,8 @@ import {Button, NavDropdown} from "react-bootstrap";
 export default class HeaderDropdown extends React.Component {
     render() {
         let user = this.props.user;
-        if ( user.isLoggedIn===false ){
-            if( user.role === 'GUEST' ){
-                return (
-                    <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
-                        <LinkContainer to="/profile/user">
-                            <NavDropdown.Item>My Profile</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/profile/history">
-                            <NavDropdown.Item>My Bookings</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/auth/logout">
-                            <NavDropdown.Item>Logout</NavDropdown.Item>
-                        </LinkContainer>
-                    </NavDropdown>
-                )
-            }
-            else if(user.role === 'DESKCLERK') {
+        if ( user.isLoggedIn ){
+            if( user.user.role === "DESKCLERK" ) {
                 return (
                     <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
                         <LinkContainer to="/deskClerk/myProfile">
@@ -30,13 +15,13 @@ export default class HeaderDropdown extends React.Component {
                         <LinkContainer to="/deskClerk/manageBookings">
                             <NavDropdown.Item>Manage Bookings</NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to="/deskClerk/logout">
+                        <LinkContainer to="/auth/logout">
                             <NavDropdown.Item>Logout</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>
                 )
             }
-            else {
+            else if( user.user.role === "MANAGER") {
                 return (
                     <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
                         <LinkContainer to="/manager/profile">
@@ -48,7 +33,22 @@ export default class HeaderDropdown extends React.Component {
                         <LinkContainer to="/manager/manageEmployees">
                             <NavDropdown.Item>Manage Employees</NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to="/manager/logout">
+                        <LinkContainer to="/auth/logout">
+                            <NavDropdown.Item>Logout</NavDropdown.Item>
+                        </LinkContainer>
+                    </NavDropdown>
+                )
+            }
+            else {
+                return (
+                    <NavDropdown alignRight title="MY PAGE" id="nav-dropdown">
+                        <LinkContainer to="/profile/user">
+                            <NavDropdown.Item>My Profile</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/profile/history">
+                            <NavDropdown.Item>My Bookings</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/auth/logout">
                             <NavDropdown.Item>Logout</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>
