@@ -41,7 +41,14 @@ class ManageWorkingHours extends React.Component {
 
         getScheduleForAll(this.state.manager.hotel_id)
             .then((res) => {
-                this.setState({schedules:res[this.props.employee_id]});
+                console.log(res)
+                let j=0;
+                for (var i in res) {
+                    if(res[i].employee_id==this.props.employee_id){
+                        this.state.schedules[j]=res[i];
+                        j++;
+                    }
+                }
                 console.log(this.state.schedules);
             });
     }
@@ -144,6 +151,9 @@ class ManageWorkingHours extends React.Component {
 
     render() {
             return (
+                this.state.schedules ?
+                    (Array.isArray(this.state.schedules) && this.state.schedules[0].length !== 0)
+                        ?
                         <div className="manager">
                             <div style={{height:"50px"}}></div>
                             <Table responsive>
@@ -162,8 +172,11 @@ class ManageWorkingHours extends React.Component {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>{this.state.schedules.date}</td>
+                                {
+                                    this.state.bookingHistory.map((row, index) => {
+                                    return (
+                                    <tr key={index}>
+                                        <td>{row.date}</td>
                                         <td>{this.state.schedules.starttime}</td>
                                         <td>{this.state.schedules.endtime}</td>
                                         <td>{this.state.schedules.paymentperhour}</td>
@@ -282,9 +295,11 @@ class ManageWorkingHours extends React.Component {
                                                                         Date
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                    <form action="/action_page.php" onChange={(e) => this.dateHandler(e)}>
-                                                                        <input type="time" id="appt" name="appt"/>
-                                                                    </form>
+                                                                    <Form.Control
+                                                                            type="date"
+                                                                            defaultValue={row.date}
+                                                                            onChange={(e) => this.dateHandler(e)}
+                                                                        />
                                                                     </Col>
                                                             </Form.Group>      
                                                             <Form.Group as={Row} controlId="addStartTimeControl">
@@ -323,9 +338,25 @@ class ManageWorkingHours extends React.Component {
                                             </Modal.Body>
                                             </Modal>
                                                 </tr>
+                                    )}
+                                )}
                                 </tbody>
                             </Table>
+                            </div>
+                            :
+                        <div style={{textAlign:"center"}}>
+                            <div style={{height:"50px"}}></div>
+                            <img className="imgDeskclerk" src={require(`../../../../../static/nobookings.svg`)} alt="deskclerk" style={{height:"130px", width:"130px"}}/>
+                            <div style={{height:"50px"}}></div>
+                            <h6>Employee doesn't have schedules yet!</h6>
+                            <Button variant="primary" size="sm"
+                                            onClick={(e) => {
+                                                this.handleOpen2(e)
+                                            }} className="m-1" block>Add</Button>
                         </div>
+                :
+                    <Loading />
+                        
                         
             );
     }
