@@ -19,7 +19,9 @@ class ManageWorkingHours extends React.Component {
             payroll: null,
             startTime: null,
             endTime: null,
-            date: null
+            date: null,
+            keys:[],
+            index: null
         }
         this.payrollHandler = this.payrollHandler.bind(this);
         this.startTimeHandler = this.startTimeHandler.bind(this);
@@ -33,9 +35,14 @@ class ManageWorkingHours extends React.Component {
         this.handleEdit2 = this.handleEdit2.bind(this);
         this.handleEdit3 = this.handleEdit3.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+        this.update = this.update.bind(this);
     }
 
     componentDidMount() {
+        this.update();
+    }
+
+    update(){
         let context = this.context;
         this.state.manager = context.user;
 
@@ -50,6 +57,18 @@ class ManageWorkingHours extends React.Component {
                     }
                 }
                 console.log(this.state.schedules);
+                
+                for(let v in Object.keys(this.state.schedules)){
+                    console.log(v)
+                    console.log(this.state.schedules[v])
+                    this.setState({
+                        keys: [
+                          ...this.state.keys,
+                          v
+                        ],
+                    })
+                }
+
             });
     }
 
@@ -74,26 +93,30 @@ class ManageWorkingHours extends React.Component {
         this.setState({showAdd: false});
     }
 
-    handleOpen = (e) => {
+    handleOpen = (e, index) => {
         this.setState({show: true});
+        this.setState({index: index});
     }
 
     handleOpen2 = (e) => {
         this.setState({showAdd: true});
     }
 
-    handleDelete = (e, date) => {
+    handleDelete = (e, index) => {
         e.preventDefault();
         let hotel_id = this.state.manager.hotel_id;
         let emp_id = this.props.employee_id;
+        let date = this.state.schedules[index].date;
 
         deleteSchedule(hotel_id, emp_id, date)
             .then(res => {
                 console.log(res);
+                this.setState({schedules: res});
+                this.update();
             })
     }
 
-    handleEdit = (e) => {
+    handleEdit = (e, index) => {
         e.preventDefault();
         let hotel_id = this.state.manager.hotel_id;
         let emp_id = this.props.employee_id;
@@ -101,37 +124,40 @@ class ManageWorkingHours extends React.Component {
 
         changePayroll(hotel_id, emp_id, new_pay)
             .then(res => {
-                console.log("chnages");
-                this.setState({schedules:res});
+                this.state.schedules[index] = res;
+                // this.setState({schedules:res});
+                this.update();
             });
     }
 
-    handleEdit2 = (e) => {
+    handleEdit2 = (e, index) => {
         e.preventDefault();
         let hotel_id = this.state.manager.hotel_id;
         let emp_id = this.props.employee_id;
-        let date = this.state.schedules.date;
+        let date = this.state.schedules[index].date;
         let time = this.state.startTime;
 
         changeStartTime(hotel_id, emp_id, date, time)
             .then(res => {
-                console.log("start time")
-                console.log(res);
-                this.setState({schedules: res});
+                this.state.schedules[index] = res;
+                // this.setState({schedules: res});
+                this.update();
             });
     }
 
-    handleEdit3 = (e) => {
+    handleEdit3 = (e, index) => {
         e.preventDefault();
         let hotel_id = this.state.manager.hotel_id;
         let emp_id = this.props.employee_id;
-        let date = this.state.schedules.date;
+        let date = this.state.schedules[index].date;
         let time = this.state.endTime;
 
         changeEndTime(hotel_id, emp_id, date, time)
             .then(res => {
                 console.log(res)
-                this.setState({schedules: res})
+                this.state.schedules[index] = res;
+                // this.setState({schedules: res})
+                this.update();
             });
     }
 
@@ -139,20 +165,25 @@ class ManageWorkingHours extends React.Component {
         e.preventDefault();
         let hotel_id = this.state.manager.hotel_id;
         let emp_id = this.props.employee_id;
-        let date = this.state.schedules.date;
+        let date = this.state.date;
         let starttime = this.state.startTime;
         let endtime = this.state.endTime;
+        var j = this.state.keys.length;
 
         addSchedule(hotel_id, emp_id, date, starttime, endtime)
             .then(res => {
-                console.log(res)
+                this.state.schedules[j]=res;
+                this.update();
             });
     }
 
     render() {
             return (
-                this.state.schedules ?
-                    (Array.isArray(this.state.schedules) && this.state.schedules[0].length !== 0)
+                <UserContext.Consumer>
+                    { state => {
+                        if( state.isLoggedIn ) {
+                            return (
+                    (this.state.keys.length !== 0)
                         ?
                         <div className="manager">
                             <div style={{height:"50px"}}></div>
@@ -173,20 +204,20 @@ class ManageWorkingHours extends React.Component {
                                 </thead>
                                 <tbody>
                                 {
-                                    this.state.bookingHistory.map((row, index) => {
+                                    this.state.keys.map((index) => {
                                     return (
-                                    <tr key={index}>
-                                        <td>{row.date}</td>
-                                        <td>{this.state.schedules.starttime}</td>
-                                        <td>{this.state.schedules.endtime}</td>
-                                        <td>{this.state.schedules.paymentperhour}</td>
+                                    <tr>
+                                        <td>{this.state.schedules[index].date}</td>
+                                        <td>{this.state.schedules[index].starttime}</td>
+                                        <td>{this.state.schedules[index].endtime}</td>
+                                        <td>{this.state.schedules[index].paymentperhour}</td>
                                         <td><Button variant="outline-additional" size="sm"
                                             onClick={(e) => {
-                                                this.handleOpen(e)
+                                                this.handleOpen(e, index)
                                             }} className="m-1" block>Change</Button>
                                             <Button variant="outline-info" size="sm"
                                             onClick={(e) => {
-                                                this.handleDelete(e, this.state.schedules.date)
+                                                this.handleDelete(e, index)
                                             }} className="m-1" block>Delete</Button>
                                         </td>
                                              
@@ -199,7 +230,7 @@ class ManageWorkingHours extends React.Component {
                                                 <Tabs className="tabs" id="controlled-tab-example">
                                                     <Tab eventKey="changePayroll" title="Change Payroll" className="tab">
                                                         <div style={{height: "50px"}}></div>
-                                                        <Form onSubmit={(e) => this.handleEdit(e)}>
+                                                        <Form onSubmit={(e) => this.handleEdit(e, this.state.index)}>
                                                             <Form.Group as={Row} controlId="payrollControl">
                                                                 <Form.Label column sm="3">
                                                                     Payment per hour
@@ -207,7 +238,7 @@ class ManageWorkingHours extends React.Component {
                                                                     <Col sm="8">
                                                                         <Form.Control
                                                                             type="number"
-                                                                            defaultValue={this.state.schedules.paymentperhour}
+                                                                            defaultValue={this.state.schedules[index].paymentperhour}
                                                                             onChange={(e) => this.payrollHandler(e)}
                                                                         />
                                                                     </Col>
@@ -217,7 +248,7 @@ class ManageWorkingHours extends React.Component {
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e)}}>
+                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
                                                                 </Form.Group>
@@ -225,14 +256,14 @@ class ManageWorkingHours extends React.Component {
                                                             </Tab>
                                                             <Tab eventKey="changeStartTime" title="Change Start Time" className="tab">
                                                             <div style={{height: "50px"}}></div>
-                                                            <Form onSubmit={(e) => this.handleEdit2(e)}>
+                                                            <Form onSubmit={(e) => this.handleEdit2(e, this.state.index)}>
                                                                 <Form.Group as={Row} controlId="startTimeControl">
                                                                     <Form.Label column sm="3">
                                                                         Start time
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                        <form action="/action_page.php" onChange={(e) => this.startTimeHandler(e)}>
-                                                                            <input type="time" id="appt" name="appt"/>
+                                                                        <form onChange={(e) => this.startTimeHandler(e)}>
+                                                                            <input id="appt-time" type="time" name="appt-time" step="2"/>
                                                                         </form>
                                                                     </Col>
                                                                 </Form.Group>
@@ -241,7 +272,7 @@ class ManageWorkingHours extends React.Component {
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit2(e)}}>
+                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit2(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
                                                                 </Form.Group>
@@ -249,20 +280,15 @@ class ManageWorkingHours extends React.Component {
                                                             </Tab>
                                                             <Tab eventKey="changeEndTime" title="Change End Time" className="tab">
                                                             <div style={{height: "50px"}}></div>
-                                                            <Form onSubmit={(e) => this.handleEdit3(e)}>
+                                                            <Form onSubmit={(e) => this.handleEdit3(e, this.state.index)}>
                                                                 <Form.Group as={Row} controlId="endTimeControl">
                                                                     <Form.Label column sm="3">
                                                                         End time
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                    <form action="/action_page.php" onChange={(e) => this.endTimeHandler(e)}>
-                                                                        <input type="time" id="appt" name="appt"/>
+                                                                    <form onChange={(e) => this.endTimeHandler(e)}>
+                                                                        <input id="appt-time" type="time" name="appt-time" step="2"/>
                                                                     </form>
-                                                                        {/* <Form.Control
-                                                                            type="number"
-                                                                            defaultValue={this.state.schedules.endtime}
-                                                                            onChange={(e) => this.endTimeHandler(e)}
-                                                                        /> */}
                                                                     </Col>
                                                                 </Form.Group>
                                                                 <div style={{height:"50px"}}></div>
@@ -270,7 +296,7 @@ class ManageWorkingHours extends React.Component {
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit3(e)}}>
+                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit3(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
                                                                 </Form.Group>
@@ -295,11 +321,9 @@ class ManageWorkingHours extends React.Component {
                                                                         Date
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                    <Form.Control
-                                                                            type="date"
-                                                                            defaultValue={row.date}
-                                                                            onChange={(e) => this.dateHandler(e)}
-                                                                        />
+                                                                    <form onChange={(e) => this.dateHandler(e)}>
+                                                                        <input type="date" name="party" min="2020-11-23" max="2021-11-23"/>
+                                                                    </form>
                                                                     </Col>
                                                             </Form.Group>      
                                                             <Form.Group as={Row} controlId="addStartTimeControl">
@@ -308,8 +332,8 @@ class ManageWorkingHours extends React.Component {
                                                                         Start time
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                    <form action="/action_page.php" onChange={(e) => this.startTimeHandler(e)}>
-                                                                        <input type="time" id="appt" name="appt"/>
+                                                                    <form onChange={(e) => this.startTimeHandler(e)}>
+                                                                        <input id="appt-time" type="time" name="appt-time" step="2"/>
                                                                     </form>
                                                                     </Col>
                                                             </Form.Group>     
@@ -319,8 +343,8 @@ class ManageWorkingHours extends React.Component {
                                                                         End time
                                                                     </Form.Label>
                                                                     <Col sm="8">
-                                                                    <form action="/action_page.php" onChange={(e) => this.endTimeHandler(e)}>
-                                                                        <input type="time" id="appt" name="appt"/>
+                                                                    <form onChange={(e) => this.endTimeHandler(e)}>
+                                                                        <input id="appt-time" type="time" name="appt-time" step="2"/>
                                                                     </form>
                                                                     </Col>
                                                             </Form.Group>         
@@ -338,7 +362,7 @@ class ManageWorkingHours extends React.Component {
                                             </Modal.Body>
                                             </Modal>
                                                 </tr>
-                                    )}
+                                     )}
                                 )}
                                 </tbody>
                             </Table>
@@ -353,13 +377,79 @@ class ManageWorkingHours extends React.Component {
                                             onClick={(e) => {
                                                 this.handleOpen2(e)
                                             }} className="m-1" block>Add</Button>
+                        
+                        <Modal show={this.state.showAdd} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add Form</Modal.Title>
+                        </Modal.Header>
+                                    
+                        <Modal.Body>
+                            
+                                    <Form onSubmit={(e) => this.handleAdd(e)}>
+                                        <Form.Group as={Row} controlId="addDateControl">
+                                
+                                                <Form.Label column sm="3">
+                                                    Date
+                                                </Form.Label>
+                                                <Col sm="8">
+                                                <form onChange={(e) => this.dateHandler(e)}>
+                                                    <input type="date" name="party" min="2020-11-23" max="2021-11-23"/>
+                                                </form>
+                                                </Col>
+                                        </Form.Group>      
+                                        <Form.Group as={Row} controlId="addStartTimeControl">
+                                
+                                                <Form.Label column sm="3">
+                                                    Start time
+                                                </Form.Label>
+                                                <Col sm="8">
+                                                <form onChange={(e) => this.startTimeHandler(e)}>
+                                                    <input id="appt-time" type="time" name="appt-time" step="2"/>
+                                                </form>
+                                                </Col>
+                                        </Form.Group>     
+                                        <Form.Group as={Row} controlId="addEndTimeControl">
+                                
+                                                <Form.Label column sm="3">
+                                                    End time
+                                                </Form.Label>
+                                                <Col sm="8">
+                                                <form onChange={(e) => this.endTimeHandler(e)}>
+                                                    <input id="appt-time" type="time" name="appt-time" step="2"/>
+                                                </form>
+                                                </Col>
+                                        </Form.Group>         
+
+                                            <Form.Group as={Row} className="p-3">
+                                                <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
+                                                    Cancel
+                                                </Button>
+                                                <Button variant="primary" type="submit" block onClick={(e) => {this.handleAdd(e)}}>
+                                                    Add Schedule
+                                                </Button>
+                                            </Form.Group>
+                                        </Form>
+                
+                        </Modal.Body>
+                        </Modal>
                         </div>
-                :
-                    <Loading />
-                        
-                        
             );
+        }
+        else {
+            return (
+                // <LoginModal
+                //     title={"Login please"}
+                //     showLogIn={!state.isLoggedIn}
+                //     message={"Please, login or signup to see your profile and bookings history"}
+                // />
+                <p>ll</p>
+                )
+        }
     }
+}
+</UserContext.Consumer>
+)
+}
 }
 
 export default withRouter(ManageWorkingHours);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SignUp.scss';
-import {withRouter} from 'react-router-dom';
-import {Col, Form} from "react-bootstrap";
+import {Link, withRouter} from 'react-router-dom';
+import {Col, Form, Alert} from "react-bootstrap";
 
 
 class SignUp extends Component {
@@ -11,7 +11,7 @@ class SignUp extends Component {
         this.state = { 
             email: "",
             password: "",
-            success: false,
+            success: false
         }
         this.signUpFunction = this.signUpFunction.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -19,10 +19,12 @@ class SignUp extends Component {
     }
 
     signUpFunction() {
-        this.props.history.push({
-            pathname: "/createAccount", 
-            state: this.state
-        });
+        if(this.state.email.length!=0 && this.state.password.length!=0){
+            this.props.history.push({
+                pathname: "/auth/createAccount", 
+                state: this.state
+            });
+        }
     }
     
     handleChange = (event, title) => {
@@ -44,7 +46,6 @@ class SignUp extends Component {
         else{
             const userContext = this.context;
             userContext.setUserLoggedIn();
-            // this.props.history.push("/");
             this.signUpFunction();
         }
 
@@ -89,12 +90,13 @@ class SignUp extends Component {
                                     </Form.Group>
                                 </Form>
                                 <button className="signUpBtn" type="button" onClick={this.signUpFunction}>Sign up</button>
-                                <p>Already have an account? <a href="/signIn">Sign in</a></p>
+                                <p>Already have an account? <Link to="/auth/signIn">Sign in</Link></p>
                             </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div style={{height: "100px"}}></div>
                 </div>
             </div>
          );
