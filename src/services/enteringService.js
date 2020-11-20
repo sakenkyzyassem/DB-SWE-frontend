@@ -15,6 +15,11 @@ export const signInEmployee = (guest) => {
 export const signOutEmployee = (token) => {
     return signOutPOST(`/api/deskclerk/logout/${token}`);
 }
+/********************* HANDLE ERRORS *******************/
+const handleErrrors = (res) => {
+    if (!res.ok) throw Error(res.statusText);
+    return res.json();
+}
 
 /********************* SIGN IN ******************/
 const signInPOST = (url, data) => {
@@ -27,8 +32,7 @@ const signInPOST = (url, data) => {
             },
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .catch(err => console.log(err));
+        .then(res => res.json())
 }
 /******************** SIGN OUT ********************/
 const signOutPOST = (url) => {

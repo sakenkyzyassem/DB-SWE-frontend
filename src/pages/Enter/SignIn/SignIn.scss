@@ -12,6 +12,12 @@
         margin-top: 70px;
         font-size: 42px;
     }
+    .signIn-alert {
+        position: absolute;
+        transform: translateY(-80px);
+        align-self: center;
+        justify-self: center;
+    }
     .container {
         display: block;
         justify-content: center;

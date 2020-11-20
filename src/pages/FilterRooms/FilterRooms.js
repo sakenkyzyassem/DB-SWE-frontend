@@ -19,43 +19,6 @@ class FilterRooms extends React.Component {
             places: [],
             hotels: [],
             data: null,
-            // data: {
-            //     "Hotel Russo Palace" : {
-            //         "hotelEntity" : {
-            //             "name" : "Hotel Russo Palace",
-            //             "address" : "Riviera San Nicol 11/a",
-            //             "city" : "Mableton",
-            //             "country" : "US",
-            //             "hotel_id" : 7416
-            //         },
-            //         "roomTypeInfoList" : [ {
-            //             "type" : "single1",
-            //             "size" : 15.9,
-            //             "capacity" : 1,
-            //             "howmanyavailable" : 1,
-            //             "price" : 15000
-            //         }, {
-            //             "type" : "single2",
-            //             "size" : 14.8,
-            //             "capacity" : 1,
-            //             "howmanyavailable" : 1,
-            //             "price" : 15000
-            //         }, {
-            //             "type" : "queen",
-            //             "size" : 81.2,
-            //             "capacity" : 4,
-            //             "howmanyavailable" : 1,
-            //             "price" : 360000
-            //         }, {
-            //             "type" : "king",
-            //             "size" : 94.5,
-            //             "capacity" : 6,
-            //             "howmanyavailable" : 1,
-            //             "price" : 360000
-            //         } ]
-            //     }
-            // },
-            // hotels: ["Hotel Russo Palace"],
             booking: null,
             bookingDetails: null,
             confirmBooking: false

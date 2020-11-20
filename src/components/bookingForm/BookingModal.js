@@ -26,6 +26,7 @@ class BookingModal extends React.Component {
         event.preventDefault();
         console.log(this.props.booking);
         createBooking(this.props.booking)
+            .then(response => response.json())
             .then(res => {
                 this.setState({success: true});
                 this.props.confirmBooking(false);
@@ -43,11 +44,6 @@ class BookingModal extends React.Component {
                     show={this.state.error || this.state.success}
                 >
                     <Modal.Header>
-                        <img
-                            src="holder.js/20x20?text=%20"
-                            className="rounded mr-2"
-                            alt=""
-                        />
                         <strong className="mr-auto">Booking</strong>
                     </Modal.Header>
                     <Modal.Body>{
@@ -59,12 +55,8 @@ class BookingModal extends React.Component {
                         <Link to="/">Go HOME</Link>
                     </Modal.Footer>
                 </Modal>
-                <Modal
-                    show={this.props.showModal}
-                    onHide={() => {
-                        this.props.confirmBooking(false)
-                    }}>
-                    <Modal.Header closeButton>
+                <Modal show={this.props.showModal}>
+                    <Modal.Header>
                         <Modal.Title>Edit form</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

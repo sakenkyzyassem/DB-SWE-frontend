@@ -1,9 +1,10 @@
 import React from "react";
 import {Row, Form, Col, ButtonGroup, Button, Alert} from "react-bootstrap";
-import {sendMssg} from "../../../services/managerServices";
+import {sendMssgToEmployees, sendMssgToGuests} from "../../../services/managerServices";
+import UserContext from "../../../services/userContext";
 
 export default class ManageEmail extends React.Component {
-
+    static contextType = UserContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -27,10 +28,18 @@ export default class ManageEmail extends React.Component {
 
         }
         else {
-            sendMssg(email)
-                .then(res => {
-                    this.setState({error: false, title: "", price: -1,receiver: "", text: ""});
-                })
+            if( this.state.receiver === "guest" ) {
+                sendMssgToGuests(email, this.context.user.hotel_id, this.context.user.token)
+                    .then(res => {
+                        this.setState({error: false, title: "", price: -1, receiver: "", text: ""});
+                    })
+            }
+            else if ( this.state.receiver === "employee" ) {
+                sendMssgToEmployees(email, this.context.user.hotel_id, this.context.user.token)
+                    .then(res => {
+                        this.setState({error: false, title: "", price: -1, receiver: "", text: ""});
+                    })
+            }
         }
     }
 

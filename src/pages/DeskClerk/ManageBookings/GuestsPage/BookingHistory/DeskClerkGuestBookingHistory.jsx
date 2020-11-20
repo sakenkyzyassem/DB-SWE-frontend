@@ -5,8 +5,11 @@ import {Table, Badge, Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-boot
 import { withRouter, Link } from 'react-router-dom';
 import {getUserBookings} from "../../../../../services/bookingsService";
 import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType} from "../../../../../services/deskClerkService";
+import UserContext from "../../../../../services/userContext";
 
 class BookingHistory extends React.Component {
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -16,9 +19,11 @@ class BookingHistory extends React.Component {
             status: '',
             numberRooms: null,
             roomType: '',
+            roomNum: null,
             dueDate: null,
             index: null,
-            roomNumbers: []
+            roomNumbers: [],
+            token: ""
         }
         this.statusHandler = this.statusHandler.bind(this);
         this.numberRoomsHandler = this.numberRoomsHandler.bind(this);
@@ -31,9 +36,13 @@ class BookingHistory extends React.Component {
         this.handleEdit2 = this.handleEdit2.bind(this);
         this.createBooking = this.createBooking.bind(this);
         this.handleEdit3 = this.handleEdit3.bind(this);
+        // this.roomNumberHandler = this.roomNumberHandler(this);
     }
 
     componentDidMount() {
+        let context = this.context;
+        this.state.token = context.user.token;
+        console.log(this.state.token)
         getUserBookings(this.props.guest_id)
             .then((res) => {
                 console.log(res);
@@ -50,14 +59,16 @@ class BookingHistory extends React.Component {
     }
 
     roomTypeHandler(e) {
-        console.log(this.state.roomType);
         this.setState({roomType: e.target.value});
     }
 
     dueDateHandler(e) {
-        console.log(this.state.dueDate);
         this.setState({dueDate: e.target.value});
     }
+
+    // roomNumberHandler(e) {
+    //     this.setState({roomNum: e.target.value});
+    // }
 
     handleClose = () => {
         this.setState({show: false});
@@ -77,19 +88,27 @@ class BookingHistory extends React.Component {
             .then(res => {
                 this.state.bookingHistory[key] = res;
                 this.state.bookingHistory[key].status = 'canceled';
+                this.setState({bookingHistory:this.state.bookingHistory})
             })
     }
 
     handleEdit = (e, key) => {
         e.preventDefault();
         var booking = this.state.bookingHistory[key];
+        var prevRoomType = this.state.bookingHistory[key].roomtype;
         booking.roomtype = this.state.roomType;
         booking.due_date = this.state.dueDate;
-        changeBooking(booking)
+        var token = this.state.token
+        changeBooking(booking, prevRoomType, token)
             .then(res => {
+                this.state.bookingHistory[key] = res;
+                this.setState({bookingHistory:this.state.bookingHistory})
                 console.log(res)
                 console.log(booking)
             })
+            .then(
+                this.setState({show: false})
+            )
     }
 
     handleEdit2 = (e, id, key) => {
@@ -99,23 +118,26 @@ class BookingHistory extends React.Component {
         changeBookingStatus(id, roomtype, status)
             .then(res => {
                 this.state.bookingHistory[key] = res;
+                this.setState({bookingHistory:this.state.bookingHistory})
                 console.log(this.state.bookingHistory[key])
                 console.log(res)
             })
+            .then(
+                this.setState({show: false})
+            )
     }
 
     handleEdit3 = (e, id, key) => {
         e.preventDefault();
-        var booking = this.state.bookingHistory[key];
-        filterByRoomType(booking)
-            .then(res => {
-                console.log(res)
-                this.setState({roomNumbers: res})
-            })
-            .then(changeRoom(id, this.state.roomNumbers[0])
+        var roomtype = this.state.bookingHistory[key].roomtype;
+        var room_num = this.state.roomNum;
+        changeRoom(id, roomtype, room_num)
             .then(res => {
                 console.log(res);
-            }))
+            })
+            .then(
+                this.setState({show: false})
+            )
     }
 
     createBooking = () => {
@@ -274,6 +296,31 @@ class BookingHistory extends React.Component {
                                                                             </Button>
                                                                             <Button variant="primary" type="submit" block onClick={(e) => {this.handleCancel(e, this.state.row.bookingid, this.state.index)}}>
                                                                                 Cancel Booking
+                                                                            </Button>
+                                                                        </Form.Group>
+                                                                    </Form>                         
+                                                            </Tab>
+                                                            <Tab eventKey="changeRoom" title="Change Room" className="tab">
+                                                                <div style={{height: "50px"}}></div>
+                                                                    <Form onSubmit={(e) => this.handleEdit3(e, this.state.row.bookingid, this.state.index)}>
+                                                                        <Form.Group as={Row} controlId="roomNumberControl">
+                                                                            <Form.Label column sm="3">
+                                                                                Room number
+                                                                            </Form.Label>
+                                                                            <Col sm="8">
+                                                                                <Form.Control
+                                                                                    type="number"
+                                                                                    // onChange={(e) => this.roomNumberHandler(e)}
+                                                                                />
+                                                                            </Col>
+                                                                        </Form.Group>
+                                                                        <div style={{height:"30px"}}></div>
+                                                                        <Form.Group as={Row} className="p-3">
+                                                                            <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
+                                                                                Close
+                                                                            </Button>
+                                                                            <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit3(e, this.state.row.bookingid, this.state.index)}}>
+                                                                                Approve Change
                                                                             </Button>
                                                                         </Form.Group>
                                                                     </Form>                         

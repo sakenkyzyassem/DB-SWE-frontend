@@ -33,7 +33,6 @@ export const editBooking = (id, booking) => {
         body: JSON.stringify(booking)
     })
         .then(response => response.json())
-        .catch((err) => console.log(err));
 }
 
 export const createBooking = (booking) => {
@@ -45,5 +44,4 @@ export const createBooking = (booking) => {
         },
         body: JSON.stringify(booking)
     })
-        .then(response => response.json());
 }

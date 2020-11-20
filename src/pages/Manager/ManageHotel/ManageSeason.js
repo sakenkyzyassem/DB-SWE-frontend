@@ -14,6 +14,7 @@ export default class ManageSeason extends React.Component {
         super(props);
         this.state ={
             hotel: null,
+            hotelSeasons: [],
             allSeasons: [],
             newSeason: "",
             newPrice: 0,
@@ -34,8 +35,10 @@ export default class ManageSeason extends React.Component {
                 this.setState({hotel: hotel});
                 let hotelSeasons = [];
                 hotel.seasons.forEach(s => hotelSeasons.push(s.season));
-                getAllSeasons()
+                this.setState({hotelSeasons: hotelSeasons});
+                getAllSeasons(this.context.user.token)
                     .then(res => {
+                        let hotelSeasons = this.state.hotelSeasons;
                         var allSeasons = res.filter(season => hotelSeasons.indexOf(season.name) === -1);
                         this.setState({allSeasons: allSeasons});
                         this.setState({loading: false});
@@ -46,7 +49,7 @@ export default class ManageSeason extends React.Component {
     deleteSeason = (e, index) => {
         e.preventDefault();
         let season = this.state.hotel.seasons[index];
-        deleteSeason(season.season, this.context.user.hotel_id)
+        deleteSeason(season.season, this.context.user.hotel_id, this.context.user.token)
             .then(res => {
                 console.log(res);
                 this.updateData();
@@ -57,8 +60,8 @@ export default class ManageSeason extends React.Component {
         this.setState({error: false});
         e.preventDefault();
         let newSeason = {
-            hotel_id: this.state.hotel.hotel.hotel_id,
-            season_name: this.state.newSeason,
+            hotelid: this.state.hotel.hotel.hotel_id,
+            season: this.state.newSeason,
             add_price: parseInt(this.state.newPrice)
         }
         if( newSeason.hotel_id !== 0 && newSeason.season_name !== "" && newSeason.add_price !== 0){

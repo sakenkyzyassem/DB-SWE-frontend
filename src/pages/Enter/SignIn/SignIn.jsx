@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
 import './SignIn.scss';
 import UserContext from '../../../services/userContext';
-import {Col, Form} from "react-bootstrap";
+import {Alert, Col, Form} from "react-bootstrap";
 import {signInEmployee, signInGuest} from "../../../services/enteringService";
 
 class SignIn extends Component {
@@ -20,6 +19,7 @@ class SignIn extends Component {
     }
 
     async signIn(e){
+        this.setState({validated: false});
         e.preventDefault();
         const guest = {
             email: this.state.email,
@@ -29,18 +29,30 @@ class SignIn extends Component {
             signInEmployee(guest)
                 .then(res => {
                     console.log(res);
-                    const userContext = this.context;
-                    userContext.setUserLoggedIn(res);
-                    this.props.history.push("/");
+                    if( (res.role !== "MANAGER" && res.role !== "DESKCLERK") && res.status !== 200 ) {
+                        this.setState({validated: true});
+                    }
+                    else {
+                        const userContext = this.context;
+                        userContext.setUserLoggedIn(res);
+                        this.props.history.push("/");
+                    }
                 })
+
         }
         else {
             signInGuest(guest)
                 .then(res => {
+                    console.log("Res: ");
                     console.log(res);
-                    const userContext = this.context;
-                    userContext.setUserLoggedIn(res);
-                    this.props.history.push("/");
+                    if( res.role !== "GUEST" && res.status !== 200 ) {
+                        this.setState({validated: true});
+                    }
+                    else {
+                        const userContext = this.context;
+                        userContext.setUserLoggedIn(res);
+                        this.props.history.push("/");
+                    }
                 });
         }
     }
@@ -63,6 +75,13 @@ class SignIn extends Component {
                             </div>
                             <div className="col-9">
                                 <h1 className="signinh1">Sign In</h1>
+                                <Alert
+                                    className="signIn-alert"
+                                    show={this.state.validated}
+                                    variant="danger"
+                                >
+                                    Please, check if your email or password is correct.
+                                </Alert>
                                 <Form noValidate validated={this.state.validated} onSubmit={this.signIn}>
                                     <Form.Group as={Col} controlId="signUpEmailValidation">
                                         <Form.Control

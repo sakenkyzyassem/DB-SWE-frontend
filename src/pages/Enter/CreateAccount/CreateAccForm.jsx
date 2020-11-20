@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './CreateAccForm.scss';
 
-// const required = value => {
-//     if(!value){
-//         return (
-//             <div className="alert alert-danger" role="alert">
-//                 Empty field is not allowed!
-//             </div>
-//         );
-//     }
-// };
-
 class CreateAccForm extends Component {
 
     constructor(props){
@@ -34,6 +24,7 @@ class CreateAccForm extends Component {
         const user = {
             email: userPrev.email,
             password: userPrev.password,
+            price: 0,
             ...this.state
         }
         await fetch('/api/signup', {
@@ -46,7 +37,7 @@ class CreateAccForm extends Component {
         }).then((res) => {
             console.log(res);
             if( res.ok ) {
-                this.props.history.push('/createAccountSuccess');
+                this.props.history.push('/auth/createAccountSuccess');
             }
         })
             .catch(err => console.log(err));

@@ -4,6 +4,8 @@ import Loading from "../../../../../components/Loading/Loading";
 // import "./DeskClerkGuestProfile.scss";
 import { Row, Col } from "react-bootstrap";
 import {withRouter} from "react-router-dom";
+import UserContext from "../../../../../services/userContext";
+import {getHotel} from "../../../../../services/hotelServices";
 
 const ImageComponent = ({job_title}) => {
 
@@ -27,29 +29,36 @@ const ImageComponent = ({job_title}) => {
 };
 
 class EmployeeProfile extends React.Component {
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
         this.state = {
+            manager: {},
             isLoaded: true,
             personal: {},
-            index: 0
+            index: 0,
+            hotel: {}
         }
-        console.log(this.state);
     }
 
     componentDidMount() {
+        let context = this.context;
+        this.state.manager = context.user;
+
         getAllEmployees()
             .then(res => {
-                const index = res.findIndex(g=>g.employee_id==this.props.employee_id);
-                this.setState({index: index});
+                const index = res.findIndex(g=>g.employee_id==this.props.employee_id && g.hotel_id==this.state.manager.hotel_id);
+                this.setState({index: index})
                 this.setState({personal: res[index]});
-                console.log(index);
-                console.log(this.props.employee_id);
-                console.log(this.state.personal);
-                console.log(res);
-            })
+                }
+            )
+        getHotel(this.state.manager.hotel_id)
+            .then(res =>{
+                this.setState({hotel:res.hotel})
+            }
+        )
     }
-
     
 
     render() {
@@ -80,12 +89,10 @@ class EmployeeProfile extends React.Component {
                         <Col md={3}>
                             <p>Job Title</p>
                             <p>Hotel</p>
-                            <p>Payment</p>
                         </Col>
                         <Col>
                             <p>{this.state.personal.job_title}</p>
-                            <p>{this.state.personal.hotel_id}</p>
-                            <p>{this.state.personal.payment_per_hour} $/hour</p>
+                            <p>{this.state.hotel.name}</p>
                         </Col>
                     </Row>
                 </div>

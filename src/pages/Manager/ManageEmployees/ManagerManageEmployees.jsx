@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import Loading from "../../../components/Loading/Loading";
 import "./ManagerManageEmployees.scss";
 import {getAllEmployees} from "../../../services/managerServices";
+import UserContext from "../../../services/userContext";
 
 const ImageComponent = ({job_title}) => {
 
@@ -29,9 +30,12 @@ const ImageComponent = ({job_title}) => {
 };
 
 class ManageEmployees extends React.Component {
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
         this.state = {
+            manager: null,
             isLoaded: true,
             employees: [],
             employeesId:[],
@@ -41,23 +45,29 @@ class ManageEmployees extends React.Component {
     }
 
     componentDidMount() {
+        let context = this.context;
+        this.setState({manager: context.user});
+        console.log(this.state.manager)
+
         getAllEmployees()
             .then(res => {
                 for (let i = 0; i < res.length; i++) {
-                    this.setState({
-                      employees: [
-                        ...this.state.employees,
-                        res[i].first_name+" "+res[i].last_name
-                      ],
-                      employeesId: [
-                          ...this.state.employeesId,
-                          res[i].employee_id
-                      ],
-                      personal: [
-                        ...this.state.personal,
-                        res[i].job_title
-                    ],
-                    })
+                    if(res[i].hotel_id==this.state.manager.hotel_id && res[i].role!="MANAGER"){
+                        this.setState({
+                            employees: [
+                              ...this.state.employees,
+                              res[i].first_name+" "+res[i].last_name
+                            ],
+                            employeesId: [
+                                ...this.state.employeesId,
+                                res[i].employee_id
+                            ],
+                            personal: [
+                              ...this.state.personal,
+                              res[i].job_title
+                          ],
+                        })
+                    }
                 }
             })
     }

@@ -20,7 +20,7 @@ class SignUp extends Component {
 
     signUpFunction() {
         this.props.history.push({
-            pathname: "/createAccount", 
+            pathname: "/auth/createAccount",
             state: this.state
         });
     }

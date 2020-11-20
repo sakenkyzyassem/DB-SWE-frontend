@@ -33,7 +33,7 @@ class EmployeesPage extends React.Component {
                         
                         </Tab>
                         <Tab eventKey="services" title="Working Schedule" className="tab">
-                            {/* <ManagerWorkingHours manager_id={this.props.match.params.id}/>                           */}
+                            <ManagerWorkingHours employee_id={this.props.match.params.id}/>                          
                         </Tab>
                     </Tabs>
                     </Card>
