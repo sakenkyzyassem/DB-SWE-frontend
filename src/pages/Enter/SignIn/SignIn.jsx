@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import './SignIn.scss';
 import UserContext from '../../../services/userContext';
 import {Col, Form} from "react-bootstrap";
@@ -24,19 +25,13 @@ class SignIn extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        if( this.props.role === 'employee' ) {
+        if( this.props.role && this.props.role === 'employee' ) {
             signInEmployee(guest)
                 .then(res => {
                     console.log(res);
                     const userContext = this.context;
                     userContext.setUserLoggedIn(res);
-
-                    if( res.role === 'DESKCLERK' ){
-                        this.props.history.push('/deskClerk/main')
-                    }
-                    else {
-                        this.props.history.push("/manager/main");
-                    }
+                    this.props.history.push("/");
                 })
         }
         else {
@@ -89,7 +84,11 @@ class SignIn extends Component {
                                     </Form.Group>
                                     <button className="signUpBtn" type="submit" onClick={this.signIn}>Sign In</button>
                                 </Form>
-                                <p>Don't have an account? <Link to="/auth/signUp">Sign up</Link></p>
+                                {
+                                    this.props.role === "employee"
+                                        ? <p>Please, sign in using your work account</p>
+                                        : <p>Don't have an account?<Link to="/auth/signUp">Sign up</Link></p>
+                                }
                             </div>
                             </div>
                         </div>

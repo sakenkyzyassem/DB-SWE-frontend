@@ -2,12 +2,13 @@ import React from "react";
 import {Link, Route, Redirect} from 'react-router-dom';
 
 import UserContext from "../../services/userContext";
-import ManagerProfile from "../../pages/Manager/Profile/ManagerProfile";
-import ManagerMain from "../../pages/Manager/Main/ManagerMain";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header"
 import ManageEmployees from "../../pages/Manager/ManageEmployees/ManagerManageEmployees";
 import EmployeesPage from "../../pages/Manager/ManageEmployees/EmployeesPage/ManagerEmployee";
+import EmployeeProfile from "../../pages/Profile/EmployeeProfile/EmployeeProfile";
+import ManageHotel from "../../pages/Manager/ManageHotel/ManageHotel";
+
 
 export default class ManagerRouter extends React.Component {
 
@@ -15,25 +16,29 @@ export default class ManagerRouter extends React.Component {
         return (
             <UserContext.Consumer>
                 {state => {
-                    if (!state.isLoggedIn || state.user.role !== 'MANAGER') {
+                    if (!state.isLoggedIn || (state.user && state.user.role !== 'MANAGER')) {
                         return (
                             <Redirect to="/auth/employee" />
                         )
                     } else {
                         return (
                             <div>
-                                <Route path='/manager/main'>
-                                    <Header className="row" dark="true"/>
-                                    <ManagerMain/>
-                                    <Footer/>
-                                </Route>
                                 <Route path='/manager/profile'>
-                                    <ManagerProfile/>
+                                    <Header className="row" dark="true"/>
+                                    <div style={{height: "100px"}}></div>
+                                    <EmployeeProfile />
+                                    <Footer/>
                                 </Route>
                                 <Route path='/manager/manageEmployees'>
                                     <Header className="row" dark="false"/>
                                     <div style={{height: "100px"}}></div>
                                     <ManageEmployees/>
+                                    <Footer/>
+                                </Route>
+                                <Route path='/manager/manageHotels'>
+                                    <Header className="row" dark="false"/>
+                                    <div style={{height: "100px"}}></div>
+                                    <ManageHotel />
                                     <Footer/>
                                 </Route>
                                 <Route path="/manager/employee/:id" component={EmployeesPage}/>

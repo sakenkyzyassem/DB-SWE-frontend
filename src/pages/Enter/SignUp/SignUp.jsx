@@ -89,7 +89,7 @@ class SignUp extends Component {
                                     </Form.Group>
                                 </Form>
                                 <button className="signUpBtn" type="button" onClick={this.signUpFunction}>Sign up</button>
-                                <p>Already have an account? <a href="/signIn">Sign in</a></p>
+                                <p>Already have an account? <a href="/auth/signIn">Sign in</a></p>
                             </div>
                             </div>
                         </div>

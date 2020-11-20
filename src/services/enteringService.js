@@ -1,6 +1,6 @@
 /***************** GUEST AUTH **********************/
 export const signInGuest = (guest) => {
-    return signInPOST('/api/login/', guest);
+    return signInPOST('/api/login', guest);
 }
 
 export const signOutGuest = (token) => {

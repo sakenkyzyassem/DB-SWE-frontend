@@ -1,0 +1,43 @@
+@import "../../../custom";
+
+.hotel-manage {
+  min-height: 80vh;
+  justify-content: center;
+  align-items: center;
+  max-width: 70%;
+  margin: 50px 0;
+  text-align: center;
+
+  .hotel {
+    height: 80px;
+    margin-left: 20px;
+  }
+
+  .btn-grp-nonactive {
+    color: $primary;
+    background-color: $white;
+  }
+  .btn-grp-active {
+    background-color: $primary;
+  }
+
+  .card{
+    background-color: white;
+    -webkit-box-shadow: 10px 10px 32px -2px rgba(0, 0, 0, 0.20);
+    -moz-box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+    box-shadow: 10px 10px 32px -2px rgba(0,0,0,0.20);
+    transition: 0.4s;
+    min-height: 300px;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px;
+    text-align: left;
+    border: none;
+  }
+
+  .tabs{
+    padding-left: 38%;
+    border-radius: 45px;
+    background-color: rgba(0, 0, 0, 0.020);
+  }
+}

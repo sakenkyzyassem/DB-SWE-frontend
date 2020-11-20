@@ -5,12 +5,7 @@ import {Button, Modal} from "react-bootstrap";
 class LoginModal extends React.Component {
 
     handleSignIn = () => {
-        if( this.props.route !== null ) {
-            this.props.history.push(`/${this.props.route}/signIn`);
-        }
-        else {
-            this.props.history.push('/auth/signIn');
-        }
+        this.props.history.push('/auth/signIn');
     }
 
     handleSignUp = () => {
