@@ -1,5 +1,4 @@
 import React from "react";
-import Loading from "../../../../../components/Loading/Loading";
 import {Table,Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import {getScheduleForAll, changePayroll, deleteSchedule, changeStartTime, changeEndTime, addSchedule} from "../../../../../services/managerServices";
@@ -44,14 +43,14 @@ class ManageWorkingHours extends React.Component {
 
     update(){
         let context = this.context;
-        this.state.manager = context.user;
+        this.setState( {manager: context.user} );
 
         getScheduleForAll(this.state.manager.hotel_id)
             .then((res) => {
                 console.log(res)
                 let j=0;
                 for (var i in res) {
-                    if(res[i].employee_id==this.props.employee_id){
+                    if(res[i].employee_id===this.props.employee_id){
                         let schedule={
                             ...this.state.schedules
                         }
@@ -65,7 +64,7 @@ class ManageWorkingHours extends React.Component {
                 for(let v in Object.keys(this.state.schedules)){
                     console.log(v)
                     for(let k in this.state.keys){
-                        if(k==v){
+                        if(k===v){
                             this.setState({keys:[]});
                         }
                     }

@@ -8,7 +8,7 @@ import {getUserBookings} from "../../../services/bookingsService";
 import UserContext from "../../../services/userContext";
 
 const ImageComponent = ({g}) => {
-    if(g%7==0){
+    if(g%7===0){
         return (
             <img
             src={require(`../../../static/guest-7.svg`)} 
@@ -16,7 +16,7 @@ const ImageComponent = ({g}) => {
             className="imgGuest"
             />
         )
-    }else if(g%6==0){
+    }else if(g%6===0){
         return (
             <img
             src={require(`../../../static/guest-6.svg`)} 
@@ -24,7 +24,7 @@ const ImageComponent = ({g}) => {
             className="imgGuest"
             />
         )
-    }else if(g%5==0){
+    }else if(g%5===0){
         return (
             <img
             src={require(`../../../static/guest-5.svg`)} 
@@ -32,7 +32,7 @@ const ImageComponent = ({g}) => {
             className="imgGuest"
             />
         )
-    }else if(g%4==0){
+    }else if(g%4===0){
         return (
             <img
             src={require(`../../../static/guest-4.svg`)} 
@@ -40,7 +40,7 @@ const ImageComponent = ({g}) => {
             className="imgGuest"
             />
         )
-    }else if(g%3==0){
+    }else if(g%3===0){
         return (
             <img
             src={require(`../../../static/guest-3.svg`)} 
@@ -48,7 +48,7 @@ const ImageComponent = ({g}) => {
             className="imgGuest"
             />
         )
-    }else if(g%2==0){
+    }else if(g%2===0){
         return (
             <img
             src={require(`../../../static/guest-2.svg`)} 
@@ -85,7 +85,7 @@ class ManageBookings extends React.Component {
 
     componentDidMount() {
         let context = this.context;
-        this.state.hotelId = context.hotel_id;
+        this.setState({hotelId: context.hotel_id});
         getAllGuests()
             .then(res => {
                 console.log(res)
@@ -106,7 +106,7 @@ class ManageBookings extends React.Component {
             console.log(this.state.guests)
         for(let id in this.state.guestsId){
             this.getHotelGuest(id);
-            if(this.state.bookingHistory.hotel_id == this.state.hotel_id){
+            if(this.state.bookingHistory.hotel_id === this.state.hotel_id){
                 this.setState({
                     hotelGuests: [
                         ...this.state.hotelGuests,

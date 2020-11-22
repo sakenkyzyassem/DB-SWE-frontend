@@ -280,6 +280,9 @@ class History extends React.Component {
                                             </tr>
                                         )
                                     }
+                                    else {
+                                        return ( null )
+                                    }
                                 })
                             }
                             </tbody>

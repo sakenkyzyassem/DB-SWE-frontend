@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Card, Nav } from "react-bootstrap";
-import {withRouter, BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {withRouter, Switch, Route} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 
 import './ProfileMain.scss';

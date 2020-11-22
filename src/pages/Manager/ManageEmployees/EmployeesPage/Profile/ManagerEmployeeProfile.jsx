@@ -44,7 +44,7 @@ class EmployeeProfile extends React.Component {
 
     componentDidMount() {
         let context = this.context;
-        this.state.manager = context.user;
+        this.setState({manager: context.user});
 
         getAllEmployees()
             .then(res => {

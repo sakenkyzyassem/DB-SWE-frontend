@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 
 const ImageComponent = ({g}) => {
-    if(g%7==0){
+    if(g%7===0){
         return (
             <img
             src={require(`../../../../../static/guest-7.svg`)} 
@@ -15,7 +15,7 @@ const ImageComponent = ({g}) => {
             style={{height:"160px"}}
             />
         )
-    }else if(g%6==0){
+    }else if(g%6===0){
         return (
             <img
             src={require(`../../../../../static/guest-6.svg`)} 
@@ -24,7 +24,7 @@ const ImageComponent = ({g}) => {
             style={{height:"160px"}}
             />
         )
-    }else if(g%5==0){
+    }else if(g%5===0){
         return (
             <img
             src={require(`../../../../../static/guest-5.svg`)} 
@@ -33,7 +33,7 @@ const ImageComponent = ({g}) => {
             style={{height:"160px"}}
             />
         )
-    }else if(g%4==0){
+    }else if(g%4===0){
         return (
             <img
             src={require(`../../../../../static/guest-4.svg`)} 
@@ -42,7 +42,7 @@ const ImageComponent = ({g}) => {
             style={{height:"160px"}}
             />
         )
-    }else if(g%3==0){
+    }else if(g%3===0){
         return (
             <img
             src={require(`../../../../../static/guest-3.svg`)} 
@@ -51,7 +51,7 @@ const ImageComponent = ({g}) => {
             style={{height:"160px"}}
             />
         )
-    }else if(g%2==0){
+    }else if(g%2===0){
         return (
             <img
             src={require(`../../../../../static/guest-2.svg`)} 

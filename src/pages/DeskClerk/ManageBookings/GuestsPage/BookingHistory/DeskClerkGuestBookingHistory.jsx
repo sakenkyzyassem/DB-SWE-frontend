@@ -54,7 +54,7 @@ class BookingHistory extends React.Component {
 
     componentDidMount() {
         let context = this.context;
-        this.state.token = context.user.token;
+        this.setState({token: context.user.token});
         console.log(this.state.token)
         this.update();
     }
@@ -187,7 +187,7 @@ class BookingHistory extends React.Component {
         console.log(this.state.occupationHistory[0])
         var index = 0;
         for(let k in Object.keys(this.state.occupationHistory)){
-            if(this.state.occupationHistory[k].room_type==roomtype){
+            if(this.state.occupationHistory[k].room_type===roomtype){
                 index = k;
             }
         }
@@ -249,7 +249,7 @@ class BookingHistory extends React.Component {
                 this.setState({roomNumbers: res})
             })
             .then(res => {
-                if(this.state.roomNumbers.length==0){
+                if(this.state.roomNumbers.length===0){
                     this.setState({exists: "There aren't any free rooms"})
                 }else{
                     this.setState({exists: `There are free rooms`})
@@ -383,7 +383,7 @@ class BookingHistory extends React.Component {
                                                                         className="m-1"
                                                                         block
                                                                         style={{width:"100px"}}
-                                                                        type="submit" block onClick={(e) => {this.filteringRooms(e, this.state.index)}}>
+                                                                        type="submit" onClick={(e) => {this.filteringRooms(e, this.state.index)}}>
                                                                         Find free rooms
                                                                     </Button>
                                                                     </Col>
@@ -396,7 +396,7 @@ class BookingHistory extends React.Component {
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    {this.state.active && this.state.exists == `There are free rooms` ? 
+                                                                    {this.state.active && this.state.exists === `There are free rooms` ?
                                                                     <Button show={this.state.active} variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
@@ -444,7 +444,7 @@ class BookingHistory extends React.Component {
                                                                     <Button variant="outline-additional"  size="sm"
                                                                         className="m-1"
                                                                         block
-                                                                        style={{width:"100px"}} type="submit" block onClick={(e) => {this.handleEdit2(e, this.state.row.bookingid, this.state.index)}}>
+                                                                        style={{width:"100px"}} type="submit"    onClick={(e) => {this.handleEdit2(e, this.state.row.bookingid, this.state.index)}}>
                                                                         Change Status
                                                                     </Button>
                                                                 </Form.Group>

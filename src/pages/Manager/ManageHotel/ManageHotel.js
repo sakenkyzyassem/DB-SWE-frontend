@@ -2,11 +2,9 @@ import React from "react";
 import './ManageHotel.scss';
 import UserContext from "../../../services/userContext";
 import {getHotel} from "../../../services/hotelServices";
-import {Button, Card, Col, Container, Dropdown, DropdownButton, Nav, Row, Tab, Tabs} from "react-bootstrap";
+import {Card, Container, Tab, Tabs} from "react-bootstrap";
 import ManageSeason from "./ManageSeason";
 import ManageEmail from "./ManageEmail";
-import GuestProfile from "../../DeskClerk/ManageBookings/GuestsPage/Profile/DeskClerkGuestProfile";
-import BookingHistory from "../../DeskClerk/ManageBookings/GuestsPage/BookingHistory/DeskClerkGuestBookingHistory";
 
 export default class ManageHotel extends React.Component {
     static contextType = UserContext;
