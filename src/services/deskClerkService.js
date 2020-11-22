@@ -139,7 +139,7 @@ export const addOccupation = (occupationHistory) => {
 }
 
 export const getRoomTypes = (hotel_id) => {
-    return fetch(`/api/deskclerk/findRoomTypes/${hotel_id}`,
+    return fetch(`/api/findRoomTypes/${hotel_id}`,
         {
             method: 'GET',
             headers: {
