@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import UserContext from "../../../services/userContext";
-import {signOutGuest} from '../../../services/enteringService';
+import {signOutEmployee, signOutGuest} from '../../../services/enteringService';
 
 class Logout extends React.Component {
     static contextType = UserContext;
@@ -15,11 +15,18 @@ class Logout extends React.Component {
     
     async componentDidMount() {
         let context = this.context;
-        //console.log(context.user.token);
-        signOutGuest(context.user.token).then((res) => {
-            context.setUserLogOut();
-            this.props.history.push("/");
-        });
+        if( this.props.role === 'employee' ) {
+            signOutEmployee(context.user.token).then((res) => {
+                context.setUserLogOut();
+                this.props.history.push("/");
+            })
+        }
+        else {
+            signOutGuest(context.user.token).then((res) => {
+                context.setUserLogOut();
+                this.props.history.push("/");
+            });
+        }
     }
     
 

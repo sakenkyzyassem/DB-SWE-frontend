@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import { createBooking } from "../../services/bookingsService";
+import {addOccHist, createBooking} from "../../services/bookingsService";
 import {Link} from "react-router-dom";
 
 class BookingModal extends React.Component {
@@ -38,8 +38,28 @@ class BookingModal extends React.Component {
                     this.setState({error: true});
                 }
                 else {
-                    this.setState({success: true});
-                    this.props.confirmBooking(false);
+                    Array.from(new Array(this.props.booking.number_of_rooms).keys()).forEach((room, i) => {
+                        let histBooking = {
+                            hotel_id: this.props.booking.hotelid,
+                            guest_id: this.props.booking.guestid,
+                            bookingid: res.bookingid,
+                            room_type: this.props.booking.roomtype,
+                            from_date: this.props.booking.date_reservation,
+                            to_date: this.props.booking.due_date,
+                            roomnumber: this.props.availableRooms[i]
+                        }
+                        addOccHist(histBooking)
+                            .then(res => res.json())
+                            .then(res => {
+                                if( res.status === 500 ) {
+                                    this.setState({error: true});
+                                }
+                                else {
+                                    this.setState({success: true});
+                                    this.props.confirmBooking(false);
+                                }
+                            })
+                    })
                 }
             })
     }

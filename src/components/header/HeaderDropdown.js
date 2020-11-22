@@ -15,7 +15,7 @@ export default class HeaderDropdown extends React.Component {
                         <LinkContainer to="/deskClerk/manageBookings">
                             <NavDropdown.Item>Manage Bookings</NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to="/auth/logout">
+                        <LinkContainer to="/auth/employeeLogout">
                             <NavDropdown.Item>Logout</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>
@@ -33,7 +33,7 @@ export default class HeaderDropdown extends React.Component {
                         <LinkContainer to="/manager/manageEmployees">
                             <NavDropdown.Item>Manage Employees</NavDropdown.Item>
                         </LinkContainer>
-                        <LinkContainer to="/auth/logout">
+                        <LinkContainer to="/auth/employeeLogout">
                             <NavDropdown.Item>Logout</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>

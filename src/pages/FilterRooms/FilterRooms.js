@@ -1,6 +1,6 @@
 import React from "react";
 import {Link, withRouter} from 'react-router-dom';
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import './FilterRooms.scss';
 import {filterRooms, getHotels} from "../../services/hotelServices";
 import Filter from "../../components/filter/Filter";
@@ -21,7 +21,10 @@ class FilterRooms extends React.Component {
             data: null,
             booking: null,
             bookingDetails: null,
-            confirmBooking: false
+            confirmBooking: false,
+            roomsByType: {},
+            rooms: {},
+            availableRooms: []
         }
     }
 
@@ -35,6 +38,7 @@ class FilterRooms extends React.Component {
                 data: this.props.history.location.data,
                 bookingDetails: this.props.history.location.bookingDetails
             })
+            this.getRoomNums(this.props.history.location.data);
         }
     }
 
@@ -44,6 +48,13 @@ class FilterRooms extends React.Component {
         }
         else {
             let roomtypeInfo = this.state.data[this.state.hotels[0]].roomTypeInfoList[index];
+            let roomsNum = roomtypeInfo.howmanyavailable;
+            //console.log(roomsNum);
+            if( this.state.rooms[index] !== undefined ) {
+                roomsNum = this.state.rooms[index];
+                //console.log("entered null")
+            }
+            //console.log(roomsNum);
             let booking = {
                 hotelid: this.state.data[this.state.hotels[0]]["hotelEntity"].hotel_id,
                 guestid: this.context.user.userId,
@@ -51,14 +62,24 @@ class FilterRooms extends React.Component {
                 status: "pending",
                 date_reservation: this.state.bookingDetails.start_date,
                 due_date: this.state.bookingDetails.due_date,
-                number_of_rooms: roomtypeInfo.howmanyavailable,
+                number_of_rooms: roomsNum,
                 price: roomtypeInfo.price,
                 category: "",
                 service_price: 0
             }
+            //console.log(booking);
+            this.setState({availableRooms: this.state.roomsByType[index]});
             this.setState({booking: booking});
             this.setState({confirmBooking: true});
         }
+    }
+
+    changeRoomNums = (e, index) => {
+        this.setState({rooms: {
+                ...this.state.rooms,
+                [index]: e.target.value
+            }});
+        //console.log(this.state.rooms);
     }
 
     confirmBooking = (val) => {
@@ -66,6 +87,7 @@ class FilterRooms extends React.Component {
     }
 
     filterRooms = (data) => {
+        console.log(data);
         filterRooms(data)
             .then(res => {
                 this.setState({
@@ -74,7 +96,18 @@ class FilterRooms extends React.Component {
                     bookingDetails: data
                 });
                 //console.log(res);
+                this.getRoomNums(res);
             });
+    }
+
+    getRoomNums = (data) => {
+        let roomTypes = data[Object.keys(data)[0]].roomTypeInfoList;
+        let resList = [];
+        roomTypes.forEach(roomType => {
+            resList.push(roomType.roomnums.substring(0, roomType.roomnums.length-1).split(" "));
+        })
+        this.setState({roomsByType: resList});
+        //console.log(resList);
     }
 
     render() {
@@ -93,6 +126,7 @@ class FilterRooms extends React.Component {
                                 confirmBooking={this.confirmBooking}
                                 showModal = {this.state.confirmBooking}
                                 booking={this.state.booking}
+                                availableRooms={this.state.availableRooms}
                             />
                             :
                             null
@@ -140,7 +174,25 @@ class FilterRooms extends React.Component {
                                                     </Row>
                                                     <Row>
                                                         <Col>Available:</Col>
-                                                        <Col>{roomtype.howmanyavailable}</Col>
+                                                        <Col>
+                                                            <Form.Control
+                                                                as="select"
+                                                                className="my-1 mr-sm-2"
+                                                                id="inlineFormCustomSelectPref"
+                                                                custom
+                                                                onChange={(e) => this.changeRoomNums(e, i)}
+                                                            >
+                                                                {
+                                                                    Array.from(Array(roomtype.howmanyavailable).keys()).map(i => {
+                                                                        return (
+                                                                            <option key={i} value={roomtype.howmanyavailable-i}>
+                                                                                {roomtype.howmanyavailable-i}
+                                                                            </option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control>
+                                                        </Col>
                                                     </Row>
                                                     <Row>
                                                         <Col>Price for one room:</Col>

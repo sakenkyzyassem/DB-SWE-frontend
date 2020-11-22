@@ -45,6 +45,7 @@ class Filter extends React.Component {
         else {
             filterRooms(f)
                 .then(res => {
+                    //console.log(res);
                     this.props.history.push({
                         pathname: "/filterRooms",
                         data: res,

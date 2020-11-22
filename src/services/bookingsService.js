@@ -11,13 +11,14 @@ export const getUserBookings = (user) => {
         .catch(err => console.log(err));
 }
 
-export const deleteBooking = (id) => {
-    return fetch("/api/bookinghistory/"+id, {
+export const deleteBooking = (booking) => {
+    return fetch("/api/deletebooking/", {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(booking)
     })
         .then(response => response.json())
         .catch((err) => console.log(err));
@@ -32,7 +33,7 @@ export const editBooking = (roomtype, booking) => {
         },
         body: JSON.stringify(booking)
     })
-        .then(response => response.json())
+        .then(response => response.json());
 }
 
 export const createBooking = (booking) => {
@@ -44,4 +45,27 @@ export const createBooking = (booking) => {
         },
         body: JSON.stringify(booking)
     })
+}
+
+export const addOccHist = (booking) => {
+    return fetch('/api/bookinghistory/addoccupation', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(booking)
+    })
+}
+
+export const getRoomTypes = (hotel_id) => {
+    return fetch(`/api/findRoomTypes/${hotel_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
 }

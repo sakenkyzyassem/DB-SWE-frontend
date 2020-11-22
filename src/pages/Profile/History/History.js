@@ -1,7 +1,7 @@
 import React from "react";
-import {Table, Badge, Row, Button, Modal, Form, Col, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import {Table, Badge, Row, Button, Modal, Form, Col, Tooltip, OverlayTrigger, Alert} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
-import { getUserBookings, editBooking } from "../../../services/bookingsService";
+import {getUserBookings, editBooking, deleteBooking, getRoomTypes} from "../../../services/bookingsService";
 import './History.scss'
 import Loading from "../../../components/Loading/Loading";
 
@@ -13,8 +13,18 @@ class History extends React.Component {
         this.state = {
             show: false,
             userHistory: null,
-            newBooking: null,
+            newBooking: undefined,
             prevRoomType: null,
+            roomTypes: [],
+            roomtype: undefined,
+            roomtype_ch: false,
+            date_reservation: undefined,
+            date_r_ch: false,
+            due_date: undefined,
+            due_d_ch: false,
+            number_of_rooms: undefined,
+            num_ch: false,
+            alertMsg: false
         }
     }
 
@@ -32,8 +42,16 @@ class History extends React.Component {
                         booking.date_reservation = this.convertDate(booking.date_reservation);
                     })
                 }
-                console.log(bookings);
+                //console.log(bookings);
                 this.setState({userHistory: bookings});
+                let rt = [];
+                bookings.forEach(res => {
+                    getRoomTypes(res.hotelid)
+                        .then(res => rt.push(res    ));
+                })
+                this.setState({roomTypes: rt});
+                //console.log(rt);
+                //console.log(this.state.roomTypes);
             })
     }
 
@@ -49,7 +67,21 @@ class History extends React.Component {
 
     handleEdit = (e, key) => {
         e.preventDefault();
-        var booking = this.state.newBooking;
+        var booking = this.state.userHistory[key];
+        //console.log(booking);
+        if( this.state.roomtype_ch ) {
+            booking.roomtype = this.state.roomtype;
+        }
+        if( this.state.date_r_ch ) {
+            booking.date_reservation = this.state.date_reservation;
+        }
+        if( this.state.due_d_ch ) {
+            booking.due_date = this.state.due_date;
+        }
+        if( this.state.num_ch ) {
+            booking.number_of_rooms = this.state.number_of_rooms;
+        }
+        //console.log(booking);
         editBooking(this.state.prevRoomType, booking)
             .then(res => {
                 this.updateData();
@@ -58,24 +90,9 @@ class History extends React.Component {
                     show: false
                 });
             })
-    }
-
-    handleChange = (event, key, name) => {
-        var booking = {};
-        if( this.state.newBookings != null ) {
-            booking = {
-                ...this.state.newBookings,
-                [name]: event.target.value
-            };
-        }
-        else {
-            booking = {
-                ...this.state.userHistory[key],
-                [name]: event.target.value
-            };
-            this.setState({prevRoomType: this.state.userHistory[key].roomtype});
-        }
-        this.setState({ newBooking: booking });
+            .catch(err => {
+                this.setState({alertMsg: true});
+            })
     }
 
     handleClose = () => {
@@ -88,9 +105,11 @@ class History extends React.Component {
 
     handleCancel = (index) => {
         var booking = this.state.userHistory[index];
-        booking.status = "canceled";
-
-        editBooking(booking.roomtype, booking)
+        //console.log(booking);
+        let deletingBooking = {
+            bookingid: booking.bookingid
+        };
+        deleteBooking(deletingBooking)
             .then(res => {
                 this.updateData();
             })
@@ -119,7 +138,7 @@ class History extends React.Component {
                             <tbody>
                             {
                                 this.state.userHistory.map((row, index) => {
-                                    if (row.status === "canceled"){
+                                    if (row.status.toLowerCase() === "canceled"){
                                         return (
                                             <tr key={index}>
                                                 <td><Link to={`/hotel/${row.hotelid}`}>{row.hotelid}</Link></td>
@@ -136,7 +155,7 @@ class History extends React.Component {
                                             </tr>
                                         )
                                     }
-                                    else if (row.status === "pending"){
+                                    else if (row.status.toLowerCase() === "pending"){
                                         return (
                                             <tr key={index}>
                                                 <td>
@@ -185,18 +204,26 @@ class History extends React.Component {
                                                                     <Form.Control
                                                                         as="select"
                                                                         defaultValue={row.roomtype}
-                                                                        onChange={(e) => this.handleChange(e, index, "roomtype")}
+                                                                        onChange={(e) => this.setState({
+                                                                            roomtype: e.target.value,
+                                                                            roomtype_ch: true,
+                                                                            prevRoomType: row.roomtype
+                                                                        })}
                                                                     >
-                                                                        <option value="old">Old</option>
-                                                                        <option value="single">Single</option>
-                                                                        <option value="double">Double</option>
-                                                                        <option value="family">Family</option>
-                                                                        <option value="king">King</option>
+                                                                        {
+                                                                            this.state.roomTypes[index] ?
+                                                                            this.state.roomTypes[index].map((hotelRoomType, i) => {
+                                                                                return (
+                                                                                    <option>{hotelRoomType.name}</option>
+                                                                                )
+                                                                            })
+                                                                                : null
+                                                                        }
                                                                     </Form.Control>
                                                                 </Col>
                                                             </Form.Group>
 
-                                                            <Form.Group as={Row} controlId="dueDateControl">
+                                                            <Form.Group as={Row} controlId="reservationDateControl">
                                                                 <Form.Label column sm="3">
                                                                     Occupation date
                                                                 </Form.Label>
@@ -204,7 +231,11 @@ class History extends React.Component {
                                                                     <Form.Control
                                                                         type="date"
                                                                         defaultValue={row.date_reservation}
-                                                                        onChange={(e) => this.handleChange(e, index, "date_reservation")}
+                                                                        onChange={(e) => this.setState({
+                                                                            date_reservation: e.target.value,
+                                                                            date_r_ch: true,
+                                                                            prevRoomType: row.roomtype
+                                                                        })}
                                                                     />
                                                                 </Col>
                                                             </Form.Group>
@@ -217,7 +248,11 @@ class History extends React.Component {
                                                                     <Form.Control
                                                                         type="date"
                                                                         defaultValue={row.due_date}
-                                                                        onChange={(e) => this.handleChange(e, index, "due_date")}
+                                                                        onChange={(e) => this.setState({
+                                                                            due_date: e.target.value,
+                                                                            due_d_ch: true,
+                                                                            prevRoomType: row.roomtype
+                                                                        }) }
                                                                     />
                                                                 </Col>
                                                             </Form.Group>
@@ -230,10 +265,18 @@ class History extends React.Component {
                                                                     <Form.Control
                                                                         type="number"
                                                                         defaultValue={row.number_of_rooms}
-                                                                        onChange={(e) => this.handleChange(e, index, "number_of_rooms")}
+                                                                        onChange={(e) => this.setState({
+                                                                            number_of_rooms: e.target.value,
+                                                                            num_ch: true,
+                                                                            prevRoomType: row.roomtype
+                                                                        })}
                                                                     />
                                                                 </Col>
                                                             </Form.Group>
+
+                                                            <Alert variant='danger' show={this.state.alertMsg}>
+                                                                No rooms available. Please try looking for available rooms <Link to="/filterRooms">here</Link>
+                                                            </Alert>
 
                                                             <Form.Group as={Row} className="p-3">
                                                                 <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
@@ -249,7 +292,7 @@ class History extends React.Component {
                                             </tr>
                                         )
                                     }
-                                    else if (row.status === 'occupied' ){
+                                    else if (row.status.toLowerCase() === 'occupied' || row.status.toLowerCase() === 'confirmed' ){
                                         return (
                                             <tr key={index}>
                                                 <td><Link to={`/hotel/${row.hotelid}`}>{row.hotelid}</Link></td>
@@ -259,7 +302,7 @@ class History extends React.Component {
                                                 <td>{row.number_of_rooms}</td>
                                                 <td>{row.price}</td>
                                                 <td>{row.service_price}</td>
-                                                <td><Badge variant="success">Occupied</Badge></td>
+                                                <td><Badge variant="success">{row.status}</Badge></td>
                                                 <td>
                                                     <OverlayTrigger
                                                         key={'left'}
