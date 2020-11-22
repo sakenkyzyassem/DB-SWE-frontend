@@ -99,14 +99,14 @@ class FilterRooms extends React.Component {
                     hotels: Object.keys(res),
                     bookingDetails: data
                 });
-                //console.log(res);
+                console.log(res);
                 this.getRoomNums(res);
                 // get categories
             });
     }
 
     getRoomNums = (data) => {
-        getCategories(data[Object.keys(data)[0]]["hotelEntity"].hotel_id)
+        getCategories(data[Object.keys(data)[0]].hotelEntity.hotel_id)
             .then(res => {
                 this.setState({categories: res});
                 //console.log(res);

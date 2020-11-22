@@ -292,7 +292,7 @@ class History extends React.Component {
                                             </tr>
                                         )
                                     }
-                                    else if (row.status.toLowerCase() === 'occupied' || row.status.toLowerCase() === 'confirmed' ){
+                                    else if (row.status.toLowerCase() === 'occupied' || row.status.toLowerCase() === 'confirmed' || row.status.toLowerCase() === 'paid' ){
                                         return (
                                             <tr key={index}>
                                                 <td><Link to={`/hotel/${row.hotelid}`}>{row.hotelid}</Link></td>

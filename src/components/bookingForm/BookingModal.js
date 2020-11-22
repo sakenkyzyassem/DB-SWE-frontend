@@ -17,6 +17,7 @@ class BookingModal extends React.Component {
                 price: "Price",
                 status: null,
                 guestid: null,
+                category: "Category",
                 service_price: "Service price"
             },
             success: false,
@@ -91,7 +92,7 @@ class BookingModal extends React.Component {
                             this.props.booking ?
                             Object.keys(this.props.booking).map((detail, index) => {
                                 if( this.state.bookingTitles[detail] !== null) {
-                                    console.log(detail);
+                                    //console.log(detail);
                                     return (
                                         <Row key={index}>
                                             <Col
