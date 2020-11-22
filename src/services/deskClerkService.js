@@ -138,3 +138,28 @@ export const addOccupation = (occupationHistory) => {
         .catch(err => console.log(err));
 }
 
+export const getRoomTypes = (hotel_id) => {
+    return fetch(`/api/deskclerk/findRoomTypes/${hotel_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}
+
+export const getHotelGuests = (hotel_id) => {
+    return fetch(`/api/deskclerk/findHotelGuests/${hotel_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}

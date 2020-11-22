@@ -4,7 +4,7 @@ import "./DeskClerkGuestBookingHistory.scss";
 import {Table, Badge, Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import {getUserBookings} from "../../../../../services/bookingsService";
-import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType, addOccupation, getOccupationHistory} from "../../../../../services/deskClerkService";
+import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType, addOccupation, getOccupationHistory, getRoomTypes} from "../../../../../services/deskClerkService";
 import UserContext from "../../../../../services/userContext";
 
 class BookingHistory extends React.Component {
@@ -32,7 +32,10 @@ class BookingHistory extends React.Component {
             active2: true,
             exists2: '',
             changedOccupation: '',
-            occupationKey: null
+            occupationKey: null,
+            bookingNewOptions: {},
+            roomTypes: [],
+            types: []
         }
         this.statusHandler = this.statusHandler.bind(this);
         this.numberRoomsHandler = this.numberRoomsHandler.bind(this);
@@ -56,6 +59,14 @@ class BookingHistory extends React.Component {
         let context = this.context;
         this.setState({token: context.user.token});
         console.log(this.state.token)
+        getRoomTypes(context.user.hotel_id)
+            .then(res => {
+                for(let k in Object.keys(res)){
+
+                    this.state.roomTypes.push(res[k].name)
+                }
+                console.log(this.state.roomTypes)
+            })
         this.update();
     }
 
@@ -64,6 +75,7 @@ class BookingHistory extends React.Component {
             .then((res) => {
                 console.log(res);
                 this.setState({bookingHistory: res});
+                this.setState({bookingNewOptions: res})
             });
     }
 
@@ -102,6 +114,7 @@ class BookingHistory extends React.Component {
     handleCancel = (e, id, key) => {
         e.preventDefault();
         var number_of_rooms = this.state.numberRooms;
+        console.log("cancel")
         var roomtype = this.state.bookingHistory[key].roomtype;
         cancelBooking(id, roomtype, number_of_rooms)
             .then(res => {
@@ -118,7 +131,11 @@ class BookingHistory extends React.Component {
     handleEdit = (e, key) => {
         e.preventDefault();
         var booking = this.state.bookingHistory[key];
-        var prevRoomType = this.state.bookingHistory[key].roomtype;
+        console.log("booking")
+        console.log(booking)
+        console.log("rromtype")
+        var prevRoomType = booking.roomtype;
+        console.log(prevRoomType)
         booking.roomtype = this.state.roomType;
         booking.due_date = this.state.dueDate;
         booking.date_reservation = this.state.resDate;
@@ -140,7 +157,7 @@ class BookingHistory extends React.Component {
         var occupation = {
             bookingid: this.state.bookingHistory[key].bookingid,
             from_date: booking.date_reservation,
-            guest_id: this.props.guest_id,
+            guest_id: parseInt(this.props.guest_id),
             hotel_id: this.state.bookingHistory[key].hotelid,
             room_type: this.state.roomType,
             roomnumber: this.state.roomNumbers[0],
@@ -150,11 +167,6 @@ class BookingHistory extends React.Component {
         console.log(occupation)
         addOccupation(occupation) 
             .then(res => {
-                // var changedOccupation = {
-                //     ...this.state.occupationHistory
-                // }
-                // changedOccupation[k]=res;
-                // this.setState({occupationHistory: changedOccupation})
                 console.log(res);
                 this.setState({show: false})
                 this.update();
@@ -187,7 +199,7 @@ class BookingHistory extends React.Component {
         console.log(this.state.occupationHistory[0])
         var index = 0;
         for(let k in Object.keys(this.state.occupationHistory)){
-            if(this.state.occupationHistory[k].room_type===roomtype){
+            if(this.state.occupationHistory[k].room_type==roomtype){
                 index = k;
             }
         }
@@ -237,7 +249,9 @@ class BookingHistory extends React.Component {
 
     filteringRooms = (e, key) => {
         e.preventDefault();
-        var booking = this.state.bookingHistory[key];
+        var booking = this.state.bookingNewOptions[key];
+        console.log("in filter")
+        console.log(booking)
         booking.roomtype = this.state.roomType;
         booking.due_date = this.state.dueDate;
         booking.date_reservation = this.state.resDate;
@@ -249,7 +263,7 @@ class BookingHistory extends React.Component {
                 this.setState({roomNumbers: res})
             })
             .then(res => {
-                if(this.state.roomNumbers.length===0){
+                if(this.state.roomNumbers.length==0){
                     this.setState({exists: "There aren't any free rooms"})
                 }else{
                     this.setState({exists: `There are free rooms`})
@@ -259,6 +273,8 @@ class BookingHistory extends React.Component {
                 this.setState({active: true})
             }
             )
+        console.log("after filter")
+        console.log(this.state.bookingHistory)
     }
 
     render() {
@@ -341,14 +357,10 @@ class BookingHistory extends React.Component {
                                                                     <Col sm="8">
                                                                         <Form.Control
                                                                             as="select"
-                                                                            defaultValue={row.room_type}
                                                                             onChange={(e) => this.roomTypeHandler(e)}>
-                                                                            <option value="modern">Modern</option>
-                                                                            <option value="old">Old</option>
-                                                                            <option value="single">Single</option>
-                                                                            <option value="double">Double</option>
-                                                                            <option value="famly">Family</option>
-                                                                            <option value="king">King</option>
+                                                                            {this.state.roomTypes.map((room) => (
+                                                                                <option value={room}>{room}</option>
+                                                                            ))}
                                                                         </Form.Control>
                                                                     </Col>
                                                                 </Form.Group>
@@ -396,7 +408,7 @@ class BookingHistory extends React.Component {
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    {this.state.active && this.state.exists === `There are free rooms` ?
+                                                                    {this.state.active && this.state.exists == `There are free rooms` ?
                                                                     <Button show={this.state.active} variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
