@@ -15,7 +15,7 @@ class Logout extends React.Component {
     
     async componentDidMount() {
         let context = this.context;
-        console.log(context.user.token);
+        //console.log(context.user.token);
         signOutGuest(context.user.token).then((res) => {
             context.setUserLogOut();
             this.props.history.push("/");

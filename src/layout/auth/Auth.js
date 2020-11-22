@@ -11,24 +11,26 @@ export default class Auth extends React.Component {
     render() {
         return (
             <div>
-                <Route path='/auth/logout'>
-                    <LogOut />
-                </Route>
-                <Route path='/auth/signUp'>
-                    <SignUp />
-                </Route>
-                <Route path='/auth/createAccount'>
-                    <CreateAccount />
-                </Route>
-                <Route path='/auth/createAccountSuccess'>
-                    <CreateAccountSuccess />
-                </Route>
-                <Route path='/auth/signIn'>
-                    <SignIn />
-                </Route>
-                <Route path='/auth/employee'>
-                    <SignIn role='employee' />
-                </Route>
+                <Switch>
+                    <Route path='/auth/logout'>
+                        <LogOut />
+                    </Route>
+                    <Route path='/auth/signUp'>
+                        <SignUp />
+                    </Route>
+                    <Route path='/auth/createAccount'>
+                        <CreateAccount />
+                    </Route>
+                    <Route path='/auth/createAccountSuccess'>
+                        <CreateAccountSuccess />
+                    </Route>
+                    <Route path='/auth/signIn'>
+                        <SignIn />
+                    </Route>
+                    <Route path='/auth/employee'>
+                        <SignIn role='employee' />
+                    </Route>
+                </Switch>
             </div>
         )
     }

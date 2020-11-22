@@ -20,7 +20,7 @@ class Information extends React.Component {
         getHotel(this.props.hotel_id)
             .then(res => {
                 this.setState({isLoaded: true});
-                console.log(res.phone[0].phone_num)
+                //console.log(res.phone[0].phone_num)
                 this.setState({address: res.hotel.address});
                 this.setState({city: res.hotel.city});
                 this.setState({country: res.hotel.country});
@@ -40,7 +40,7 @@ class Information extends React.Component {
                       ],
                     })
                   }
-                console.log(this.state.features)
+                //console.log(this.state.features)
             })
     }
 

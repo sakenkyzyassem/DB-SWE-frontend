@@ -9,7 +9,7 @@ import {getHotel} from "../../../../../services/hotelServices";
 
 const ImageComponent = ({job_title}) => {
 
-    if (job_title == "Cleaner") {
+    if (job_title === "Cleaner") {
         return (
             <img
             src={require(`../../../../../static/cleaner.svg`)} 
@@ -48,7 +48,7 @@ class EmployeeProfile extends React.Component {
 
         getAllEmployees()
             .then(res => {
-                const index = res.findIndex(g=>g.employee_id==this.props.employee_id && g.hotel_id==this.state.manager.hotel_id);
+                const index = res.findIndex(g=>g.employee_id===this.props.employee_id && g.hotel_id===this.state.manager.hotel_id);
                 this.setState({index: index})
                 this.setState({personal: res[index]});
                 }

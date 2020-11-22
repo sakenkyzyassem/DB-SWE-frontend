@@ -51,7 +51,7 @@ export default class ManageSeason extends React.Component {
         let season = this.state.hotel.seasons[index];
         deleteSeason(season.season, this.context.user.hotel_id, this.context.user.token)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 this.updateData();
             })
     }

@@ -45,14 +45,16 @@ class FilterRooms extends React.Component {
         else {
             let roomtypeInfo = this.state.data[this.state.hotels[0]].roomTypeInfoList[index];
             let booking = {
-                hotel_id: this.state.data[this.state.hotels[0]]["hotelEntity"].hotel_id,
-                guest_id: this.context.user.userId,
-                room_type: roomtypeInfo.type,
+                hotelid: this.state.data[this.state.hotels[0]]["hotelEntity"].hotel_id,
+                guestid: this.context.user.userId,
+                roomtype: roomtypeInfo.type,
                 status: "pending",
                 date_reservation: this.state.bookingDetails.start_date,
                 due_date: this.state.bookingDetails.due_date,
                 number_of_rooms: roomtypeInfo.howmanyavailable,
-                price: roomtypeInfo.price
+                price: roomtypeInfo.price,
+                category: "",
+                service_price: 0
             }
             this.setState({booking: booking});
             this.setState({confirmBooking: true});
@@ -71,7 +73,7 @@ class FilterRooms extends React.Component {
                     hotels: Object.keys(res),
                     bookingDetails: data
                 });
-                console.log(res);
+                //console.log(res);
             });
     }
 

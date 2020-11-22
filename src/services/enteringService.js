@@ -16,10 +16,10 @@ export const signOutEmployee = (token) => {
     return signOutPOST(`/api/deskclerk/logout/${token}`);
 }
 /********************* HANDLE ERRORS *******************/
-const handleErrrors = (res) => {
-    if (!res.ok) throw Error(res.statusText);
-    return res.json();
-}
+// const handleErrrors = (res) => {
+//     if (!res.ok) throw Error(res.statusText);
+//     return res.json();
+// }
 
 /********************* SIGN IN ******************/
 const signInPOST = (url, data) => {

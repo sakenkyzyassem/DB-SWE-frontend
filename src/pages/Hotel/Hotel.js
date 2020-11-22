@@ -14,7 +14,7 @@ class Hotel extends React.Component {
             isLoaded: false,
             name: ""
         }
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     componentDidMount() {
@@ -22,7 +22,7 @@ class Hotel extends React.Component {
             .then(res => {
                 this.setState({name: res.hotel.name});
                 this.setState({isLoaded: true});
-                console.log(this.state.name);
+                //console.log(this.state.name);
             })
     }
 

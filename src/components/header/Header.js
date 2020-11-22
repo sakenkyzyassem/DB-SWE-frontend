@@ -1,5 +1,5 @@
 import React from "react";
-import {Navbar, Nav, NavDropdown, Button} from 'react-bootstrap';
+import {Navbar, Nav} from 'react-bootstrap';
 import {Link, withRouter} from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ReactComponent as Logo } from "../../static/LogoWhite.svg";

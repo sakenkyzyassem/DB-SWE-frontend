@@ -15,7 +15,7 @@ class Information extends React.Component {
     componentDidMount() {
         getHotel(this.props.hotel_id)
             .then(res => {
-                console.log(res)
+                //console.log(res)
                 for (let i = 0; i < res.services.length; i++) {
                     this.setState({
                       services: [

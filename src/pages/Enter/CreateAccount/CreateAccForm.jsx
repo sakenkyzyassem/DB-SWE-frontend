@@ -35,7 +35,7 @@ class CreateAccForm extends Component {
             },
             body: JSON.stringify(user),
         }).then((res) => {
-            console.log(res);
+            //console.log(res);
             if( res.ok ) {
                 this.props.history.push('/auth/createAccountSuccess');
             }

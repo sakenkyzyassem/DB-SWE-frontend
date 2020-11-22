@@ -19,7 +19,7 @@ class GuestProfile extends React.Component {
     componentDidMount() {
         getAllGuests()
             .then(res => {
-                const index = res.findIndex(g=>g.userId==this.props.guest_id);
+                const index = res.findIndex(g=>g.userId===this.props.guest_id);
                 this.setState({index: index});
                 this.setState({personal: res[index]})
             })

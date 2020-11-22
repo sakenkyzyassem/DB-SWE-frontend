@@ -8,7 +8,7 @@ import UserContext from "../../../services/userContext";
 
 const ImageComponent = ({job_title}) => {
 
-    if (job_title == "Cleaner") {
+    if (job_title === "Cleaner") {
         return (
             <img
             src={require(`../../../static/cleaner.svg`)} 
@@ -41,18 +41,18 @@ class ManageEmployees extends React.Component {
             employeesId:[],
             personal: []
         }
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     componentDidMount() {
         let context = this.context;
         this.setState({manager: context.user});
-        console.log(this.state.manager)
+        //console.log(this.state.manager)
 
         getAllEmployees()
             .then(res => {
                 for (let i = 0; i < res.length; i++) {
-                    if(res[i].hotel_id==this.state.manager.hotel_id && res[i].role!="MANAGER"){
+                    if(res[i].hotel_id===this.state.manager.hotel_id && res[i].role!=="MANAGER"){
                         this.setState({
                             employees: [
                               ...this.state.employees,

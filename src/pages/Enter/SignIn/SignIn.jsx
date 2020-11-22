@@ -28,7 +28,7 @@ class SignIn extends Component {
         if( this.props.role && this.props.role === 'employee' ) {
             signInEmployee(guest)
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if( (res.role !== "MANAGER" && res.role !== "DESKCLERK") && res.status !== 200 ) {
                         this.setState({validated: true});
                     }
@@ -43,8 +43,8 @@ class SignIn extends Component {
         else {
             signInGuest(guest)
                 .then(res => {
-                    console.log("Res: ");
-                    console.log(res);
+                    // console.log("Res: ");
+                    // console.log(res);
                     if( res.role !== "GUEST" && res.status !== 200 ) {
                         this.setState({validated: true});
                     }
