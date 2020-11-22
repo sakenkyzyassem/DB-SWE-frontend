@@ -232,7 +232,7 @@ class BookingHistory extends React.Component {
 
     createBooking = () => {
         this.props.history.push({
-            path: "/filterRooms",
+            pathname: "/filterRooms",
             guestId: this.props.guest_id
         });
     }
