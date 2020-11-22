@@ -56,6 +56,9 @@ class EmployeeProfile extends React.Component {
         getHotel(this.state.manager.hotel_id)
             .then(res =>{
                 this.setState({hotel:res.hotel})
+                console.log("hotels")
+                console.log(res)
+                console.log(this.state.hotel)
             }
         )
     }

@@ -4,6 +4,7 @@ import {Table,Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import {getScheduleForAll, changePayroll, deleteSchedule, changeStartTime, changeEndTime, addSchedule} from "../../../../../services/managerServices";
 import UserContext from "../../../../../services/userContext";
+import { SignalCellularNull } from "@material-ui/icons";
 
 class ManageWorkingHours extends React.Component {
     static contextType = UserContext;
@@ -52,7 +53,11 @@ class ManageWorkingHours extends React.Component {
                 let j=0;
                 for (var i in res) {
                     if(res[i].employee_id==this.props.employee_id){
-                        this.state.schedules[j]=res[i];
+                        let schedule={
+                            ...this.state.schedules
+                        }
+                        schedule[j] = res[i];
+                        this.setState({schedules:schedule});
                         j++;
                     }
                 }
@@ -60,14 +65,19 @@ class ManageWorkingHours extends React.Component {
                 
                 for(let v in Object.keys(this.state.schedules)){
                     console.log(v)
+                    for(let k in this.state.keys){
+                        if(k==v){
+                            this.setState({keys:[]});
+                        }
+                    }
                     console.log(this.state.schedules[v])
                     this.setState({
                         keys: [
-                          ...this.state.keys,
-                          v
-                        ],
+                            ...this.state.keys,
+                            v],
                     })
                 }
+                console.log(this.state.keys)
 
             });
     }
@@ -110,11 +120,12 @@ class ManageWorkingHours extends React.Component {
 
         deleteSchedule(hotel_id, emp_id, date)
             .then(res => {
-                console.log(res);
-                this.setState({schedules: res});
+                this.setState({keys: []})
+                this.setState({schedules: {}})
                 this.update();
             })
     }
+
 
     handleEdit = (e, index) => {
         e.preventDefault();
@@ -124,8 +135,12 @@ class ManageWorkingHours extends React.Component {
 
         changePayroll(hotel_id, emp_id, new_pay)
             .then(res => {
-                this.state.schedules[index] = res;
-                // this.setState({schedules:res});
+                let schedule={
+                    ...this.state.schedules
+                }
+                schedule[index] = res;
+                this.setState({schedules:schedule});
+                this.setState({show: false});
                 this.update();
             });
     }
@@ -139,8 +154,12 @@ class ManageWorkingHours extends React.Component {
 
         changeStartTime(hotel_id, emp_id, date, time)
             .then(res => {
-                this.state.schedules[index] = res;
-                // this.setState({schedules: res});
+                let schedule={
+                    ...this.state.schedules
+                }
+                schedule[index] = res;
+                this.setState({schedules:schedule});
+                this.setState({show: false});
                 this.update();
             });
     }
@@ -154,9 +173,12 @@ class ManageWorkingHours extends React.Component {
 
         changeEndTime(hotel_id, emp_id, date, time)
             .then(res => {
-                console.log(res)
-                this.state.schedules[index] = res;
-                // this.setState({schedules: res})
+                let schedule={
+                    ...this.state.schedules
+                }
+                schedule[index] = res;
+                this.setState({schedules:schedule});
+                this.setState({show: false});
                 this.update();
             });
     }
@@ -172,10 +194,17 @@ class ManageWorkingHours extends React.Component {
 
         addSchedule(hotel_id, emp_id, date, starttime, endtime)
             .then(res => {
-                this.state.schedules[j]=res;
+                let schedule={
+                    ...this.state.schedules
+                }
+                schedule[j] = res;
+                this.setState({schedules:schedule});
                 this.update();
+                this.setState({show: false});
             });
     }
+
+
 
     render() {
             return (
@@ -183,7 +212,7 @@ class ManageWorkingHours extends React.Component {
                     { state => {
                         if( state.isLoggedIn ) {
                             return (
-                    (this.state.keys.length !== 0)
+                    (Array.isArray(this.state.keys) && this.state.keys.length !== 0 && this.state.keys!==null)
                         ?
                         <div className="manager">
                             <div style={{height:"50px"}}></div>
