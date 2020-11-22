@@ -42,8 +42,8 @@ class History extends React.Component {
                         booking.date_reservation = this.convertDate(booking.date_reservation);
                     })
                 }
-                //console.log(bookings);
-                this.setState({userHistory: bookings});
+                console.log(bookings);
+                this.setState({userHistory: bookings.reverse()});
                 let rt = [];
                 bookings.forEach(res => {
                     getRoomTypes(res.hotelid)
