@@ -75,12 +75,9 @@ class ManageBookings extends React.Component {
             isLoaded: true,
             guests: [],
             guestsId:[],
-            hotelGuests: [],
-            bookingHistory: {},
             hotelId: null
         }
         console.log(this.state);
-        this.getHotelGuest = this.getHotelGuest.bind(this)
     }
 
     componentDidMount() {
@@ -104,31 +101,7 @@ class ManageBookings extends React.Component {
             },
             )
             console.log(this.state.guests)
-        for(let id in this.state.guestsId){
-            this.getHotelGuest(id);
-            if(this.state.bookingHistory.hotel_id === this.state.hotel_id){
-                this.setState({
-                    hotelGuests: [
-                        ...this.state.hotelGuests,
-                        id
-                    ]
-                })
-                
-            }
-        }
-        console.log(this.state.hotelGuests)
     }
-
-
-    getHotelGuest = (id) => {
-        console.log("ye")
-        getUserBookings(id)
-            .then(res => {
-                console.log(res)
-                this.setState({bookingHistory: res})
-            })
-    }
-
 
     render() {
         if( this.state.isLoaded ) {

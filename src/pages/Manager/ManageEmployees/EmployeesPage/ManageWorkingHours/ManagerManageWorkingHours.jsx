@@ -50,7 +50,7 @@ class ManageWorkingHours extends React.Component {
                 console.log(res)
                 let j=0;
                 for (var i in res) {
-                    if(res[i].employee_id===this.props.employee_id){
+                    if(res[i].employee_id==this.props.employee_id){
                         let schedule={
                             ...this.state.schedules
                         }
@@ -64,7 +64,7 @@ class ManageWorkingHours extends React.Component {
                 for(let v in Object.keys(this.state.schedules)){
                     console.log(v)
                     for(let k in this.state.keys){
-                        if(k===v){
+                        if(k==v){
                             this.setState({keys:[]});
                         }
                     }

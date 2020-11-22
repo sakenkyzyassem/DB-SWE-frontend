@@ -52,7 +52,7 @@ class ManageEmployees extends React.Component {
         getAllEmployees()
             .then(res => {
                 for (let i = 0; i < res.length; i++) {
-                    if(res[i].hotel_id===this.state.manager.hotel_id && res[i].role!=="MANAGER"){
+                    if(res[i].hotel_id==this.state.manager.hotel_id && res[i].role!="MANAGER"){
                         this.setState({
                             employees: [
                               ...this.state.employees,
