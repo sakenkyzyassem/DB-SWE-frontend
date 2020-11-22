@@ -5,6 +5,73 @@ import "./DeskClerkGuestProfile.scss";
 import { Row, Col } from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 
+const ImageComponent = ({g}) => {
+    if(g%7==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-7.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else if(g%6==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-6.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else if(g%5==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-5.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else if(g%4==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-4.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else if(g%3==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-3.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else if(g%2==0){
+        return (
+            <img
+            src={require(`../../../../../static/guest-2.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }else{
+        return (
+            <img
+            src={require(`../../../../../static/guest-1.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            style={{height:"160px"}}
+            />
+        )
+    }
+};
+
 class GuestProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -44,7 +111,7 @@ class GuestProfile extends React.Component {
                             <p>{this.state.personal.email}</p>
                         </Col>
                         <Col md={3}>
-                            <img className="imgDeskclerk" src={require(`../../../../../static/guest-${this.state.index+1}.svg`)} alt="deskclerk" style={{height:"160px"}}/>
+                        <ImageComponent g={this.state.index}/>
                         </Col>
                     </Row>
                     <h6 className="info-header">Guest's Contact Information</h6>

@@ -4,7 +4,7 @@ import "./DeskClerkGuestBookingHistory.scss";
 import {Table, Badge, Row, Button, Modal, Form, Col, Tab, Tabs} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import {getUserBookings} from "../../../../../services/bookingsService";
-import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType} from "../../../../../services/deskClerkService";
+import {changeBookingStatus, cancelBooking, changeBooking, changeRoom, filterByRoomType, addOccupation, getOccupationHistory} from "../../../../../services/deskClerkService";
 import UserContext from "../../../../../services/userContext";
 
 class BookingHistory extends React.Component {
@@ -23,12 +23,22 @@ class BookingHistory extends React.Component {
             dueDate: null,
             index: null,
             roomNumbers: [],
-            token: ""
+            token: "",
+            resDate: null,
+            exists: '',
+            active: false,
+            occupationHistory: {},
+            freeRooms: [],
+            active2: true,
+            exists2: '',
+            changedOccupation: '',
+            occupationKey: null
         }
         this.statusHandler = this.statusHandler.bind(this);
         this.numberRoomsHandler = this.numberRoomsHandler.bind(this);
         this.roomTypeHandler = this.roomTypeHandler.bind(this);
         this.dueDateHandler = this.dueDateHandler.bind(this);
+        this.resDateHandler = this.resDateHandler.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -36,13 +46,20 @@ class BookingHistory extends React.Component {
         this.handleEdit2 = this.handleEdit2.bind(this);
         this.createBooking = this.createBooking.bind(this);
         this.handleEdit3 = this.handleEdit3.bind(this);
-        // this.roomNumberHandler = this.roomNumberHandler(this);
+        this.filteringRooms = this.filteringRooms.bind(this);
+        this.update = this.update.bind(this);
+        this.findOccupation = this.findOccupation.bind(this);
+        this.filterToFindRoom = this.filterToFindRoom.bind(this);
     }
 
     componentDidMount() {
         let context = this.context;
         this.state.token = context.user.token;
         console.log(this.state.token)
+        this.update();
+    }
+
+    update = () => {
         getUserBookings(this.props.guest_id)
             .then((res) => {
                 console.log(res);
@@ -66,18 +83,20 @@ class BookingHistory extends React.Component {
         this.setState({dueDate: e.target.value});
     }
 
-    // roomNumberHandler(e) {
-    //     this.setState({roomNum: e.target.value});
-    // }
+    resDateHandler(e) {
+        this.setState({resDate: e.target.value})
+    }
 
     handleClose = () => {
         this.setState({show: false});
+        this.setState({active2:true});
     }
 
     handleOpen = (e, row, key) => {
         this.setState({index: key});
         this.setState({row: row});
         this.setState({show: true});
+        this.findOccupation(e, key);
     }
 
     handleCancel = (e, id, key) => {
@@ -86,9 +105,13 @@ class BookingHistory extends React.Component {
         var roomtype = this.state.bookingHistory[key].roomtype;
         cancelBooking(id, roomtype, number_of_rooms)
             .then(res => {
-                this.state.bookingHistory[key] = res;
-                this.state.bookingHistory[key].status = 'canceled';
-                this.setState({bookingHistory:this.state.bookingHistory})
+                let bookingH = {
+                    ...this.state.bookingHistory
+                }
+                bookingH[key] = res;
+                this.setState({bookingHistory: bookingH})
+                this.setState({show: false})
+                this.update();
             })
     }
 
@@ -98,17 +121,44 @@ class BookingHistory extends React.Component {
         var prevRoomType = this.state.bookingHistory[key].roomtype;
         booking.roomtype = this.state.roomType;
         booking.due_date = this.state.dueDate;
+        booking.date_reservation = this.state.resDate;
         var token = this.state.token
         changeBooking(booking, prevRoomType, token)
             .then(res => {
-                this.state.bookingHistory[key] = res;
-                this.setState({bookingHistory:this.state.bookingHistory})
-                console.log(res)
-                console.log(booking)
-            })
-            .then(
+                let bookingH = {
+                    ...this.state.bookingHistory
+                }
+                bookingH[key] = res;
+                this.setState({bookingHistory: bookingH})
+                console.log(res);
+                console.log("done")
                 this.setState({show: false})
-            )
+                console.log(booking);
+            })
+        console.log("occ hist before change")
+        console.log(this.state.occupationHistory);
+        var occupation = {
+            bookingid: this.state.bookingHistory[key].bookingid,
+            from_date: booking.date_reservation,
+            guest_id: this.props.guest_id,
+            hotel_id: this.state.bookingHistory[key].hotelid,
+            room_type: this.state.roomType,
+            roomnumber: this.state.roomNumbers[0],
+            to_date: booking.due_date
+        }
+        console.log("the add occ")
+        console.log(occupation)
+        addOccupation(occupation) 
+            .then(res => {
+                // var changedOccupation = {
+                //     ...this.state.occupationHistory
+                // }
+                // changedOccupation[k]=res;
+                // this.setState({occupationHistory: changedOccupation})
+                console.log(res);
+                this.setState({show: false})
+                this.update();
+            })
     }
 
     handleEdit2 = (e, id, key) => {
@@ -117,31 +167,98 @@ class BookingHistory extends React.Component {
         var roomtype = this.state.bookingHistory[key].roomtype;
         changeBookingStatus(id, roomtype, status)
             .then(res => {
-                this.state.bookingHistory[key] = res;
-                this.setState({bookingHistory:this.state.bookingHistory})
+                let bookingH = {
+                    ...this.state.bookingHistory
+                }
+                bookingH[key] = res;
+                this.setState({bookingHistory: bookingH})
                 console.log(this.state.bookingHistory[key])
                 console.log(res)
-            })
-            .then(
                 this.setState({show: false})
-            )
+                this.update();
+            })
     }
 
     handleEdit3 = (e, id, key) => {
         e.preventDefault();
         var roomtype = this.state.bookingHistory[key].roomtype;
-        var room_num = this.state.roomNum;
-        changeRoom(id, roomtype, room_num)
+        this.findOccupation(e,key);
+        console.log(this.state.occupationHistory)
+        console.log(this.state.occupationHistory[0])
+        var index = 0;
+        for(let k in Object.keys(this.state.occupationHistory)){
+            if(this.state.occupationHistory[k].room_type==roomtype){
+                index = k;
+            }
+        }
+        var room_num = this.state.occupationHistory[index].roomnumber;
+        this.filterToFindRoom(e, key);
+        console.log("free room")
+        console.log(this.state.freeRooms)
+        if(this.state.freeRooms.length>0){
+            changeRoom(id, roomtype, room_num)
+                .then(res => {
+                    this.setState({show: false})
+                    console.log(res);
+                })
+            }
+        else{
+            this.setState({active2: false})
+        }
+    }
+
+    filterToFindRoom = (e, key) => {
+        e.preventDefault();
+        var token = this.state.token
+        var booking = this.state.bookingHistory[key];
+        filterByRoomType(booking, token)
             .then(res => {
-                console.log(res);
+                console.log(res)
+                this.setState({freeRooms: res})
             })
-            .then(
-                this.setState({show: false})
-            )
     }
 
     createBooking = () => {
         this.props.history.push("/filterRooms");
+    }
+
+    findOccupation = (e, key) => {
+        console.log("hoo")
+        let hotelid = this.state.bookingHistory[key].hotelid;
+        let bookingid = this.state.bookingHistory[key].bookingid;
+        getOccupationHistory(hotelid, bookingid)
+            .then(res => {
+                console.log(res)
+                this.setState({occupationHistory: res})
+                console.log("old occ")
+                console.log(this.state.occupationHistory)
+            })
+    }
+
+    filteringRooms = (e, key) => {
+        e.preventDefault();
+        var booking = this.state.bookingHistory[key];
+        booking.roomtype = this.state.roomType;
+        booking.due_date = this.state.dueDate;
+        booking.date_reservation = this.state.resDate;
+        var token = this.state.token
+        console.log(booking)
+        filterByRoomType(booking, token)
+            .then(res => {
+                console.log(res)
+                this.setState({roomNumbers: res})
+            })
+            .then(res => {
+                if(this.state.roomNumbers.length==0){
+                    this.setState({exists: "There aren't any free rooms"})
+                }else{
+                    this.setState({exists: `There are free rooms`})
+                }
+            })
+            .then(res =>{
+                this.setState({active: true})
+            }
+            )
     }
 
     render() {
@@ -159,7 +276,6 @@ class BookingHistory extends React.Component {
                                     <th>Date of reservation</th>
                                     <th>Due date</th>
                                     <th>Number of rooms</th>
-                                    <th>Payment Status</th>
                                     <th>Reservation status</th>
                                     <th>Estimated price</th>
                                     <th><Button variant="primary" onClick={this.createBooking} block>Book</Button></th>
@@ -176,19 +292,36 @@ class BookingHistory extends React.Component {
                                                     <td>{row.date_reservation}</td>
                                                     <td>{row.due_date}</td>
                                                     <td>{row.number_of_rooms}</td>
-                                                    <td>{row.payment_status}</td>
                                                     <td><Badge variant="warning">{row.status}</Badge></td>
                                                     <td>{row.price}</td>
                                                     <td>
-                                                        <Button
-                                                            variant="outline-additional"
-                                                            size="sm"
-                                                            onClick={(e) => {
-                                                                this.handleOpen(e, row, index)
-                                                            }}
-                                                            className="m-1"
-                                                            block
-                                                        >View</Button>
+                                                        {row.number_of_rooms>0 ?
+                                                        <Row>
+                                                            <Col>
+                                                            <Button
+                                                                variant="outline-additional"
+                                                                size="sm"
+                                                                onClick={(e) => {
+                                                                    this.handleOpen(e, row, index)
+                                                                }}
+                                                                className="m-1"
+                                                                block
+                                                            >View</Button>
+                                                            </Col>
+                                                            <Col>
+                                                            
+                                                                <Button
+                                                                    variant="outline-secondary"
+                                                                    size="sm"
+                                                                    onClick={(e) => {
+                                                                        this.handleEdit3(e, row.bookingid, index)
+                                                                    }}
+                                                                    className="m-1"
+                                                                    block
+                                                                >Remove</Button>
+                                                            </Col>
+                                                        </Row>
+                                                        : null}
                                                     </td>
                                                     
                                                     <Modal show={this.state.show} onHide={this.handleClose}>
@@ -198,9 +331,9 @@ class BookingHistory extends React.Component {
                                                         
                                                         <Modal.Body>
                                                         <Tabs className="tabs" id="controlled-tab-example">
-                                                            <Tab eventKey="changeBooking" title="Edit Booking" className="tab">
+                                                            <Tab eventKey="changeBooking" title="Edit Booking" className="tab" style={{minHeight:"400px"}}>
                                                             <div style={{height: "50px"}}></div>
-                                                            <Form onSubmit={(e) => this.handleEdit(e, this.state.index)}>
+                                                            <Form>
                                                                 <Form.Group as={Row} controlId="roomTypeControl">
                                                                     <Form.Label column sm="3">
                                                                         Room Types
@@ -210,14 +343,27 @@ class BookingHistory extends React.Component {
                                                                             as="select"
                                                                             defaultValue={row.room_type}
                                                                             onChange={(e) => this.roomTypeHandler(e)}>
+                                                                            <option value="modern">Modern</option>
+                                                                            <option value="old">Old</option>
                                                                             <option value="single">Single</option>
                                                                             <option value="double">Double</option>
-                                                                            <option value="family">Family</option>
+                                                                            <option value="famly">Family</option>
                                                                             <option value="king">King</option>
                                                                         </Form.Control>
                                                                     </Col>
                                                                 </Form.Group>
-    
+                                                                <Form.Group as={Row} controlId="resDateControl">
+                                                                    <Form.Label column sm="3">
+                                                                        Reservation date
+                                                                    </Form.Label>
+                                                                    <Col sm="8">
+                                                                        <Form.Control
+                                                                            type="date"
+                                                                            defaultValue={row.date_reservation}
+                                                                            onChange={(e) => this.resDateHandler(e)}
+                                                                        />
+                                                                    </Col>
+                                                                </Form.Group>
                                                                 <Form.Group as={Row} controlId="dueDateControl">
                                                                     <Form.Label column sm="3">
                                                                         Due date
@@ -230,25 +376,55 @@ class BookingHistory extends React.Component {
                                                                         />
                                                                     </Col>
                                                                 </Form.Group>
+                                                                <Form.Group as={Row} controlId="filterControl">
+                                                                    <Col>
+                                                                    <Button variant="outline-additional"
+                                                                        size="sm"
+                                                                        className="m-1"
+                                                                        block
+                                                                        style={{width:"100px"}}
+                                                                        type="submit" block onClick={(e) => {this.filteringRooms(e, this.state.index)}}>
+                                                                        Find free rooms
+                                                                    </Button>
+                                                                    </Col>
+                                                                    <Col>
+                                                        <p>{this.state.exists}</p>
+                                                        </Col>
+                                                                </Form.Group>
     
                                                                 <Form.Group as={Row} className="p-3">
                                                                     <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
                                                                         Cancel
                                                                     </Button>
-                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
+                                                                    {this.state.active && this.state.exists == `There are free rooms` ? 
+                                                                    <Button show={this.state.active} variant="primary" type="submit" block onClick={(e) => {this.handleEdit(e, this.state.index)}}>
                                                                         Save Changes
                                                                     </Button>
-                                                                    <Button variant="primary"
-                                                                        type="submit" block onClick={(e) => {this.handleEdit3(e, this.state.row.bookingid, this.state.index)}}>
-                                                                        Change Room
-                                                                    </Button>
+                                                                    : null}
                                                                 </Form.Group>
                                                             </Form>
                                                             </Tab>
-                                                            <Tab eventKey="changeBookingStatus" title="Change Status" className="tab">
+                                                            <Tab eventKey="changeBookingStatus" title="Change Status or Room" className="tab" style={{minHeight:"400px"}}>
                                                             <div style={{height: "50px"}}></div>
-                                                            <Form onSubmit={(e) => this.handleEdit2(e, this.state.row.bookingid, this.state.index)}>
+                                                            <Form>
+                                                                <Form.Group>
+                                                                    {this.state.active2 ?
+                                                                    <Button
+                                                                        variant="outline-secondary"
+                                                                        size="sm"
+                                                                        style={{width:"100px"}}
+                                                                        onClick={(e) => {
+                                                                            this.handleEdit3(e, this.state.row.bookingid, this.state.index)
+                                                                        }}
+                                                                        className="m-1"
+                                                                        block
+                                                                    >Change Room</Button>
+                                                                : <p>No free rooms</p>
+                                                                }
+                                                                    </Form.Group>
+                                                                <div style={{height:"30px"}}></div>
                                                                 <Form.Group as={Row} controlId="statusControl">
+                                                                
                                                                     <Form.Label column sm="3">
                                                                         Status
                                                                     </Form.Label>
@@ -263,18 +439,20 @@ class BookingHistory extends React.Component {
                                                                         </Form.Control>
                                                                     </Col>
                                                                 </Form.Group>
-                                                                <div style={{height:"50px"}}></div>
+                                                                <div style={{height:"20px"}}></div>
                                                                 <Form.Group as={Row} className="p-3">
-                                                                    <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
-                                                                        Cancel
-                                                                    </Button>
-                                                                    <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit2(e, this.state.row.bookingid, this.state.index)}}>
-                                                                        Save Changes
+                                                                    <Button variant="outline-additional"  size="sm"
+                                                                        className="m-1"
+                                                                        block
+                                                                        style={{width:"100px"}} type="submit" block onClick={(e) => {this.handleEdit2(e, this.state.row.bookingid, this.state.index)}}>
+                                                                        Change Status
                                                                     </Button>
                                                                 </Form.Group>
+                                                            
                                                             </Form>                         
                                                             </Tab>
-                                                            <Tab eventKey="cancelBooking" title="Cancel Booking" className="tab">
+                                                            {/* {this.state.row.number_of_rooms>1 ? */}
+                                                            <Tab eventKey="cancelBooking" title="Cancel Booking" className="tab" style={{minHeight:"400px"}}>
                                                                 <div style={{height: "50px"}}></div>
                                                                     <Form onSubmit={(e) => this.handleCancel(e, this.state.row.bookingid, this.state.index)}>
                                                                         <Form.Group as={Row} controlId="numberOfRoomsControl">
@@ -300,31 +478,7 @@ class BookingHistory extends React.Component {
                                                                         </Form.Group>
                                                                     </Form>                         
                                                             </Tab>
-                                                            <Tab eventKey="changeRoom" title="Change Room" className="tab">
-                                                                <div style={{height: "50px"}}></div>
-                                                                    <Form onSubmit={(e) => this.handleEdit3(e, this.state.row.bookingid, this.state.index)}>
-                                                                        <Form.Group as={Row} controlId="roomNumberControl">
-                                                                            <Form.Label column sm="3">
-                                                                                Room number
-                                                                            </Form.Label>
-                                                                            <Col sm="8">
-                                                                                <Form.Control
-                                                                                    type="number"
-                                                                                    // onChange={(e) => this.roomNumberHandler(e)}
-                                                                                />
-                                                                            </Col>
-                                                                        </Form.Group>
-                                                                        <div style={{height:"30px"}}></div>
-                                                                        <Form.Group as={Row} className="p-3">
-                                                                            <Button variant="outline-dark" type="cancel" onClick={this.handleClose} block>
-                                                                                Close
-                                                                            </Button>
-                                                                            <Button variant="primary" type="submit" block onClick={(e) => {this.handleEdit3(e, this.state.row.bookingid, this.state.index)}}>
-                                                                                Approve Change
-                                                                            </Button>
-                                                                        </Form.Group>
-                                                                    </Form>                         
-                                                            </Tab>
+                    
                                                         </Tabs>
                                                             
                                                         </Modal.Body>

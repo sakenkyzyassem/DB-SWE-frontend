@@ -16,7 +16,7 @@ export const signInDeskClerk = (guest) => {
 }
 
 export const getAllGuests = () => {
-    return fetch(`/api/deskclerk/allguests`,
+    return fetch(`/api/allguests`,
         {
             method: 'GET',
             headers: {
@@ -83,11 +83,12 @@ export const findGuest = (guest) => {
         .catch(err => console.log(err));
 }
 
-export const filterByRoomType = (bookingHistory) => {
+export const filterByRoomType = (bookingHistory, access_token) => {
     return fetch(`/api/deskclerk/filterbyroomtype`,
         {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${access_token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -105,6 +106,33 @@ export const changeRoom = (bh_id, roomtype, room_num) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}
+
+export const getOccupationHistory = (hotelid, bookingid) => {
+    return fetch(`/api/deskclerk/alloccupationhistory/${hotelid}/${bookingid}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}
+
+export const addOccupation = (occupationHistory) => {
+    return fetch(`/api/bookinghistory/addoccupation`,
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(occupationHistory)
         })
         .then(response => response.json())
         .catch(err => console.log(err));

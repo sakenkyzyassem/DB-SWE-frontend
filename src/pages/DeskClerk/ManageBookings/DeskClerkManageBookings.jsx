@@ -4,21 +4,91 @@ import { Link, withRouter } from 'react-router-dom';
 import {getAllGuests} from "../../../services/deskClerkService";
 import Loading from "../../../components/Loading/Loading";
 import "./DeskClerkManageBookings.scss";
+import {getUserBookings} from "../../../services/bookingsService";
+import UserContext from "../../../services/userContext";
+
+const ImageComponent = ({g}) => {
+    if(g%7==0){
+        return (
+            <img
+            src={require(`../../../static/guest-7.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else if(g%6==0){
+        return (
+            <img
+            src={require(`../../../static/guest-6.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else if(g%5==0){
+        return (
+            <img
+            src={require(`../../../static/guest-5.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else if(g%4==0){
+        return (
+            <img
+            src={require(`../../../static/guest-4.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else if(g%3==0){
+        return (
+            <img
+            src={require(`../../../static/guest-3.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else if(g%2==0){
+        return (
+            <img
+            src={require(`../../../static/guest-2.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }else{
+        return (
+            <img
+            src={require(`../../../static/guest-1.svg`)} 
+            alt="guest"
+            className="imgGuest"
+            />
+        )
+    }
+};
 
 class ManageBookings extends React.Component {
+    static contextType = UserContext;
     constructor(props) {
         super(props);
         this.state = {
             isLoaded: true,
             guests: [],
-            guestsId:[]
+            guestsId:[],
+            hotelGuests: [],
+            bookingHistory: {},
+            hotelId: null
         }
         console.log(this.state);
+        this.getHotelGuest = this.getHotelGuest.bind(this)
     }
 
     componentDidMount() {
+        let context = this.context;
+        this.state.hotelId = context.hotel_id;
         getAllGuests()
             .then(res => {
+                console.log(res)
                 for (let i = 0; i < res.length; i++) {
                     this.setState({
                       guests: [
@@ -31,6 +101,31 @@ class ManageBookings extends React.Component {
                       ],
                     })
                 }
+            },
+            )
+            console.log(this.state.guests)
+        for(let id in this.state.guestsId){
+            this.getHotelGuest(id);
+            if(this.state.bookingHistory.hotel_id == this.state.hotel_id){
+                this.setState({
+                    hotelGuests: [
+                        ...this.state.hotelGuests,
+                        id
+                    ]
+                })
+                
+            }
+        }
+        console.log(this.state.hotelGuests)
+    }
+
+
+    getHotelGuest = (id) => {
+        console.log("ye")
+        getUserBookings(id)
+            .then(res => {
+                console.log(res)
+                this.setState({bookingHistory: res})
             })
     }
 
@@ -47,7 +142,7 @@ class ManageBookings extends React.Component {
                             {this.state.guests.map((guest, i) => (
                                 <Link to={`/deskClerk/guest/${this.state.guestsId[i]}`}>
                                 <div className="guest" id="list">
-                                    <img className="imgGuest" src={require(`../../../static/guest-${i+1}.svg`)} alt="guest"/>
+                                <ImageComponent g={i}/>
                                     {guest}
                                 </div>
                                 </Link>
