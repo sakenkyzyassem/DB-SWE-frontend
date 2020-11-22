@@ -54,8 +54,8 @@ export const cancelBooking = (bh_id, room_type, number_of_rooms) => {
         .catch(err => console.log(err));
 }
 
-export const changeBooking = (bookingHistory, prevroomtype, access_token) => {
-    return fetch(`/api/deskclerk/changebooking/${prevroomtype}`,
+export const changeBooking = (bookingHistory, access_token) => {
+    return fetch(`/api/deskclerk/changebooking`,
         {
             method: 'POST',
             headers: {
@@ -139,7 +139,7 @@ export const addOccupation = (occupationHistory) => {
 }
 
 export const getRoomTypes = (hotel_id) => {
-    return fetch(`/api/deskclerk/findRoomTypes/${hotel_id}`,
+    return fetch(`/api/findRoomTypes/${hotel_id}`,
         {
             method: 'GET',
             headers: {

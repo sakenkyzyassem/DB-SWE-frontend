@@ -35,7 +35,8 @@ class BookingHistory extends React.Component {
             occupationKey: null,
             bookingNewOptions: {},
             roomTypes: [],
-            types: []
+            types: [],
+            prevRoom: null
         }
         this.statusHandler = this.statusHandler.bind(this);
         this.numberRoomsHandler = this.numberRoomsHandler.bind(this);
@@ -108,6 +109,7 @@ class BookingHistory extends React.Component {
         this.setState({index: key});
         this.setState({row: row});
         this.setState({show: true});
+        this.setState({prevRoom: this.state.bookingHistory[key].roomtype})
         this.findOccupation(e, key);
     }
 
@@ -131,16 +133,15 @@ class BookingHistory extends React.Component {
     handleEdit = (e, key) => {
         e.preventDefault();
         var booking = this.state.bookingHistory[key];
+        booking.prevroomtype = this.state.prevRoom;
         console.log("booking")
         console.log(booking)
         console.log("rromtype")
-        var prevRoomType = booking.roomtype;
-        console.log(prevRoomType)
         booking.roomtype = this.state.roomType;
         booking.due_date = this.state.dueDate;
         booking.date_reservation = this.state.resDate;
         var token = this.state.token
-        changeBooking(booking, prevRoomType, token)
+        changeBooking(booking, token)
             .then(res => {
                 let bookingH = {
                     ...this.state.bookingHistory
@@ -154,23 +155,23 @@ class BookingHistory extends React.Component {
             })
         console.log("occ hist before change")
         console.log(this.state.occupationHistory);
-        var occupation = {
-            bookingid: this.state.bookingHistory[key].bookingid,
-            from_date: booking.date_reservation,
-            guest_id: parseInt(this.props.guest_id),
-            hotel_id: this.state.bookingHistory[key].hotelid,
-            room_type: this.state.roomType,
-            roomnumber: this.state.roomNumbers[0],
-            to_date: booking.due_date
-        }
-        console.log("the add occ")
-        console.log(occupation)
-        addOccupation(occupation) 
-            .then(res => {
-                console.log(res);
-                this.setState({show: false})
-                this.update();
-            })
+        // var occupation = {
+        //     bookingid: this.state.bookingHistory[key].bookingid,
+        //     from_date: booking.date_reservation,
+        //     guest_id: parseInt(this.props.guest_id),
+        //     hotel_id: this.state.bookingHistory[key].hotelid,
+        //     room_type: this.state.roomType,
+        //     roomnumber: this.state.roomNumbers[0],
+        //     to_date: booking.due_date
+        // }
+        // console.log("the add occ")
+        // console.log(occupation)
+        // addOccupation(occupation) 
+        //     .then(res => {
+        //         console.log(res);
+        //         this.setState({show: false})
+        //         this.update();
+        //     })
     }
 
     handleEdit2 = (e, id, key) => {
@@ -249,6 +250,7 @@ class BookingHistory extends React.Component {
 
     filteringRooms = (e, key) => {
         e.preventDefault();
+        console.log(this.state.bookingNewOptions)
         var booking = this.state.bookingNewOptions[key];
         console.log("in filter")
         console.log(booking)

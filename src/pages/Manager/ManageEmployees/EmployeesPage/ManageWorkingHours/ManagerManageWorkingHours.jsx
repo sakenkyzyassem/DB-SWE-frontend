@@ -20,7 +20,7 @@ class ManageWorkingHours extends React.Component {
             endTime: null,
             date: null,
             keys:[],
-            index: null,
+            index: null
         }
         this.payrollHandler = this.payrollHandler.bind(this);
         this.startTimeHandler = this.startTimeHandler.bind(this);
@@ -44,7 +44,6 @@ class ManageWorkingHours extends React.Component {
     update(){
         let context = this.context;
         this.state.manager = context.user;
-        // console.log(this.tat)
         getScheduleForAll(this.state.manager.hotel_id)
             .then((res) => {
                 console.log(res)
@@ -202,8 +201,6 @@ class ManageWorkingHours extends React.Component {
                 this.setState({show: false});
             });
     }
-
-
 
     render() {
             return (
