@@ -69,3 +69,15 @@ export const getRoomTypes = (hotel_id) => {
         })
         .then(res => res.json())
 }
+
+export const getCategories = (hotel_id) => {
+    return fetch(`/api/getHotelDiscounts/${hotel_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+    })
+        .then(res => res.json())
+}
