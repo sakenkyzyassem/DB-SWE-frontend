@@ -7,6 +7,7 @@ import Filter from "../../components/filter/Filter";
 import UserContext from "../../services/userContext";
 import LoginModal from "../../components/LoginModal/LoginModal";
 import BookingModal from "../../components/bookingForm/BookingModal";
+import {getCategories} from "../../services/bookingsService";
 
 class FilterRooms extends React.Component {
 
@@ -25,14 +26,12 @@ class FilterRooms extends React.Component {
             roomsByType: {},
             rooms: {},
             availableRooms: [],
-            categories: []
+            categories: [],
+            userCategory: null
         }
     }
 
     componentDidMount() {
-        if( this.props.location.guestId ) {
-            console.log(this.props.location.guestId);
-        }
         getHotels().then(data => {
             this.setState({places: data});
         })
@@ -66,7 +65,7 @@ class FilterRooms extends React.Component {
                 due_date: this.state.bookingDetails.due_date,
                 number_of_rooms: roomsNum,
                 price: roomtypeInfo.price,
-                category: "",
+                category: this.state.userCategory,
                 service_price: 0
             }
             this.setState({availableRooms: this.state.roomsByType[index]});
@@ -83,12 +82,16 @@ class FilterRooms extends React.Component {
         //console.log(this.state.rooms);
     }
 
+    changeCategory = (e) => {
+        this.setState({userCategory: e.target.value});
+    }
+
     confirmBooking = (val) => {
         this.setState({confirmBooking: val });
     }
 
     filterRooms = (data) => {
-        console.log(data);
+        //console.log(data);
         filterRooms(data)
             .then(res => {
                 this.setState({
@@ -103,6 +106,12 @@ class FilterRooms extends React.Component {
     }
 
     getRoomNums = (data) => {
+        getCategories(data[Object.keys(data)[0]]["hotelEntity"].hotel_id)
+            .then(res => {
+                this.setState({categories: res});
+                //console.log(res);
+            })
+
         let roomTypes = data[Object.keys(data)[0]].roomTypeInfoList;
         let resList = [];
         roomTypes.forEach(roomType => {
@@ -192,6 +201,31 @@ class FilterRooms extends React.Component {
                                                                             </option>
                                                                         )
                                                                     })
+                                                                }
+                                                            </Form.Control>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row>
+                                                        <Col>Choose your category:</Col>
+                                                        <Col>
+                                                            <Form.Control
+                                                                as="select"
+                                                                className="my-1 mr-sm-2"
+                                                                id="inlineFormCustomSelect"
+                                                                custom
+                                                                onChange={(e) => this.changeCategory(e)}
+                                                            >
+                                                                <option value={this.state.userCategory}>No category</option>
+                                                                {
+                                                                    this.state.categories ?
+                                                                    this.state.categories.map((category, i)=> {
+                                                                        return (
+                                                                            <option key={i} value={category.category}>
+                                                                                {category.category}
+                                                                            </option>
+                                                                        )
+                                                                    })
+                                                                        : null
                                                                 }
                                                             </Form.Control>
                                                         </Col>
