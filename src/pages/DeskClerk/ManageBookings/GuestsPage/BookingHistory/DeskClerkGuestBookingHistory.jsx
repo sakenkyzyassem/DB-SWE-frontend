@@ -152,6 +152,7 @@ class BookingHistory extends React.Component {
                 console.log("done")
                 this.setState({show: false})
                 console.log(booking);
+                this.update();
             })
         console.log("occ hist before change")
         console.log(this.state.occupationHistory);
