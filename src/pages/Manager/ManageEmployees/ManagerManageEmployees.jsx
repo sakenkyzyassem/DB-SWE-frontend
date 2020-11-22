@@ -8,7 +8,7 @@ import UserContext from "../../../services/userContext";
 
 const ImageComponent = ({job_title}) => {
 
-    if (job_title === "Cleaner") {
+    if (job_title == "Cleaner") {
         return (
             <img
             src={require(`../../../static/cleaner.svg`)} 

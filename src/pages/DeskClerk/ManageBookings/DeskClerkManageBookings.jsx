@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { Link, withRouter } from 'react-router-dom';
-import {getAllGuests} from "../../../services/deskClerkService";
+import {getAllGuests, getHotelGuests} from "../../../services/deskClerkService";
 import Loading from "../../../components/Loading/Loading";
 import "./DeskClerkManageBookings.scss";
 import {getUserBookings} from "../../../services/bookingsService";
@@ -75,7 +75,8 @@ class ManageBookings extends React.Component {
             isLoaded: true,
             guests: [],
             guestsId:[],
-            hotelId: null
+            hotelId: null,
+            hotelGuests: {}
         }
         console.log(this.state);
     }
@@ -83,24 +84,24 @@ class ManageBookings extends React.Component {
     componentDidMount() {
         let context = this.context;
         this.setState({hotelId: context.hotel_id});
-        getAllGuests()
+        getHotelGuests(context.user.hotel_id)
             .then(res => {
                 console.log(res)
-                for (let i = 0; i < res.length; i++) {
-                    this.setState({
-                      guests: [
-                        ...this.state.guests,
-                        res[i].firstName+" "+res[i].lastName
-                      ],
-                      guestsId: [
-                          ...this.state.guestsId,
-                          res[i].userId
-                      ],
-                    })
+                this.setState({hotelGuests: res})
+                console.log(this.state.hotelGuests)
+                for(let g in Object.keys(this.state.hotelGuests)){
+                    console.log(g)
+                    this.state.guestsId.push(g)
                 }
-            },
-            )
-            console.log(this.state.guests)
+                for(let i in this.state.guestsId){
+                    this.setState({
+                        guests: [
+                        ...this.state.guests,
+                        this.state.hotelGuests[i].firstName+" "+this.state.hotelGuests[i].lastName
+                    ],
+                })
+            }
+            })
     }
 
     render() {
@@ -112,11 +113,11 @@ class ManageBookings extends React.Component {
                         <input type="text" id="findGuest" class="findguest" onKeyUp="filteredSearch()" size="50" placeholder="Enter name and surname of the guest"></input>
                         <button class="search" type="button" >Search</button>
                         <div class="card" id="guestsList">
-                            {this.state.guests.map((guest, i) => (
-                                <Link to={`/deskClerk/guest/${this.state.guestsId[i]}`}>
+                            {this.state.guestsId.map((i) => (
+                                <Link to={`/deskClerk/guest/${this.state.hotelGuests[i].userId}`}>
                                 <div className="guest" id="list">
                                 <ImageComponent g={i}/>
-                                    {guest}
+                                    {this.state.hotelGuests[i].firstName} {this.state.hotelGuests[i].lastName}
                                 </div>
                                 </Link>
                             ))}

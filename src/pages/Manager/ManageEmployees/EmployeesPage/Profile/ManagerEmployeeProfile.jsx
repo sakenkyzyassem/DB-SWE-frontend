@@ -44,7 +44,8 @@ class EmployeeProfile extends React.Component {
 
     componentDidMount() {
         let context = this.context;
-        this.setState({manager: context.user});
+        this.state.manager = this.context.user;
+        // this.setState({manager: context.user});
 
         getAllEmployees()
             .then(res => {
@@ -58,7 +59,7 @@ class EmployeeProfile extends React.Component {
                 this.setState({hotel:res.hotel})
                 console.log("hotels")
                 console.log(res)
-                console.log(this.state.hotel)
+                // console.log(this.state.hotel)
             }
         )
     }
