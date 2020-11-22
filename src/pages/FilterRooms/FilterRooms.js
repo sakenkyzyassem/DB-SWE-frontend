@@ -30,8 +30,8 @@ class FilterRooms extends React.Component {
     }
 
     componentDidMount() {
-        if( this.props.guestId ) {
-            console.log(this.props.guestId);
+        if( this.props.location.guestId ) {
+            console.log(this.props.location.guestId);
         }
         getHotels().then(data => {
             this.setState({places: data});
@@ -59,7 +59,7 @@ class FilterRooms extends React.Component {
             }
             let booking = {
                 hotelid: this.state.data[this.state.hotels[0]]["hotelEntity"].hotel_id,
-                guestid: this.props.guestId ? this.props.guestId : this.context.user.userId,
+                guestid: this.props.location.guestId ? this.props.location.guestId : this.context.user.userId,
                 roomtype: roomtypeInfo.type,
                 status: "pending",
                 date_reservation: this.state.bookingDetails.start_date,
