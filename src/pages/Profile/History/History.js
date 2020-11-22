@@ -1,10 +1,9 @@
 import React from "react";
-import {Table, Badge, Row, Button, Modal, Form, Col} from 'react-bootstrap';
+import {Table, Badge, Row, Button, Modal, Form, Col, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
-import { getUserBookings, deleteBooking, editBooking } from "../../../services/bookingsService";
+import { getUserBookings, editBooking } from "../../../services/bookingsService";
 import './History.scss'
 import Loading from "../../../components/Loading/Loading";
-import {getHotel} from "../../../services/hotelServices";
 
 class History extends React.Component {
 
@@ -14,7 +13,8 @@ class History extends React.Component {
         this.state = {
             show: false,
             userHistory: null,
-            newBooking: null
+            newBooking: null,
+            prevRoomType: null,
         }
     }
 
@@ -47,20 +47,10 @@ class History extends React.Component {
         this.props.history.push("/filterRooms");
     }
 
-    handleHide = (id, key) => {
-        deleteBooking(id)
-            .then(res => {
-                const arr = [...this.state.userHistory];
-                arr.splice(key,1);
-                this.setState({userHistory: arr});
-            })
-    }
-
     handleEdit = (e, key) => {
         e.preventDefault();
         var booking = this.state.newBooking;
-        console.log(booking);
-        editBooking(booking.bookingid, booking)
+        editBooking(this.state.prevRoomType, booking)
             .then(res => {
                 this.updateData();
                 this.setState({
@@ -83,9 +73,9 @@ class History extends React.Component {
                 ...this.state.userHistory[key],
                 [name]: event.target.value
             };
+            this.setState({prevRoomType: this.state.userHistory[key].roomtype});
         }
-        console.log(booking);
-        this.setState({ newBooking: booking});
+        this.setState({ newBooking: booking });
     }
 
     handleClose = () => {
@@ -96,15 +86,13 @@ class History extends React.Component {
         this.setState({show: true});
     }
 
-    handleCancel = (id, key) => {
-        var booking = this.state.userHistory[key];
-        booking.appointment_status = "canceled";
+    handleCancel = (index) => {
+        var booking = this.state.userHistory[index];
+        booking.status = "canceled";
 
-        editBooking(id, booking)
+        editBooking(booking.roomtype, booking)
             .then(res => {
-                const arr = [...this.state.userHistory];
-                arr[key].appointment_status = "canceled";
-                this.setState({userHistory: arr});
+                this.updateData();
             })
     }
 
@@ -125,7 +113,7 @@ class History extends React.Component {
                                 <th>Estimated price</th>
                                 <th>Services price</th>
                                 <th>Reservation Status</th>
-                                <th><Button variant="primary" onClick={this.createBooking} block>Book</Button></th>
+                                <th><Button variant="primary" onClick={this.createBooking} block>New booking</Button></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -134,23 +122,16 @@ class History extends React.Component {
                                     if (row.status === "canceled"){
                                         return (
                                             <tr key={index}>
-                                                <td><Link to={`/hotel/${row.hotelid}`}>{row.hotel.name}</Link></td>
+                                                <td><Link to={`/hotel/${row.hotelid}`}>{row.hotelid}</Link></td>
                                                 <td>{row.roomtype}</td>
                                                 <td>{row.date_reservation}</td>
                                                 <td>{row.due_date}</td>
                                                 <td>{row.number_of_rooms}</td>
                                                 <td>{row.price}</td>
                                                 <td>{row.service_price}</td>
-                                                <td><Badge variant="danger">Canceled</Badge></td>
+                                                <td><Badge variant="warning">Canceled</Badge></td>
                                                 <td>
-                                                    <Button
-                                                        variant="outline-info"
-                                                        size="sm"
-                                                        onClick={() => {
-                                                            this.handleHide(row.bookingid, index)
-                                                        }}
-                                                        block
-                                                    >Remove</Button>
+                                                    No action available
                                                 </td>
                                             </tr>
                                         )
@@ -169,7 +150,7 @@ class History extends React.Component {
                                                 <td>{row.number_of_rooms}</td>
                                                 <td>{row.price}</td>
                                                 <td>{row.service_price}</td>
-                                                <td><Badge variant="warning">Pending</Badge></td>
+                                                <td><Badge variant="info">Pending</Badge></td>
                                                 <td>
                                                     <Button
                                                         variant="outline-additional"
@@ -184,7 +165,7 @@ class History extends React.Component {
                                                         variant="outline-danger"
                                                         size="sm"
                                                         onClick={() => {
-                                                            this.handleCancel(row.bookingid, index)
+                                                            this.handleCancel(index)
                                                         }}
                                                         className="m-1"
                                                         block
@@ -268,23 +249,33 @@ class History extends React.Component {
                                             </tr>
                                         )
                                     }
-                                    else {
+                                    else if (row.status === 'occupied' ){
                                         return (
                                             <tr key={index}>
-                                                <td><Link to={`/hotel/${row.hotelid}`}>{row.hotel_name}</Link></td>
+                                                <td><Link to={`/hotel/${row.hotelid}`}>{row.hotelid}</Link></td>
                                                 <td>{row.roomtype}</td>
                                                 <td>{row.date_reservation}</td>
                                                 <td>{row.due_date}</td>
                                                 <td>{row.number_of_rooms}</td>
                                                 <td>{row.price}</td>
                                                 <td>{row.service_price}</td>
-                                                <td><Badge variant="success">Past</Badge></td>
+                                                <td><Badge variant="success">Occupied</Badge></td>
                                                 <td>
-                                                    <Button
-                                                        variant="outline-info"
-                                                        size="sm"
-                                                        onClick={() => {this.handleHide(row.booking_id, index)}}
-                                                    >Remove</Button>
+                                                    <OverlayTrigger
+                                                        key={'left'}
+                                                        placement={'left'}
+                                                        overlay={
+                                                            <Tooltip id={`tooltip-${'left'}`}>
+                                                                Please refer to the desk clerk of your hotel if you want to change anything
+                                                            </Tooltip>
+                                                        }
+                                                    >
+                                                        <span className="d-inline-block">
+                                                            <Button disabled style={{ pointerEvents: 'none' }}>
+                                                              No actions available
+                                                            </Button>
+                                                        </span>
+                                                    </OverlayTrigger>
                                                 </td>
                                             </tr>
                                         )

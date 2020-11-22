@@ -23,9 +23,9 @@ export const deleteBooking = (id) => {
         .catch((err) => console.log(err));
 }
 
-export const editBooking = (id, booking) => {
-    return fetch("/api/bookinghistory/"+id, {
-        method: 'PUT',
+export const editBooking = (roomtype, booking) => {
+    return fetch(`/api/changebooking/${roomtype}`, {
+        method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
