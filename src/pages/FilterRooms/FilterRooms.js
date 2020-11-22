@@ -24,11 +24,15 @@ class FilterRooms extends React.Component {
             confirmBooking: false,
             roomsByType: {},
             rooms: {},
-            availableRooms: []
+            availableRooms: [],
+            categories: []
         }
     }
 
     componentDidMount() {
+        if( this.props.guestId ) {
+            console.log(this.props.guestId);
+        }
         getHotels().then(data => {
             this.setState({places: data});
         })
@@ -39,6 +43,7 @@ class FilterRooms extends React.Component {
                 bookingDetails: this.props.history.location.bookingDetails
             })
             this.getRoomNums(this.props.history.location.data);
+            // add categories
         }
     }
 
@@ -49,15 +54,12 @@ class FilterRooms extends React.Component {
         else {
             let roomtypeInfo = this.state.data[this.state.hotels[0]].roomTypeInfoList[index];
             let roomsNum = roomtypeInfo.howmanyavailable;
-            //console.log(roomsNum);
             if( this.state.rooms[index] !== undefined ) {
                 roomsNum = this.state.rooms[index];
-                //console.log("entered null")
             }
-            //console.log(roomsNum);
             let booking = {
                 hotelid: this.state.data[this.state.hotels[0]]["hotelEntity"].hotel_id,
-                guestid: this.context.user.userId,
+                guestid: this.props.guestId ? this.props.guestId : this.context.user.userId,
                 roomtype: roomtypeInfo.type,
                 status: "pending",
                 date_reservation: this.state.bookingDetails.start_date,
@@ -67,7 +69,6 @@ class FilterRooms extends React.Component {
                 category: "",
                 service_price: 0
             }
-            //console.log(booking);
             this.setState({availableRooms: this.state.roomsByType[index]});
             this.setState({booking: booking});
             this.setState({confirmBooking: true});
@@ -97,6 +98,7 @@ class FilterRooms extends React.Component {
                 });
                 //console.log(res);
                 this.getRoomNums(res);
+                // get categories
             });
     }
 
