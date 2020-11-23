@@ -163,3 +163,16 @@ export const getHotelGuests = (hotel_id) => {
         .then(response => response.json())
         .catch(err => console.log(err));
 }
+
+export const getRooms = (roomtype, bookingid) => {
+    return fetch(`/api/deskclerk/getoccupation/${bookingid}/${roomtype}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+}

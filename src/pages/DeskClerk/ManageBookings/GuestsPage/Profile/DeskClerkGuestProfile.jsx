@@ -1,5 +1,5 @@
 import React from "react";
-import {getAllGuests, getHotelGuests} from "../../../../../services/deskClerkService";
+import {getHotelGuests} from "../../../../../services/deskClerkService";
 import Loading from "../../../../../components/Loading/Loading";
 import "./DeskClerkGuestProfile.scss";
 import { Row, Col } from "react-bootstrap";
@@ -93,28 +93,8 @@ class GuestProfile extends React.Component {
                 const index = res.findIndex(g=>g.userId==this.props.guest_id);
                 this.setState({index: index});
                 this.setState({personal: res[index]})
-                // for(let g in Object.keys(this.state.hotelGuests)){
-                //     console.log(g)
-                //     this.state.guestsId.push(g)
-                // }
-                // for(let i in this.state.guestsId){
-                //     this.setState({
-                //         guests: [
-                //         ...this.state.guests,
-                //         this.state.hotelGuests[i].firstName+" "+this.state.hotelGuests[i].lastName
-                //     ],
-                // })
             }
             )
-        // getAllGuests()
-        //     .then(res => {
-        //         console.log(res)
-        //         const index = res.findIndex(g=>g.userId==this.props.guest_id);
-        //         this.setState({index: index});
-        //         this.setState({personal: res[index]})
-        //         console.log("pers")
-        //         console.log(this.state.personal)
-        //     })
     }
 
     render() {

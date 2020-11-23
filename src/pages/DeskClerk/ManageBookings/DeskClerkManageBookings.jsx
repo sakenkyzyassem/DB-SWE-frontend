@@ -1,10 +1,9 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { Link, withRouter } from 'react-router-dom';
-import {getAllGuests, getHotelGuests} from "../../../services/deskClerkService";
+import { getHotelGuests} from "../../../services/deskClerkService";
 import Loading from "../../../components/Loading/Loading";
 import "./DeskClerkManageBookings.scss";
-import {getUserBookings} from "../../../services/bookingsService";
 import UserContext from "../../../services/userContext";
 
 const ImageComponent = ({g}) => {
@@ -109,9 +108,7 @@ class ManageBookings extends React.Component {
             return (
                 <div className="manageBookings">
                     <Container className="container">
-                        <h2>Manage Bookings</h2>
-                        <input type="text" id="findGuest" class="findguest" onKeyUp="filteredSearch()" size="50" placeholder="Enter name and surname of the guest"></input>
-                        <button class="search" type="button" >Search</button>
+                        <h2>Hotel Guests</h2>
                         <div class="card" id="guestsList">
                             {this.state.guestsId.map((i) => (
                                 <Link to={`/deskClerk/guest/${this.state.hotelGuests[i].userId}`}>
